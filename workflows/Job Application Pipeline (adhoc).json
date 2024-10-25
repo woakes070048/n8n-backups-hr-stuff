@@ -1,0 +1,254 @@
+{
+  "active": false,
+  "connections": {
+    "Baserow - Get row (trigger)": {
+      "main": [
+        [
+          {
+            "node": "Switch - Baserow Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Baserow - Get row (trigger)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch - Baserow Event": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow - Resume Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute Workflow - Setup Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-25T14:21:45.957Z",
+  "id": "WPaW6AFVyfoB9bWI",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Job Application Pipeline (adhoc)",
+  "nodes": [
+    {
+      "parameters": {
+        "databaseId": 123,
+        "tableId": 589,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5598,
+                "value": "={{ $json.uuid }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "f54c8f32-b5e6-4018-9cc8-ebd6efc735f0",
+      "name": "Baserow - Get row (trigger)",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        360,
+        1100
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "4Eh3Z4Yo6VJZsxOq",
+          "mode": "list",
+          "cachedResultName": "Resume Analysis"
+        },
+        "options": {}
+      },
+      "id": "3f1c0732-3e06-4bbe-97f4-23184406268b",
+      "name": "Execute Workflow - Resume Analysis",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "1AF8fQ9rl5LZkdDR",
+          "mode": "list",
+          "cachedResultName": "Setup Job Application Folder"
+        },
+        "options": {}
+      },
+      "id": "7f364f08-94f6-426d-91f5-646340bc0dd7",
+      "name": "Execute Workflow - Setup Folder",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        1300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "80de87a8-319a-4a84-939d-5d008ce75e9b",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10823370-59d9-439a-8f40-917f96825fac",
+              "name": "uuid",
+              "value": "e29f8c87-b4ab-4d6a-81fa-ee5c72a425fd",
+              "type": "string"
+            },
+            {
+              "id": "396ef04b-ea23-46a6-b74a-5f25870ab371",
+              "name": "event_type",
+              "value": "rows.updated",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e6a49a93-6d80-4b93-9175-9fad332664ef",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Edit Fields').item.json.event_type }}",
+                    "rightValue": "rows.updated",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Row Update"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ed7a3726-be25-4855-8d1d-07bbc9f26fa5",
+                    "leftValue": "={{ $('Edit Fields').item.json.event_type }}",
+                    "rightValue": "rows.created",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "New Row"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e54c2647-ea44-42f9-9e4e-073f60472597",
+      "name": "Switch - Baserow Event",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        560,
+        1100
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-25T14:28:14.000Z",
+  "versionId": "de72356c-7c9a-4e1d-91bc-9b12dace63cf"
+}
