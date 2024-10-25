@@ -1,0 +1,879 @@
+{
+  "active": true,
+  "connections": {
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Get All Resources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Resources": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Resources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Team Lead Projects": {
+      "main": [
+        [
+          {
+            "node": "Assign Team Lead Capacity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Resources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Resources": {
+      "main": [
+        [
+          {
+            "node": "Update Baserow with Capacity",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Team Lead Projects",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Solution Architect Projects",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Business Analyst Projects",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Developer Projects",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Assign Team Lead Capacity": {
+      "main": [
+        [
+          {
+            "node": "Sum Capacity (Team Lead)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Solution Architect Projects": {
+      "main": [
+        [
+          {
+            "node": "Assign Capacity (Solution Architect)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Business Analyst Projects": {
+      "main": [
+        [
+          {
+            "node": "Assign Capacity (Business Analyst)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assign Capacity (Business Analyst)": {
+      "main": [
+        [
+          {
+            "node": "Sum Capacity (Business Analyst)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sum Capacity (Team Lead)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sum Capacity (Business Analyst)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assign Capacity (Solution Architect)": {
+      "main": [
+        [
+          {
+            "node": "Sum Capacity (Solution Architect)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sum Capacity (Solution Architect)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Developer Projects": {
+      "main": [
+        [
+          {
+            "node": "Assign Capacity (Developer)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assign Capacity (Developer)": {
+      "main": [
+        [
+          {
+            "node": "Sum Capacity (Developer)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sum Capacity (Developer)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sum Role Capacity into Total": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get All Resources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Sum Role Capacity into Total",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-21T02:39:07.253Z",
+  "id": "1exC9wXi99yrkBf8",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Calculate ICBC Resource Capacity",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "796fa154-a634-4a98-aee2-7addcb59561f",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -820,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "databaseId": 122,
+        "tableId": 585,
+        "returnAll": true,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5558,
+                "operator": "boolean",
+                "value": "True"
+              }
+            ]
+          }
+        }
+      },
+      "id": "44fd8965-f793-4879-a455-3f7b72100d42",
+      "name": "Get All Resources",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        660
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "databaseId": 122,
+        "tableId": 586,
+        "returnAll": true,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5578,
+                "operator": "link_row_has",
+                "value": "={{ $json.id }}"
+              },
+              {
+                "field": 5577,
+                "operator": "boolean",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "id": "b60a64b3-0475-4d70-84be-7756b6557817",
+      "name": "Team Lead Projects",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        460,
+        860
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "c03bc5c3-0e0e-4e3d-83b7-da7ce3587fa6",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2120,
+        1760
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6c1bbbaf-0368-461f-8da1-581108b4f6c8",
+      "name": "Loop Over Resources",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -160,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "=id",
+              "type": "numberValue",
+              "numberValue": "={{ $('Loop Over Resources').item.json.id }}"
+            },
+            {
+              "name": "Name",
+              "stringValue": "={{ $('Loop Over Resources').item.json.Name }}"
+            },
+            {
+              "name": "Team Lead Capacity",
+              "type": "numberValue",
+              "numberValue": "={{ $json['sum_\\'Team_Lead_Capacity\\''] }}"
+            }
+          ]
+        },
+        "include": "selected",
+        "options": {}
+      },
+      "id": "89798b15-04cd-488c-99eb-80e68ced5b35",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        1060,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "=id",
+              "type": "numberValue",
+              "numberValue": "={{ $('Loop Over Resources').item.json.id }}"
+            },
+            {
+              "name": "Name",
+              "stringValue": "={{ $('Loop Over Resources').item.json.Name }}"
+            },
+            {
+              "name": "Solution Architect Capacity",
+              "type": "numberValue",
+              "numberValue": "={{ $json['sum_\\'Solution_Architect_Capacity\\''] }}"
+            }
+          ]
+        },
+        "include": "selected",
+        "options": {}
+      },
+      "id": "bedf3e8d-f90f-448d-9217-5bf53a9d7089",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        1060,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet TL_Capacity = 0\nfor (const item of $input.all()) {\n  // console.log('Helloworld: ' + item.json['Stakeholder Engagement']);\n  item.json['Team Lead Capacity'] = 0;\n  if (item.json['Stakeholder Engagement'] == null) {\n    item.json['Team Lead Capacity'] = 0;\n    break;\n  }\n  if (item.json['Stakeholder Engagement'].value == 'High')\n    item.json['Team Lead Capacity'] = 30;\n  if (item.json['Stakeholder Engagement'].value == 'Medium')\n    item.json['Team Lead Capacity'] = 20;\n  if (item.json['Stakeholder Engagement'].value == 'Low')\n    item.json['Team Lead Capacity'] = 10;\n}\nreturn $input.all();\n\n\n"
+      },
+      "id": "5e7cbf59-cc4f-49ce-98eb-c3d57135ef2d",
+      "name": "Assign Team Lead Capacity",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "=id",
+              "type": "numberValue",
+              "numberValue": "={{ $('Loop Over Resources').item.json.id }}"
+            },
+            {
+              "name": "Name",
+              "stringValue": "={{ $('Loop Over Resources').item.json.Name }}"
+            },
+            {
+              "name": "Business Analyst Capacity",
+              "type": "numberValue",
+              "numberValue": "={{ $json['sum_\\'Business_Analyst_Capacity\\''] }}"
+            }
+          ]
+        },
+        "include": "selected",
+        "options": {}
+      },
+      "id": "4c316fc4-7058-402b-a698-c49de675c6ba",
+      "name": "Edit Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        1060,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "databaseId": 122,
+        "tableId": 586,
+        "returnAll": true,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5580,
+                "operator": "link_row_has",
+                "value": "={{ $json.id }}"
+              },
+              {
+                "field": 5577,
+                "operator": "boolean",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "id": "6891a6f1-51de-4785-8e56-7977f115ea89",
+      "name": "Solution Architect Projects",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        460,
+        1080
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "databaseId": 122,
+        "tableId": 586,
+        "returnAll": true,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5579,
+                "operator": "link_row_has",
+                "value": "={{ $json.id }}"
+              },
+              {
+                "field": 5577,
+                "operator": "boolean",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "id": "98ab747d-e1db-49a7-9c1d-d06e45f7bdb7",
+      "name": "Business Analyst Projects",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        460,
+        1300
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet field_name = 'Requirements Complexity';\nlet capacity_field_name = 'Business Analyst Capacity';\n\nfor (const item of $input.all()) {\n  // console.log('Helloworld: ' + item.json['Stakeholder Engagement']);\n  if (item.json[field_name] == null) {\n    item.json[capacity_field_name] = 0;\n    break;\n  }\n  if (item.json[field_name].value == 'High')\n    item.json[capacity_field_name] = 30;\n  if (item.json[field_name].value == 'Medium')\n    item.json[capacity_field_name] = 20;\n  if (item.json[field_name].value == 'Low')\n    item.json[capacity_field_name] = 10;\n  if (item.json[field_name].value == 'Very Low')\n    item.json[capacity_field_name] = 5;\n}\nreturn $input.all();\n\n\n"
+      },
+      "id": "9f28b49a-1219-4017-9e5b-a4370249faff",
+      "name": "Assign Capacity (Business Analyst)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "sum",
+              "field": "['Team Lead Capacity']"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1de659c9-f31a-4b5e-9adf-637348e1e587",
+      "name": "Sum Capacity (Team Lead)",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        860,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "sum",
+              "field": "['Business Analyst Capacity']"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "90c32c30-3a6b-4195-bcbf-6a9cc3fadaf5",
+      "name": "Sum Capacity (Business Analyst)",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        860,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet field_name = 'Technical Complexity';\nlet capacity_field_name = 'Solution Architect Capacity';\n\nfor (const item of $input.all()) {\n  // console.log('Helloworld: ' + item.json['Stakeholder Engagement']);\n  if (item.json[field_name] == null) {\n    item.json[capacity_field_name] = 0;\n    break;\n  }\n  if (item.json[field_name].value == 'Very High')\n    item.json[capacity_field_name] = 35;\n  if (item.json[field_name].value == 'High')\n    item.json[capacity_field_name] = 30;\n  if (item.json[field_name].value == 'Medium')\n    item.json[capacity_field_name] = 20;\n  if (item.json[field_name].value == 'Low')\n    item.json[capacity_field_name] = 15;\n  if (item.json[field_name].value == 'Very Low')\n    item.json[capacity_field_name] = 10;\n}\nreturn $input.all();\n\n\n"
+      },
+      "id": "d362b9ce-6963-4f98-83e4-6f5a01426aef",
+      "name": "Assign Capacity (Solution Architect)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "sum",
+              "field": "['Solution Architect Capacity']"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b41a6391-5e21-40ec-8c5f-a40209a6d25d",
+      "name": "Sum Capacity (Solution Architect)",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        860,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "=id",
+              "type": "numberValue",
+              "numberValue": "={{ $('Loop Over Resources').item.json.id }}"
+            },
+            {
+              "name": "Name",
+              "stringValue": "={{ $('Loop Over Resources').item.json.Name }}"
+            },
+            {
+              "name": "Developer Capacity",
+              "type": "numberValue",
+              "numberValue": "={{ $json['sum_\\'Developer_Capacity\\''] }}"
+            }
+          ]
+        },
+        "include": "selected",
+        "options": {}
+      },
+      "id": "f6ca371d-63aa-448f-bedf-70452882f2ea",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        1060,
+        1520
+      ]
+    },
+    {
+      "parameters": {
+        "databaseId": 122,
+        "tableId": 586,
+        "returnAll": true,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5581,
+                "operator": "link_row_has",
+                "value": "={{ $json.id }}"
+              },
+              {
+                "field": 5577,
+                "operator": "boolean",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "id": "e914358d-eed9-47e8-a922-9542ae9e48f9",
+      "name": "Developer Projects",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        460,
+        1520
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet field_name = 'Technical Complexity';\nlet capacity_field_name = 'Developer Capacity';\n\nfor (const item of $input.all()) {\n  // console.log('Helloworld: ' + item.json['Stakeholder Engagement']);\n  if (item.json[field_name] == null) {\n    item.json[capacity_field_name] = 0;\n    break;\n  }\n  if (item.json[field_name].value == 'Very High')\n    item.json[capacity_field_name] = 40;\n  if (item.json[field_name].value == 'High')\n    item.json[capacity_field_name] = 30;\n  if (item.json[field_name].value == 'Medium')\n    item.json[capacity_field_name] = 20;\n  if (item.json[field_name].value == 'Low')\n    item.json[capacity_field_name] = 10;\n  if (item.json[field_name].value == 'Very Low')\n    item.json[capacity_field_name] = 5;\n}\nreturn $input.all();\n\n\n"
+      },
+      "id": "417e5cab-6ef7-448d-84aa-af2598a79bfa",
+      "name": "Assign Capacity (Developer)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        1520
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "sum",
+              "field": "['Developer Capacity']"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e20c2a17-40c4-48f2-b167-c15458466517",
+      "name": "Sum Capacity (Developer)",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        860,
+        1520
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "Total Capacity",
+              "type": "numberValue",
+              "numberValue": "={{ $json['Team Lead Capacity'] + $json['Business Analyst Capacity'] + $json['Solution Architect Capacity'] + $json['Developer Capacity']}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2c85d9ca-c22b-4c88-bdf2-01ce4767a1ad",
+      "name": "Sum Role Capacity into Total",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        1780,
+        1180
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 122,
+        "tableId": 585,
+        "rowId": "={{ $json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 5562,
+              "fieldValue": "={{ $json['Total Capacity'] }}"
+            }
+          ]
+        }
+      },
+      "id": "73e3d46c-07e6-4d48-8d81-bca5aed6e03d",
+      "name": "Update Baserow with Capacity",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 5 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "ebbcc712-893d-4475-bc61-1a92f11775f8",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -820,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 4,
+        "options": {}
+      },
+      "id": "2e4f8325-e7d9-4607-b055-864a4bbb7c52",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1480,
+        1160
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-23T21:02:13.000Z",
+  "versionId": "7119fe21-c960-49b2-a0e4-b2ae0a1298f4"
+}
