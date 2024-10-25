@@ -1,0 +1,219 @@
+{
+  "active": true,
+  "connections": {
+    "Baserow - Get row (trigger)": {
+      "main": [
+        [
+          {
+            "node": "Switch - Baserow Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch - Baserow Event": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow - Resume Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Baserow - Get row (trigger)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-22T14:34:28.719Z",
+  "id": "vcec0dkSIQHBSmk1",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Job Application Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "databaseId": 123,
+        "tableId": 589,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5598,
+                "value": "={{ $json.body.items[0].uuid }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "82595385-b4a2-438d-9571-a2c52f3253fe",
+      "name": "Baserow - Get row (trigger)",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        360,
+        1100
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.event_type }}",
+                    "rightValue": "rows.updated",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Row Update"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ed7a3726-be25-4855-8d1d-07bbc9f26fa5",
+                    "leftValue": "={{ $('Webhook').item.json.body.event_type }}",
+                    "rightValue": "rows.created",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "New Row"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c12d3d73-538d-4fe1-8ea9-4ac2f873b40b",
+      "name": "Switch - Baserow Event",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        560,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "1AF8fQ9rl5LZkdDR",
+          "mode": "list",
+          "cachedResultName": "Setup Job Application Folder"
+        },
+        "options": {}
+      },
+      "id": "d7d26c69-f723-4fd8-ad99-488d4d98d2ba",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        860,
+        1260
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "AqdNJzpBpnnbjU19",
+          "mode": "list",
+          "cachedResultName": "Resume Analysis"
+        },
+        "options": {}
+      },
+      "id": "f1d2edab-bd74-4918-853e-4b74050581b4",
+      "name": "Execute Workflow - Resume Analysis",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        860,
+        920
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "96686a27-41d4-491e-9f8f-7cbf50a028a7",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "id": "70f4298a-f4b4-4a11-968b-6cef75caa71d",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        1100
+      ],
+      "webhookId": "96686a27-41d4-491e-9f8f-7cbf50a028a7",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2Bo6EzO1uNxkaXtR",
+          "name": "JobSearch Baserow Webhook"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-25T04:46:33.000Z",
+  "versionId": "f5eaa9bf-f408-4258-a728-6279ff257f4e"
+}
