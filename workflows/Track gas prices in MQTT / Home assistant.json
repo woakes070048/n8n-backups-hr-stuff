@@ -1,0 +1,284 @@
+{
+  "active": true,
+  "connections": {
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Baserow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baserow": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MQTT": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "MQTT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Baserow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-21T02:23:34.283Z",
+  "id": "NCMPgvPod9E3QFdY",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Track gas prices in MQTT / Home assistant",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "46bd6426-0914-4731-b96b-d542c0efc4a9",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "databaseId": 123,
+        "tableId": 588,
+        "returnAll": true,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5590,
+                "operator": "boolean",
+                "value": "True"
+              }
+            ]
+          }
+        }
+      },
+      "id": "b84505a7-e6fd-42a1-8fff-add815ff392c",
+      "name": "Baserow",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        480
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "1f797c10-46dd-4b9b-ac47-be2a85eb1965",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        100,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.gasbuddy.com/graphql",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": " Content-Type",
+              "value": " application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "= {\n      \"operationName\": \"GetStation\",\n      \"variables\": {\n        \"id\": \"{{ $json.GasBuddy_Station_ID }}\"\n      },\n      \"query\": \"query GetStation($id: ID!) { station(id: $id) { prices { credit { nickname postedTime price } } } }\"\n    } ",
+        "options": {}
+      },
+      "id": "35866ace-6b27-4c39-8b2b-54fd98b1bd00",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "topic": "=n8n/scraping/gas_stations/{{ $json.ID }}",
+        "options": {}
+      },
+      "id": "5e2a0f25-d925-4823-9cfa-66055f667eb5",
+      "name": "MQTT",
+      "type": "n8n-nodes-base.mqtt",
+      "typeVersion": 1,
+      "position": [
+        740,
+        660
+      ],
+      "credentials": {
+        "mqtt": {
+          "id": "gFiJmxuPdrU0l5ck",
+          "name": "MQTT account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0813b2b0-db17-4635-8158-324612d74347",
+              "name": "PostedTime",
+              "value": "={{ $json.data.station.prices[0].credit.postedTime }}",
+              "type": "string"
+            },
+            {
+              "id": "77b11522-fc32-4b85-94bb-2cfc45ba1a03",
+              "name": "Bronze",
+              "value": "={{ $json.data.station.prices[0].credit.price }}",
+              "type": "number"
+            },
+            {
+              "id": "9d0c8c65-e1d8-441b-8e99-ed62dd8a2e22",
+              "name": "StationName",
+              "value": "={{ $('Baserow').item.json.Name }}",
+              "type": "string"
+            },
+            {
+              "id": "7bd8a142-1bb4-4929-a61b-c3c0971521e9",
+              "name": "ID",
+              "value": "={{ $('Loop Over Items').item.json.Name.replaceAll(\" \",\"_\").toLowerCase() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8c86ea73-87f5-4e45-b25a-b4ebf411a2da",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        520,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "162a2d7b-87e8-4c2e-858f-719207fcfde4",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -340,
+        700
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "e7640c8a-b6ba-4a8a-89e4-f2de72474b5c",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        340,
+        320
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-21T02:24:33.000Z",
+  "versionId": "3663f191-1b01-4c2a-bf79-dfd81a3ddfb0"
+}
