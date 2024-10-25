@@ -1,0 +1,238 @@
+{
+  "active": true,
+  "connections": {
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Todoist",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mark email as read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-21T02:25:33.874Z",
+  "id": "MsGhRTfJ2tNhU40z",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Create task for synology DSM updates",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json[\"Subject\"] }}",
+              "operation": "contains",
+              "value2": "update has been detected"
+            },
+            {
+              "value1": "={{ $json.Subject }}",
+              "operation": "contains",
+              "value2": "out-of-date"
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "id": "6394c243-2ef2-4e23-ad72-bdf5ca866e7a",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        400,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "project": {
+          "__rl": true,
+          "value": "2263595354",
+          "mode": "list",
+          "cachedResultName": "Next Actions"
+        },
+        "labels": [
+          "effort:low",
+          "computer"
+        ],
+        "content": "Update for [yukari.local](http://yukari.local:5000/)",
+        "options": {
+          "description": "={{ $json[\"textPlain\"] }}"
+        }
+      },
+      "id": "c604781c-13f8-4eed-b368-dea41c70898c",
+      "name": "Todoist",
+      "type": "n8n-nodes-base.todoist",
+      "typeVersion": 2,
+      "position": [
+        680,
+        320
+      ],
+      "credentials": {
+        "todoistOAuth2Api": {
+          "id": "NJCKeLpADTG146Dn",
+          "name": "Todoist account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "88af1bb3-fa54-4d0e-824d-0bee9e10c0ef",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        680,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "labelIds": [
+            "Label_1964591812771859995"
+          ],
+          "readStatus": "unread"
+        }
+      },
+      "id": "27800d3d-dac8-4e88-b924-48ecebe941fe",
+      "name": "Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        40,
+        440
+      ],
+      "webhookId": "e835f06c-461d-4c34-9081-0266f324fbc7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "af16376f-d073-4902-9dd3-367c56f6123e",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "21fd17e1-4b0d-404f-aed1-684fef84ddba",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -220,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "id": "8449a82f-974c-46e9-aeef-659b389966a4",
+      "name": "Mark email as read",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        400,
+        800
+      ],
+      "webhookId": "5faa0323-6aed-4acb-883c-1f10162427ef",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-21T02:37:46.000Z",
+  "versionId": "c331fda2-89ee-4c7d-a56e-5ecc645fe4e0"
+}
