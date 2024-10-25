@@ -1,0 +1,410 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud": {
+      "main": [
+        [
+          {
+            "node": "Filter Markdown (by Content Type)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Markdown (by Content Type)": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read markdown": {
+      "main": [
+        [
+          {
+            "node": "Front Matter Node",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge FrontMatter data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Front Matter Node": {
+      "main": [
+        [
+          {
+            "node": "Merge FrontMatter data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge FrontMatter data": {
+      "main": [
+        [
+          {
+            "node": "Get Baserow Details",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge with Baserow Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud - Download File": {
+      "main": [
+        [
+          {
+            "node": "Read markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Create an activity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an activity": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge with Baserow Data": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Nextcloud - Move files out of Inbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Baserow Details": {
+      "main": [
+        [
+          {
+            "node": "Merge with Baserow Data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-21T01:50:51.566Z",
+  "id": "MX70tEIHbXoV7T8K",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Process Meeting files in (Nextcloud) journal inbox",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "595257a2-c4d1-458f-bd15-1a32c5c3af21",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -920,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "operation": "list",
+        "path": "=/Journal/Inbox/"
+      },
+      "id": "8d0a88f6-dd36-4aed-83a8-f0f0d0f68925",
+      "name": "Nextcloud",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        400
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "bc27a00d-85d7-466a-b553-2e239fc2cb8c",
+              "leftValue": "={{ $json.contentType }}",
+              "rightValue": "text/markdown",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "04b836a1-1043-4d44-956e-ff9f9fa73c2c",
+      "name": "Filter Markdown (by Content Type)",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        -500,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "setAllData": false,
+        "destinationKey": "text",
+        "options": {}
+      },
+      "id": "9a5ecf75-d3bd-4348-93d8-c18616931333",
+      "name": "Read markdown",
+      "type": "n8n-nodes-base.moveBinaryData",
+      "typeVersion": 1.1,
+      "position": [
+        -60,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.text }}"
+      },
+      "id": "5266d90c-fb9f-4fa7-a197-a4ec371bed7e",
+      "name": "Front Matter Node",
+      "type": "@icttroacon/n8n-nodes-front-matter.frontMatter",
+      "typeVersion": 1,
+      "position": [
+        180,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "9e48c5ed-c3d7-4164-ac5d-09c3a7b9520f",
+      "name": "Merge FrontMatter data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        400,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "download",
+        "path": "={{ $json.path.urlDecode() }}"
+      },
+      "id": "163071ed-ed59-48a9-bcf4-f6fb943b37bf",
+      "name": "Nextcloud - Download File",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        400
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3c9f05b2-755a-45e9-ad97-0e404a8a3dbb",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1080,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "activity",
+        "activityTypeId": "={{ $json.monica_activity_id }}",
+        "contacts": "={{ $json.monica_contact_id }}",
+        "happenedAt": "={{ new Date($json.data.meeting_date).format('yyyy-MM-dd') }}",
+        "summary": "={{ $json.data.note_type }}",
+        "additionalFields": {
+          "description": "={{ $json.content }}"
+        }
+      },
+      "id": "a12800c1-8ad2-4336-878c-6342febd74e9",
+      "name": "Create an activity",
+      "type": "n8n-nodes-base.monicaCrm",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        460
+      ],
+      "credentials": {
+        "monicaCrmApi": {
+          "id": "Gyg2sJkCy8J13rTe",
+          "name": "Monica CRM account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "=data.name",
+              "field2": "Name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ff881c83-6ca1-41d6-8ded-d75a3bbcdcb1",
+      "name": "Merge with Baserow Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        780,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "databaseId": 33,
+        "tableId": 583,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5548,
+                "value": "={{ $json.data.monica.contact_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "2a2cf920-20c0-495d-9073-6f15390a6daa",
+      "name": "Get Baserow Details",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        600,
+        600
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "move",
+        "path": "={{ $json.path.urlDecode() }}",
+        "toPath": "={{ $json.nextcloud_path }}{{ $json.data.meeting_date.toDateTime().format(\"yyyy-MM-dd\") }}.md"
+      },
+      "id": "bb30c3bf-ea21-4389-9cee-2b83f7dd6c4b",
+      "name": "Nextcloud - Move files out of Inbox",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        700
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2024-10-21T02:11:55.000Z",
+  "versionId": "ed61d248-de80-46c2-8aef-e3c247243e5a"
+}
