@@ -1,0 +1,391 @@
+{
+  "active": true,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Set Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Unread Quarterly Commentaries": {
+      "main": [
+        [
+          {
+            "node": "Code - Extracts the PDF from the attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Extracts the PDF from the attachments": {
+      "main": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Nextcloud - Save file to Brett's commentary folder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gmail - File to Brett Commentary Label",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - File to Brett Commentary Label": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Remove from INBOX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Variables": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Unread Quarterly Commentaries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Remove from INBOX": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Mark as Unread",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarization Chain": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-24T13:36:29.895Z",
+  "id": "zqz4Ae7OPFhBxIsY",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Brett's Quarterly Commentary",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "4940ab7e-58b8-409a-9be0-4c2be0789a31",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ],
+          "q": "subject:Quarterly Commentary",
+          "readStatus": "unread",
+          "sender": "Irena Kolosova"
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "id": "19587925-5e6b-4a8b-9276-a5fcefe58788",
+      "name": "Gmail - Unread Quarterly Commentaries",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1540,
+        360
+      ],
+      "webhookId": "50dcd782-d6ac-489a-b84b-2ce33b58573b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let results = [];\n\nfor (item of items) {\n    for (key of Object.keys(item.binary)) {\n      attachment = item.binary[key];\n      console.log(attachment.mimeType);\n      if (attachment.mimeType == \"application/pdf\") {\n        results.push({\n            json: {},\n            binary: {\n                data: item.binary[key],\n            }\n        });\n      }\n    }\n}\n\nreturn results;"
+      },
+      "id": "84faa427-7b77-49b4-8508-c2befbcd908c",
+      "name": "Code - Extracts the PDF from the attachments",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        360
+      ],
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "93a2612e-2e77-4c91-8147-36287ec31dfc",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        2280,
+        220
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "path": "=/Documents/Financials and Budget/Brett’s commentary/{{ $now.format(\"yyyy-qq\") }} - Brett's Commentary.pdf",
+        "binaryDataUpload": true
+      },
+      "id": "53ddcc62-13a8-4995-b966-13a90b5159bd",
+      "name": "Nextcloud - Save file to Brett's commentary folder",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        360
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=Brett sent a quarterly commentary. Here is the summary:\n\n{{ $json.response.text }}",
+        "options": {}
+      },
+      "id": "70c23efd-e3df-4ad9-b14b-1befedc1aafc",
+      "name": "Discord",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2460,
+        40
+      ],
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "hf6RAiISd5zNhDZr",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "id": "10e2ef02-cfdd-434f-b369-bee29198674b",
+      "name": "Gmail - Remove from INBOX",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2300,
+        640
+      ],
+      "webhookId": "310bf594-84d6-487c-b0a3-02731320e64b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail - Unread Quarterly Commentaries').item.json.id }}",
+        "labelIds": "={{ $('Set Variables').item.json['Brett\\'s Commentary Gmail Label'] }}"
+      },
+      "id": "b1328ed0-9974-4667-97fe-e56f8c8318bb",
+      "name": "Gmail - File to Brett Commentary Label",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2080,
+        640
+      ],
+      "webhookId": "10389869-0efc-4132-8a7f-10048dd11f5b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "207bd1ff-0b01-426c-8647-98152c74bdc8",
+              "name": "Brett's Commentary Gmail Label",
+              "value": "Label_7146284642284060267",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9fb0c1b0-a18f-4308-b655-c896f7c66d17",
+      "name": "Set Variables",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1320,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "markAsUnread",
+        "messageId": "={{ $json.id }}"
+      },
+      "id": "4098f60b-db94-4a45-96a9-956b6b5d8838",
+      "name": "Gmail - Mark as Unread",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2520,
+        640
+      ],
+      "webhookId": "01be2820-6141-4cbc-ae99-59bd2a79db4b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 2
+            }
+          ]
+        }
+      },
+      "id": "652a2705-9b91-4b31-a069-4d023b1b81c9",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        1100,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "operationMode": "nodeInputBinary",
+        "options": {
+          "summarizationMethodAndPrompts": {
+            "values": {
+              "combineMapPrompt": "Act as an economist. Write a concise summary of the following:\n\n\"{text}\"\n\nCONCISE SUMMARY:",
+              "prompt": "Act as an economist. Write a concise summary of the following:\n\n\"{text}\"\n\nHere are relevant topics to focus on:\n- Global market trends\n- Risks\n- World events that can impact markets, identify what these events are and if relevant identify their timelines\n\nCONCISE SUMMARY:"
+            }
+          }
+        }
+      },
+      "id": "d9f65251-e8e8-4959-8036-872225f27c24",
+      "name": "Summarization Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        40
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-24T15:05:47.000Z",
+  "versionId": "fe73a3e8-4cc2-40a4-8c65-65c0612e159c"
+}
