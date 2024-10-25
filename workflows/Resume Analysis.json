@@ -1,0 +1,439 @@
+{
+  "active": false,
+  "connections": {
+    "Nextcloud - Get Posting File": {
+      "main": [
+        [
+          {
+            "node": "Extract from Job Posting Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from Job Posting Markdown": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from Resume PDF": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Set Variables": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Get Posting File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Nextcloud - Get Resume Version",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud - Get Resume Version": {
+      "main": [
+        [
+          {
+            "node": "Extract from Resume PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Variables": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud - Get Coverletter version": {
+      "main": [
+        [
+          {
+            "node": "Extract from Cover letter from PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Save Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Save Analysis Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-25T04:31:23.442Z",
+  "id": "AqdNJzpBpnnbjU19",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Resume Analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "download",
+        "path": "={{ $json.posting_path }}"
+      },
+      "id": "6274e4cc-2a3e-4fa5-8e3b-6cf19bb40a8f",
+      "name": "Nextcloud - Get Posting File",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        620,
+        340
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "id": "70d40c63-5554-43c6-b1cc-5f035c131ade",
+      "name": "Extract from Job Posting Markdown",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        840,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "95b59fab-d57c-461c-8cfa-d23e072d4c51",
+      "name": "Extract from Resume PDF",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        840,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "91471de4-ead7-4223-8b5d-3c197b736553",
+              "name": "posting_path",
+              "value": "={{ $json.NextCloud_Path }}/Posting.md",
+              "type": "string"
+            },
+            {
+              "id": "c812ba43-a5ce-4118-8159-eccb5765bbe8",
+              "name": "resume_filename",
+              "value": "=Resume v{{ $json['Resume Version'] }}.pdf",
+              "type": "string"
+            },
+            {
+              "id": "37db82c7-54b5-4ba9-85de-facb11e8b685",
+              "name": "position",
+              "value": "={{ $json.Position }}",
+              "type": "string"
+            },
+            {
+              "id": "701e10cc-0bdb-434e-a53e-6d32f44a9841",
+              "name": "company",
+              "value": "={{ $json.Company }}",
+              "type": "string"
+            },
+            {
+              "id": "af426e7e-3e32-4a74-a8e6-4e216aba07fa",
+              "name": "resume_version",
+              "value": "={{ $json['Resume Version'] }}",
+              "type": "string"
+            },
+            {
+              "id": "dc8cdf4a-41d4-4c58-84be-559d70f2a50b",
+              "name": "nextcloud_path",
+              "value": "={{ $json.NextCloud_Path }}",
+              "type": "string"
+            },
+            {
+              "id": "bb06a54d-e960-478b-ae2f-9b7201648d73",
+              "name": "coverletter_version",
+              "value": "={{ $json['Cover Letter Version'] }}",
+              "type": "string"
+            },
+            {
+              "id": "6b2c1b2c-5f72-4515-b20b-995d3b402e3c",
+              "name": "coverletter_filename",
+              "value": "=Cover Letter v{{ $json['Cover Letter Version'] }}.pdf",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "80c7cdf5-46e2-4a74-8831-fa1cab5b5c7b",
+      "name": "Set Variables",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        360,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "download",
+        "path": "={{ $json.nextcloud_path }}{{ $json.resume_filename }}"
+      },
+      "id": "38a2d933-a66e-4b0b-bc2c-e6f4b50ab0bd",
+      "name": "Nextcloud - Get Resume Version",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        620,
+        560
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27c5a223-e355-415a-8a23-0f5df10dee51",
+              "name": "posting",
+              "value": "={{ $json.data_1 }}",
+              "type": "string"
+            },
+            {
+              "id": "e1dca750-6d70-4582-afd1-bf25f57ad71c",
+              "name": "resume",
+              "value": "={{ $json.text_2 }}",
+              "type": "string"
+            },
+            {
+              "id": "c902a48b-1bfa-4b05-8f17-382c1b4459a1",
+              "name": "resume_version",
+              "value": "={{ $('Set Variables').item.json.resume_version }}",
+              "type": "string"
+            },
+            {
+              "id": "01ae07a0-65c0-4e64-b587-da3905b47e49",
+              "name": "position",
+              "value": "={{ $('Set Variables').item.json.position }}",
+              "type": "string"
+            },
+            {
+              "id": "c9befc42-9ff9-4872-99ef-2d2d42a11c30",
+              "name": "company",
+              "value": "={{ $('Set Variables').item.json.company }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ef4c14e3-a2f8-40cf-9bb4-107ee810bdc6",
+      "name": "Save Variables",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1320,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "path": "={{ $('Set Variables').item.json.nextcloud_path }}/AI Analysis (Resume) - {{ $now.format(\"yyyy-MM-dd\") }}.md",
+        "fileContent": "={{ $json.message.content }}"
+      },
+      "id": "9be657ec-6d01-4a3a-8aed-622ffded44d9",
+      "name": "Nextcloud - Save Analysis Data",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1880,
+        540
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "download",
+        "path": "={{ $json.nextcloud_path }}{{ $json.coverletter_filename }}"
+      },
+      "id": "3dac5dba-c4ef-4a12-be42-cb058e5a780f",
+      "name": "Nextcloud - Get Coverletter version",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        620,
+        800
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "01aa4bc5-7d50-4d76-acc2-b3fbcfd53499",
+      "name": "Extract from Cover letter from PDF",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        840,
+        800
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "96845b9f-b200-4b8f-ab51-e56c3c798463",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        160,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "clashHandling": {
+            "values": {
+              "resolveClash": "addSuffix"
+            }
+          }
+        }
+      },
+      "id": "fc1ac274-db00-4941-867a-5b160a61aee5",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=I want you to act as a recruiter for a {{ $json.position }} position at {{ $json.company }}.  I am considering applying for this job and am trying to determine if I am a good fit for the position and how my resume might be improved.\n\n**Step 1:** Review the job description:\n\n{{ $json.posting }}\n\n**End of job description**\n\n**Step 2:** Review my resume text:\n\n{{ $json.resume }}\n\n**End of resume text**\n\n**Step 4:** Compare the job description and resume to each other and provide the following information:\n\n- Determine whether I am a good candidate for this role and provide the percentage estimate the resume matches the job description.  This percentage should be determined by whether I have demonstrated expertise for each of the qualifications listed in the job description.  I expect this percentage to be provided to me as a number, even if this is your best estimate without a specific assessment tool.\n- Extract the salary / pay information from the job description, if it is not available say \"Salary was not included.\"\n- Rate my strengths for the role. Include the relevant text from the job posting and the relevant text from my resume. Put this analysis under the header of \"Strengths\"\n- Help me identify where I am weak for this role. Put this analysis under the header of \"Weaknesses\"\n- Specify how I can improve this resume to be more compelling to recruiters. Provide suggestions on where to incorporate this on the resume. Put this analysis under the header of \"Resume improvements.\n\nTake your time and be thorough."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e01ac7db-9f2f-4ece-a4f1-ff402088c9c0",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        1520,
+        540
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-10-25T04:32:39.000Z",
+  "versionId": "2b52f192-140a-4a34-a271-c3800cc335ff"
+}
