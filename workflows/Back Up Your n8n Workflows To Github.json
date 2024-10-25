@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "n8n": {
       "main": [
@@ -492,8 +492,15 @@
   "pinData": {},
   "settings": {},
   "staticData": null,
-  "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2024-10-25T05:40:38.000Z",
-  "versionId": "f8d7cfb1-068b-436c-98ab-14b535970264"
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-25T05:44:58.000Z",
+  "versionId": "23742748-b028-457d-aa6d-716f9445b793"
 }
