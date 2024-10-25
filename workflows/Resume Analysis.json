@@ -72,17 +72,6 @@
         ]
       ]
     },
-    "Nextcloud - Get Coverletter version": {
-      "main": [
-        [
-          {
-            "node": "Extract from Cover letter from PDF",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Execute Workflow Trigger": {
       "main": [
         [
@@ -117,8 +106,8 @@
       ]
     }
   },
-  "createdAt": "2024-10-25T04:31:23.442Z",
-  "id": "AqdNJzpBpnnbjU19",
+  "createdAt": "2024-10-25T05:52:22.578Z",
+  "id": "4Eh3Z4Yo6VJZsxOq",
   "meta": {
     "templateCredsSetupCompleted": true
   },
@@ -130,13 +119,13 @@
         "operation": "download",
         "path": "={{ $json.posting_path }}"
       },
-      "id": "6274e4cc-2a3e-4fa5-8e3b-6cf19bb40a8f",
+      "id": "069ad421-35ee-4112-97b2-68452f7df202",
       "name": "Nextcloud - Get Posting File",
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        620,
-        340
+        460,
+        460
       ],
       "credentials": {
         "nextCloudOAuth2Api": {
@@ -150,13 +139,13 @@
         "operation": "text",
         "options": {}
       },
-      "id": "70d40c63-5554-43c6-b1cc-5f035c131ade",
+      "id": "eff9666e-aa1f-4a6a-85d5-703ca7d1f54e",
       "name": "Extract from Job Posting Markdown",
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        840,
-        340
+        680,
+        460
       ]
     },
     {
@@ -164,13 +153,13 @@
         "operation": "pdf",
         "options": {}
       },
-      "id": "95b59fab-d57c-461c-8cfa-d23e072d4c51",
+      "id": "bbc97b3c-30bc-4452-86b9-4d039c2b7b82",
       "name": "Extract from Resume PDF",
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        840,
-        560
+        680,
+        680
       ]
     },
     {
@@ -212,30 +201,18 @@
               "name": "nextcloud_path",
               "value": "={{ $json.NextCloud_Path }}",
               "type": "string"
-            },
-            {
-              "id": "bb06a54d-e960-478b-ae2f-9b7201648d73",
-              "name": "coverletter_version",
-              "value": "={{ $json['Cover Letter Version'] }}",
-              "type": "string"
-            },
-            {
-              "id": "6b2c1b2c-5f72-4515-b20b-995d3b402e3c",
-              "name": "coverletter_filename",
-              "value": "=Cover Letter v{{ $json['Cover Letter Version'] }}.pdf",
-              "type": "string"
             }
           ]
         },
         "options": {}
       },
-      "id": "80c7cdf5-46e2-4a74-8831-fa1cab5b5c7b",
+      "id": "4805d4a1-5a11-401a-8b9d-125d63c35781",
       "name": "Set Variables",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        360,
-        420
+        200,
+        540
       ]
     },
     {
@@ -244,13 +221,13 @@
         "operation": "download",
         "path": "={{ $json.nextcloud_path }}{{ $json.resume_filename }}"
       },
-      "id": "38a2d933-a66e-4b0b-bc2c-e6f4b50ab0bd",
+      "id": "4b8d2c28-2d9f-4994-b36a-331119ac9a95",
       "name": "Nextcloud - Get Resume Version",
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        620,
-        560
+        460,
+        680
       ],
       "credentials": {
         "nextCloudOAuth2Api": {
@@ -297,13 +274,13 @@
         },
         "options": {}
       },
-      "id": "ef4c14e3-a2f8-40cf-9bb4-107ee810bdc6",
+      "id": "b1e2c3e0-9c7e-4c0f-9bfd-afc9d9273758",
       "name": "Save Variables",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1320,
-        540
+        1160,
+        660
       ]
     },
     {
@@ -312,13 +289,13 @@
         "path": "={{ $('Set Variables').item.json.nextcloud_path }}/AI Analysis (Resume) - {{ $now.format(\"yyyy-MM-dd\") }}.md",
         "fileContent": "={{ $json.message.content }}"
       },
-      "id": "9be657ec-6d01-4a3a-8aed-622ffded44d9",
+      "id": "639f131c-5f6f-410e-816d-7f8083274e8e",
       "name": "Nextcloud - Save Analysis Data",
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1880,
-        540
+        1720,
+        660
       ],
       "credentials": {
         "nextCloudOAuth2Api": {
@@ -326,51 +303,16 @@
           "name": "NextCloud account"
         }
       }
-    },
-    {
-      "parameters": {
-        "authentication": "oAuth2",
-        "operation": "download",
-        "path": "={{ $json.nextcloud_path }}{{ $json.coverletter_filename }}"
-      },
-      "id": "3dac5dba-c4ef-4a12-be42-cb058e5a780f",
-      "name": "Nextcloud - Get Coverletter version",
-      "type": "n8n-nodes-base.nextCloud",
-      "typeVersion": 1,
-      "position": [
-        620,
-        800
-      ],
-      "credentials": {
-        "nextCloudOAuth2Api": {
-          "id": "fLXJCCubxnE7gtwF",
-          "name": "NextCloud account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "pdf",
-        "options": {}
-      },
-      "id": "01aa4bc5-7d50-4d76-acc2-b3fbcfd53499",
-      "name": "Extract from Cover letter from PDF",
-      "type": "n8n-nodes-base.extractFromFile",
-      "typeVersion": 1,
-      "position": [
-        840,
-        800
-      ]
     },
     {
       "parameters": {},
-      "id": "96845b9f-b200-4b8f-ab51-e56c3c798463",
+      "id": "25b6b9d5-3dd1-4168-af07-6182221d3bce",
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1,
       "position": [
-        160,
-        420
+        0,
+        540
       ]
     },
     {
@@ -385,13 +327,13 @@
           }
         }
       },
-      "id": "fc1ac274-db00-4941-867a-5b160a61aee5",
+      "id": "4f91915c-e412-48b1-a659-c8793577283e",
       "name": "Merge",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        1120,
-        540
+        960,
+        660
       ]
     },
     {
@@ -411,13 +353,13 @@
         },
         "options": {}
       },
-      "id": "e01ac7db-9f2f-4ece-a4f1-ff402088c9c0",
+      "id": "50f872cb-d954-4308-bb91-00662f46a197",
       "name": "OpenAI",
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.6,
       "position": [
-        1520,
-        540
+        1360,
+        660
       ],
       "credentials": {
         "openAiApi": {
@@ -432,8 +374,15 @@
     "executionOrder": "v1"
   },
   "staticData": null,
-  "tags": [],
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
   "triggerCount": 0,
-  "updatedAt": "2024-10-25T04:32:39.000Z",
-  "versionId": "2b52f192-140a-4a34-a271-c3800cc335ff"
+  "updatedAt": "2024-10-25T06:22:41.000Z",
+  "versionId": "413ebafb-3c79-4d2f-b670-0e8169c16d7c"
 }
