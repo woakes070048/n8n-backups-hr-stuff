@@ -1,23 +1,317 @@
 {
   "active": false,
-  "connections": {},
-  "createdAt": "2024-10-23T05:15:21.975Z",
-  "id": "Nk7mJVSD56Bl63sy",
+  "connections": {
+    "Set Variables": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Create Company Folder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Nextcloud - Create Application Folder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Nextcloud - Copy Resume Master to Application Folder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baserow1": {
+      "main": [
+        [
+          {
+            "node": "Baserow - Update Resume Version Number1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud - Create Application Folder": {
+      "main": [
+        [
+          {
+            "node": "Baserow1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-24T23:01:57.325Z",
+  "id": "1AF8fQ9rl5LZkdDR",
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "name": "Setup Job Application Folder",
   "nodes": [
     {
-      "parameters": {},
-      "id": "cd20a467-2c43-47b1-9bbc-b621dd12f20b",
-      "name": "When clicking ‘Test workflow’",
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c96eaaf8-8d8c-4eaa-9d10-f056d3b8094b",
+              "name": "company_folder",
+              "value": "=/Jobs/{{ $json.Company }}",
+              "type": "string"
+            },
+            {
+              "id": "12771c64-381d-43af-a320-dde2470c098c",
+              "name": "application_folder",
+              "value": "=/Jobs/{{ $json.Company }}/{{ $json.Position }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "dfb24340-dd93-4da3-a0b7-3a21332b260b",
+      "name": "Set Variables",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
       "position": [
-        460,
+        1360,
         360
       ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "path": "={{ $json.company_folder }}"
+      },
+      "id": "027bb0e0-1d33-4e56-9e7d-62055444b673",
+      "name": "Nextcloud - Create Company Folder",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        160
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "copy",
+        "path": "/Jobs/_Masters/Resume Master.odt",
+        "toPath": "={{ $json.application_folder }}/Resume v1.0.0.odt"
+      },
+      "id": "949c46a8-3ed1-4d7c-a495-f8322e940c0b",
+      "name": "Nextcloud - Copy Resume Master to Application Folder",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        560
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "options": {}
+      },
+      "id": "a078f6b8-6e2d-4e92-9912-9aabb0fe9230",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        940
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Take the following text job posting and generate a markdown version:\n\n{{ $json['Posting Text'] }}\n\n+++ This marks the end of the job posting.\n\nDo not change any content, however format it accordingly:\n\n- Identify any headings and subheadings\n- Identify any bullet points "
+      },
+      "id": "52d73786-5621-4389-9c47-52931dd9bb0e",
+      "name": "Basic LLM Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        1620,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "path": "={{ $('Set Variables').item.json.application_folder }}/Posting.md",
+        "fileContent": "={{ $json.text }}"
+      },
+      "id": "6ac55eb9-dcbb-491c-87a7-2aee613679e3",
+      "name": "Nextcloud",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        800
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "path": "={{ $json.application_folder }}"
+      },
+      "id": "28447957-c1e2-41ba-8836-1799250ae445",
+      "name": "Nextcloud - Create Application Folder",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        360
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "databaseId": 123,
+        "tableId": 589,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5598,
+                "value": "={{ $('Set Variables').item.json.uuid }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "5e5023d4-6f7e-40a0-a6de-4844b36d2600",
+      "name": "Baserow1",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        360
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "89251f4f-ea49-4764-a80b-3a9e2ff03159",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 123,
+        "tableId": 589,
+        "rowId": "={{ $json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 5593,
+              "fieldValue": "=/Jobs/{{ $json.Company }}/{{ $json.Position }}/"
+            }
+          ]
+        }
+      },
+      "id": "4d3800dc-c6e2-44e1-9093-eab97df56398",
+      "name": "Baserow - Update Resume Version Number1",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2060,
+        360
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -25,8 +319,15 @@
     "executionOrder": "v1"
   },
   "staticData": null,
-  "tags": [],
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
   "triggerCount": 0,
-  "updatedAt": "2024-10-23T05:15:21.975Z",
-  "versionId": "a775528f-357a-4a1a-8ce6-86403a686dd9"
+  "updatedAt": "2024-10-25T16:29:04.000Z",
+  "versionId": "4aa26ee7-ac90-4b34-8faa-17d761539cbc"
 }
