@@ -1,0 +1,479 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Baserow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monica CRM": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baserow": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Monica CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Code - isEmpty?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Contact Exists": {
+      "main": [
+        [
+          {
+            "node": "Code - Parse Full Name & Get Baserow ID",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields - Get Baserow and Monica ids",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baserow - Update from existing Monica contact": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields - Get Baserow and Monica ids": {
+      "main": [
+        [
+          {
+            "node": "Baserow - Update from existing Monica contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - isEmpty?": {
+      "main": [
+        [
+          {
+            "node": "If - Contact Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monica CRM - Create Contact": {
+      "main": [
+        [
+          {
+            "node": "Baserow - Update Baserow from new Monica contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Parse Full Name & Get Baserow ID": {
+      "main": [
+        [
+          {
+            "node": "Monica CRM - Create Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baserow - Update Baserow from new Monica contact": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-27T07:20:20.493Z",
+  "id": "Tlyrr8u0O34UTeD1",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Manage the Baserow 1:1 table",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "544df73a-f446-467e-af48-485058030b70",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        740,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {}
+      },
+      "id": "1877d0c8-0665-40d2-b760-06542144c29d",
+      "name": "Monica CRM",
+      "type": "n8n-nodes-base.monicaCrm",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        700
+      ],
+      "credentials": {
+        "monicaCrmApi": {
+          "id": "MQNOIs99uoEzemTz",
+          "name": "Monica CRM account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "51939174-cc06-41ac-9f9a-34f96f924c3e",
+              "leftValue": "={{ $json.complete_name }}",
+              "rightValue": "={{ $('Loop Over Items').item.json.Name }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5603b056-3928-4d2c-a034-bf8ea97b9b71",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1580,
+        700
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "databaseId": 33,
+        "tableId": 583,
+        "returnAll": true,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 5546,
+                "operator": "boolean",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "id": "7ecb780e-8db0-4ee8-bb1b-7066b120dc51",
+      "name": "Baserow",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        940,
+        580
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3905de96-eea4-4e70-9345-d72cc2577ea1",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1160,
+        580
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "1aec1d79-cfec-4ff9-b9db-205cbc985d25",
+      "name": "Replace Me",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3220,
+        940
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e8f7dafd-1ed8-4a70-b311-09380251d996",
+              "leftValue": "={{ $json.empty }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "a58919a0-b46e-4dc8-abd6-f0fb472ec3bd",
+      "name": "If - Contact Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2000,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 33,
+        "tableId": 583,
+        "rowId": "={{ $json.baserow_id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 5548,
+              "fieldValue": "={{ $json.monica_id }}"
+            }
+          ]
+        }
+      },
+      "id": "cf22e537-3450-4298-b1c3-6bbce3d3c76e",
+      "name": "Baserow - Update from existing Monica contact",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2600,
+        860
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7091a14c-8a9e-46b8-b0ae-d9ffde0b4834",
+              "name": "monica_id",
+              "value": "={{ $('Filter').item.json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "4d1f7caf-fa80-4ea1-979a-ee10cca9bb50",
+              "name": "baserow_id",
+              "value": "={{ $('Loop Over Items').item.json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f8df414c-de49-4c98-a948-eeb06a4750be",
+      "name": "Edit Fields - Get Baserow and Monica ids",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2340,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{json: {empty: items.length == 1 && Object.keys(items[0].json).length == 0}}];"
+      },
+      "id": "bf9cda36-277a-4a21-b46c-e043f8b81080",
+      "name": "Code - isEmpty?",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1800,
+        700
+      ],
+      "notesInFlow": true,
+      "notes": "https://community.n8n.io/t/how-to-check-for-empty-node-output/10022/2"
+    },
+    {
+      "parameters": {
+        "firstName": "={{ $json.first_name }}",
+        "genderId": 3,
+        "additionalFields": {
+          "last_name": "={{ $json.last_name }}"
+        }
+      },
+      "id": "60bf0bf4-dab3-44c2-872f-24bcbce78326",
+      "name": "Monica CRM - Create Contact",
+      "type": "n8n-nodes-base.monicaCrm",
+      "typeVersion": 1,
+      "position": [
+        2580,
+        520
+      ],
+      "credentials": {
+        "monicaCrmApi": {
+          "id": "MQNOIs99uoEzemTz",
+          "name": "Monica CRM account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Add a new field called 'myNewField' to the JSON of the item\nlet full_name = $('Loop Over Items').item.json.Name\n\nlet name_arr = full_name.split(' ');\nlet last_name = (name_arr[name_arr.length-1]).trim();\n\n// $input.item.json.last_name_position = full_name.indexOf(last_name);\n\n$input.item.json.first_name = (full_name.substring(0, (full_name.indexOf(last_name) -1))).trim()\n$input.item.json.last_name  = last_name;\n\n// add the baserow id\n$input.item.json.baserow_id = $('Loop Over Items').item.json.id\n\nreturn $input.item.json;"
+      },
+      "id": "66f364f6-f32c-4041-a2d5-215208504d70",
+      "name": "Code - Parse Full Name & Get Baserow ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2340,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 33,
+        "tableId": 583,
+        "rowId": "={{ $('Code - Parse Full Name & Get Baserow ID').item.json.baserow_id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 5548,
+              "fieldValue": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "id": "d1cbed72-dbc0-4a45-a4c3-c79e152818a5",
+      "name": "Baserow - Update Baserow from new Monica contact",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2800,
+        520
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2024-10-27T17:03:29.000Z",
+  "versionId": "88b0159c-4d58-45d7-8940-32fc8e823953"
+}
