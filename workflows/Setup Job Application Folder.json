@@ -1,6 +1,83 @@
 {
   "active": false,
-  "connections": {},
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Paths",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Posting and Paths",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud - Create Company Path": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Create Position Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Paths": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Create Company Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Posting and Paths": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Save Cleaned up posting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Path": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Copy Master Resume",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "createdAt": "2024-10-23T05:15:21.975Z",
   "id": "Nk7mJVSD56Bl63sy",
   "meta": {
@@ -10,23 +87,242 @@
   "nodes": [
     {
       "parameters": {},
-      "id": "cd20a467-2c43-47b1-9bbc-b621dd12f20b",
-      "name": "When clicking ‘Test workflow’",
-      "type": "n8n-nodes-base.manualTrigger",
+      "id": "a2704990-8c33-4ccb-bbd8-1db9cf4a52fe",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1,
       "position": [
-        460,
-        360
+        0,
+        380
       ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "path": "={{ $json.company_path }}"
+      },
+      "id": "02ee8723-85b0-46a3-b6c3-4ab025c55d03",
+      "name": "Nextcloud - Create Company Path",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        480,
+        200
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "path": "={{ $('Set Paths').item.json.position_path }}"
+      },
+      "id": "29ff7631-3247-430c-89de-33ecd5736af8",
+      "name": "Nextcloud - Create Position Path",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        700,
+        200
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc276fb7-f72d-4dc3-a481-c8f2479a0348",
+              "name": "company_path",
+              "value": "=/Jobs/{{ $json.Company }}",
+              "type": "string"
+            },
+            {
+              "id": "aec9edcd-54b0-41ab-9a82-e6e7b9e5a2c9",
+              "name": "position_path",
+              "value": "=/Jobs/{{ $json.Company }}/{{ $json.Position }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1acec03b-1834-43b2-975d-86fd8e683293",
+      "name": "Set Paths",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "089bdf90-07c0-42d9-b04f-1d8e9438e57f",
+              "name": "posting",
+              "value": "={{ $json['Posting Text'] }}",
+              "type": "string"
+            },
+            {
+              "id": "53bd8793-5bc8-4fb7-8cca-20eab3dd4f23",
+              "name": "position_path",
+              "value": "=/Jobs/{{ $json.Company }}/{{ $json.Position }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "74aa90df-16c5-4823-b6cf-e32a6baa5b30",
+      "name": "Set Posting and Paths",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Clean up the attached text into markdown format. Do not alter any of the content. Simply update to include the following markdown elements:\n\n- Headings and subheadings\n- Bullet points\n- Quotes\n\nThe following is the text:\n\n {{ $json.posting }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5c9cce7f-f937-4bae-a589-8000c9bc7c51",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        460,
+        420
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "path": "={{ $('Set Posting and Paths').item.json.position_path }}/Posting.md",
+        "fileContent": "={{ $json.message.content }}"
+      },
+      "id": "d7b908d7-2e09-4f39-9e24-a2963b2cc606",
+      "name": "Nextcloud - Save Cleaned up posting",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        840,
+        420
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "53bd8793-5bc8-4fb7-8cca-20eab3dd4f23",
+              "name": "position_path",
+              "value": "=/Jobs/{{ $json.Company }}/{{ $json.Position }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a7792771-30c9-4fc9-8e89-7af4ea818e53",
+      "name": "Set Path",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "copy",
+        "path": "/Jobs/_Masters/Resume Master.odt",
+        "toPath": "={{ position_path }}/Resume.odt"
+      },
+      "id": "0963d368-0c5c-4fba-a189-20694e7d2f24",
+      "name": "Nextcloud - Copy Master Resume",
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        480,
+        660
+      ],
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Execute Workflow Trigger": [
+      {
+        "json": {
+          "id": 7,
+          "order": "7.00000000000000000000",
+          "uuid": "53dadff4-a3b6-496a-ba58-5a00b101acac",
+          "Position": "Software Engineer Manager",
+          "NextCloud_Path": null,
+          "Stage": null,
+          "Company": "PolicyMe",
+          "Closing Date": null,
+          "Posting URL": "https://www.linkedin.com/jobs/view/4055954542",
+          "Resume Version": null,
+          "Cover Letter Version": null,
+          "Posting Text": "About the job\n\nOverview of the role:\n\nJoin us at PolicyMe! We're modernizing insurance and we'd like your help. The Canadian insurance landscape has remained largely unchanged for decades and we are in the process of changing that. We're a remote-first, Toronto-based startup with big ambitions.\n\n\nAs a Software Engineer Manager at PolicyMe, you will be responsible for leading and scaling a high-performance engineering team that builds and enhances our platform. You’ll work closely with cross-functional teams to ensure smooth execution of initiatives, delivering products that drive PolicyMe's mission to become one of the biggest insurance brands in Canada.\n\n\nYou’ll bring your leadership experience and technical expertise to guide the team in making strategic decisions, improving engineering processes, and maintaining a strong focus on building reliable, scalable, and secure systems.\n\n\nWhat you'll be doing:\n\n    Lead and manage a team of software engineers, providing mentorship, performance feedback, and career development.\n    Oversee the technical design, development, and deployment of key features and systems that drive growth.\n    Collaborate with product, design, and QA teams to ensure seamless execution and delivery of cross-functional projects.\n    Establish and maintain best practices for code quality, architecture, and testing.\n    Drive technical decision-making, lead discussions on architecture and ensure alignment with the business objectives.\n    Maintain focus on building reliable, scalable, secure, and extensible systems to support the company’s growth.\n    Foster a positive, high-energy environment where engineers are motivated to take initiative, experiment, and push boundaries.\n\n\nWhat we're looking for:\n\n    7+ years of experience in software development, with at least 2 years in a management role (people leadership is a key aspect of this).\n    Strong technical background in web development, ideally in a full-stack environment with expertise in React, Python, and Node.js.\n    Experience working in UNIX/Linux environments and familiarity with PostgreSQL.\n    Proven ability to lead teams in an agile, fast-paced environment, with a strong focus on collaboration and stakeholder management.\n    A track record of delivering complex projects with a focus on scalability, reliability, and security.\n    Excellent communication skills with the ability to translate technical concepts for non-technical stakeholders.\n\n\nReports To: Chief Technology Officer\n\n\nWhy join us:\n\n\n    Generous PTO - 20 vacation days\n    Access to stock options and a comprehensive benefits plan\n    A remote-first team with company paid, in-person socials and the option to work from our Toronto-based office\n    Resources to help your professional development, including an L&D budget, performance reviews twice a year and ongoing feedback to ensure you reach your highest potential\n    Work with an empathetic, high-performing team in a flexible, results-oriented environment\n\n\nAbout PolicyMe:\n\nPolicyMe is a Venture-Backed InsurTech startup on a mission to put families first, protecting them with the honest and uncomplicated life insurance they deserve. Through technology, PolicyMe is streamlining the traditional insurance process, removing barriers and inefficiencies to deliver a fully-underwritten life insurance policy that families deserve but with fewer steps and lower costs. PolicyMe makes it easy to get a quote and apply for term life insurance online in 20 minutes or less. Since our launch in 2018, we have grown exponentially, selling over $1 billion in life insurance coverage to Canadians.\n\nPolicyMe was also most recently voted as one of Canada's 50 Most Impactful Companies of 2021, and has been mentioned in BetaKit, National Post, the Global & Mail, Global News and more. If you're interested in being considered for this opportunity, please submit a resume.\n\n\nCommitment to Equal Opportunity:\n\nPolicyMe is proud to be an equal opportunity employer. All applicants will be considered for employment without attention to race, colour, religion, sex, sexual orientation, gender identity, national origin, or disability status. We thank all applicants for their interest, however, only those selected for an interview will be contacted.\n\n\nAccessibility Statement:\n\nPolicyMe is dedicated to ensuring an accessible experience for all candidates. If you require accommodations during the application process, please let us know in the \"Additional Information\" section of the job application. We are committed to working with you to provide support and make reasonable adjustments throughout the process."
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2024-10-23T05:15:21.975Z",
-  "versionId": "a775528f-357a-4a1a-8ce6-86403a686dd9"
+  "updatedAt": "2024-10-28T15:30:19.000Z",
+  "versionId": "0c535432-3226-438f-8f2a-17b7d28b6850"
 }
