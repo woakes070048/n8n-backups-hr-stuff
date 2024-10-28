@@ -168,7 +168,7 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "1AF8fQ9rl5LZkdDR",
+          "value": "Nk7mJVSD56Bl63sy",
           "mode": "list",
           "cachedResultName": "Setup Job Application Folder"
         },
@@ -207,7 +207,63 @@
       }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "automation.macapinlac.network",
+            "user-agent": "python-requests/2.31.0",
+            "content-length": "5230",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "50.98.54.49",
+            "cf-ipcountry": "CA",
+            "cf-ray": "8d9be0885e668441-YVR",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "content-type": "application/json",
+            "jobsearch": "aTCHo9JUSLkCNe",
+            "x-baserow-delivery": "6eaacc93-8b55-4af9-af8e-27df68ca608a",
+            "x-baserow-event": "rows.created",
+            "x-forwarded-for": "162.158.146.115",
+            "x-forwarded-host": "automation.macapinlac.network",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "7b4c48395145",
+            "x-real-ip": "162.158.146.115"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "table_id": 589,
+            "database_id": 123,
+            "workspace_id": 31,
+            "event_id": "6eaacc93-8b55-4af9-af8e-27df68ca608a",
+            "event_type": "rows.created",
+            "items": [
+              {
+                "id": 7,
+                "order": "7.00000000000000000000",
+                "uuid": "53dadff4-a3b6-496a-ba58-5a00b101acac",
+                "Position": "Software Engineer Manager",
+                "NextCloud_Path": null,
+                "Stage": null,
+                "Company": "PolicyMe",
+                "Closing Date": null,
+                "Posting URL": "https://www.linkedin.com/jobs/view/4055954542",
+                "Resume Version": null,
+                "Cover Letter Version": null,
+                "Posting Text": "About the job\n\nOverview of the role:\n\nJoin us at PolicyMe! We're modernizing insurance and we'd like your help. The Canadian insurance landscape has remained largely unchanged for decades and we are in the process of changing that. We're a remote-first, Toronto-based startup with big ambitions.\n\n\nAs a Software Engineer Manager at PolicyMe, you will be responsible for leading and scaling a high-performance engineering team that builds and enhances our platform. You’ll work closely with cross-functional teams to ensure smooth execution of initiatives, delivering products that drive PolicyMe's mission to become one of the biggest insurance brands in Canada.\n\n\nYou’ll bring your leadership experience and technical expertise to guide the team in making strategic decisions, improving engineering processes, and maintaining a strong focus on building reliable, scalable, and secure systems.\n\n\nWhat you'll be doing:\n\n    Lead and manage a team of software engineers, providing mentorship, performance feedback, and career development.\n    Oversee the technical design, development, and deployment of key features and systems that drive growth.\n    Collaborate with product, design, and QA teams to ensure seamless execution and delivery of cross-functional projects.\n    Establish and maintain best practices for code quality, architecture, and testing.\n    Drive technical decision-making, lead discussions on architecture and ensure alignment with the business objectives.\n    Maintain focus on building reliable, scalable, secure, and extensible systems to support the company’s growth.\n    Foster a positive, high-energy environment where engineers are motivated to take initiative, experiment, and push boundaries.\n\n\nWhat we're looking for:\n\n    7+ years of experience in software development, with at least 2 years in a management role (people leadership is a key aspect of this).\n    Strong technical background in web development, ideally in a full-stack environment with expertise in React, Python, and Node.js.\n    Experience working in UNIX/Linux environments and familiarity with PostgreSQL.\n    Proven ability to lead teams in an agile, fast-paced environment, with a strong focus on collaboration and stakeholder management.\n    A track record of delivering complex projects with a focus on scalability, reliability, and security.\n    Excellent communication skills with the ability to translate technical concepts for non-technical stakeholders.\n\n\nReports To: Chief Technology Officer\n\n\nWhy join us:\n\n\n    Generous PTO - 20 vacation days\n    Access to stock options and a comprehensive benefits plan\n    A remote-first team with company paid, in-person socials and the option to work from our Toronto-based office\n    Resources to help your professional development, including an L&D budget, performance reviews twice a year and ongoing feedback to ensure you reach your highest potential\n    Work with an empathetic, high-performing team in a flexible, results-oriented environment\n\n\nAbout PolicyMe:\n\nPolicyMe is a Venture-Backed InsurTech startup on a mission to put families first, protecting them with the honest and uncomplicated life insurance they deserve. Through technology, PolicyMe is streamlining the traditional insurance process, removing barriers and inefficiencies to deliver a fully-underwritten life insurance policy that families deserve but with fewer steps and lower costs. PolicyMe makes it easy to get a quote and apply for term life insurance online in 20 minutes or less. Since our launch in 2018, we have grown exponentially, selling over $1 billion in life insurance coverage to Canadians.\n\nPolicyMe was also most recently voted as one of Canada's 50 Most Impactful Companies of 2021, and has been mentioned in BetaKit, National Post, the Global & Mail, Global News and more. If you're interested in being considered for this opportunity, please submit a resume.\n\n\nCommitment to Equal Opportunity:\n\nPolicyMe is proud to be an equal opportunity employer. All applicants will be considered for employment without attention to race, colour, religion, sex, sexual orientation, gender identity, national origin, or disability status. We thank all applicants for their interest, however, only those selected for an interview will be contacted.\n\n\nAccessibility Statement:\n\nPolicyMe is dedicated to ensuring an accessible experience for all candidates. If you require accommodations during the application process, please let us know in the \"Additional Information\" section of the job application. We are committed to working with you to provide support and make reasonable adjustments throughout the process."
+              }
+            ]
+          },
+          "webhookUrl": "https://automation.macapinlac.network/webhook/96686a27-41d4-491e-9f8f-7cbf50a028a7",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -221,6 +277,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-10-25T06:22:24.000Z",
-  "versionId": "b851f720-c6f7-4377-a15c-6ef4ddcf78e2"
+  "updatedAt": "2024-10-28T15:17:48.000Z",
+  "versionId": "5d2c213c-73a2-487b-9f98-ad89f054eebd"
 }
