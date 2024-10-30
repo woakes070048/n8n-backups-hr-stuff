@@ -19,27 +19,11 @@
         ]
       ]
     },
-    "Gmail": {
-      "main": [
-        [
-          {
-            "node": "IF",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Mark email as read",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "When clicking ‘Test workflow’": {
       "main": [
         [
           {
-            "node": "Gmail",
+            "node": "Gmail - Unread emails",
             "type": "main",
             "index": 0
           }
@@ -50,7 +34,51 @@
       "main": [
         [
           {
+            "node": "Gmail - Unread emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Unread emails": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Todoist": {
+      "main": [
+        [
+          {
             "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Remove from INBOX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Remove from INBOX": {
+      "main": [
+        [
+          {
+            "node": "Mark email as read",
             "type": "main",
             "index": 0
           }
@@ -77,7 +105,7 @@
             {
               "value1": "={{ $json.Subject }}",
               "operation": "contains",
-              "value2": "out-of-date"
+              "value2": "yukari is out-of-date"
             }
           ]
         },
@@ -137,33 +165,6 @@
       ]
     },
     {
-      "parameters": {
-        "operation": "getAll",
-        "returnAll": true,
-        "filters": {
-          "labelIds": [
-            "Label_1964591812771859995"
-          ],
-          "readStatus": "unread"
-        }
-      },
-      "id": "27800d3d-dac8-4e88-b924-48ecebe941fe",
-      "name": "Gmail",
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        40,
-        440
-      ],
-      "webhookId": "e835f06c-461d-4c34-9081-0266f324fbc7",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "RNFupvlyj3Indiwy",
-          "name": "ritchie@macapinlac.com"
-        }
-      }
-    },
-    {
       "parameters": {},
       "id": "af16376f-d073-4902-9dd3-367c56f6123e",
       "name": "When clicking ‘Test workflow’",
@@ -203,10 +204,81 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        400,
-        800
+        1320,
+        320
       ],
       "webhookId": "5faa0323-6aed-4acb-883c-1f10162427ef",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "readStatus": "unread"
+        }
+      },
+      "id": "27800d3d-dac8-4e88-b924-48ecebe941fe",
+      "name": "Gmail - Unread emails",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        40,
+        440
+      ],
+      "webhookId": "e835f06c-461d-4c34-9081-0266f324fbc7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "addLabels",
+        "threadId": "={{ $('IF').item.json.id }}",
+        "labelIds": [
+          "Label_1964591812771859995"
+        ]
+      },
+      "id": "39585402-37b6-46bb-9f9e-fdca49e3ebda",
+      "name": "Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        320
+      ],
+      "webhookId": "0aa3f42e-0365-48af-afa3-09934218d07b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": "={{ $json.messages[0].labelIds[3] }}"
+      },
+      "id": "3e2cfc25-1841-49bb-8dd6-9788c2dbfadb",
+      "name": "Gmail - Remove from INBOX",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        320
+      ],
+      "webhookId": "77f5c35a-44df-43bb-8a2f-70c43d7e93bb",
       "credentials": {
         "gmailOAuth2": {
           "id": "RNFupvlyj3Indiwy",
@@ -233,6 +305,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-10-21T02:37:46.000Z",
-  "versionId": "c331fda2-89ee-4c7d-a56e-5ecc645fe4e0"
+  "updatedAt": "2024-10-30T18:53:24.000Z",
+  "versionId": "6b415fdf-7f30-41e0-95a4-5f83a97e2d02"
 }
