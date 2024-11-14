@@ -106,6 +106,11 @@
               "value1": "={{ $json.Subject }}",
               "operation": "contains",
               "value2": "yukari is out-of-date"
+            },
+            {
+              "value1": "={{ $json.Subject }}",
+              "operation": "contains",
+              "value2": "yukari are out-of-date"
             }
           ]
         },
@@ -207,7 +212,7 @@
         1320,
         320
       ],
-      "webhookId": "5faa0323-6aed-4acb-883c-1f10162427ef",
+      "webhookId": "f6228b9f-2c6f-4f9e-af29-98c2cbc3acbf",
       "credentials": {
         "gmailOAuth2": {
           "id": "RNFupvlyj3Indiwy",
@@ -231,7 +236,7 @@
         40,
         440
       ],
-      "webhookId": "e835f06c-461d-4c34-9081-0266f324fbc7",
+      "webhookId": "b51c1ba5-1bdd-4ed6-856c-b76708635582",
       "credentials": {
         "gmailOAuth2": {
           "id": "RNFupvlyj3Indiwy",
@@ -256,7 +261,7 @@
         900,
         320
       ],
-      "webhookId": "0aa3f42e-0365-48af-afa3-09934218d07b",
+      "webhookId": "c9e1c877-418f-4ac4-8fb2-396f774240bf",
       "credentials": {
         "gmailOAuth2": {
           "id": "RNFupvlyj3Indiwy",
@@ -278,7 +283,7 @@
         1120,
         320
       ],
-      "webhookId": "77f5c35a-44df-43bb-8a2f-70c43d7e93bb",
+      "webhookId": "0882c52b-dc2f-4e1b-a1bd-0baf815b2eb5",
       "credentials": {
         "gmailOAuth2": {
           "id": "RNFupvlyj3Indiwy",
@@ -305,6 +310,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-10-30T18:53:24.000Z",
-  "versionId": "6b415fdf-7f30-41e0-95a4-5f83a97e2d02"
+  "updatedAt": "2024-11-14T14:26:09.000Z",
+  "versionId": "c1e39699-726f-4d6f-b4f5-49f0765aed27"
 }
