@@ -67,17 +67,6 @@
       "main": [
         [
           {
-            "node": "Gmail - Remove from INBOX",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Gmail - Remove from INBOX": {
-      "main": [
-        [
-          {
             "node": "Mark email as read",
             "type": "main",
             "index": 0
@@ -209,7 +198,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1320,
+        1120,
         320
       ],
       "webhookId": "f6228b9f-2c6f-4f9e-af29-98c2cbc3acbf",
@@ -268,28 +257,6 @@
           "name": "ritchie@macapinlac.com"
         }
       }
-    },
-    {
-      "parameters": {
-        "operation": "removeLabels",
-        "messageId": "={{ $json.id }}",
-        "labelIds": "={{ $json.messages[0].labelIds[3] }}"
-      },
-      "id": "3e2cfc25-1841-49bb-8dd6-9788c2dbfadb",
-      "name": "Gmail - Remove from INBOX",
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        1120,
-        320
-      ],
-      "webhookId": "0882c52b-dc2f-4e1b-a1bd-0baf815b2eb5",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "RNFupvlyj3Indiwy",
-          "name": "ritchie@macapinlac.com"
-        }
-      }
     }
   ],
   "pinData": {},
@@ -310,6 +277,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-11-14T14:26:09.000Z",
-  "versionId": "c1e39699-726f-4d6f-b4f5-49f0765aed27"
+  "updatedAt": "2024-11-26T14:21:31.000Z",
+  "versionId": "b0da8285-ae05-47ef-bbef-002b91aaa934"
 }
