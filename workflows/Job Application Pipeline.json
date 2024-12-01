@@ -1,29 +1,47 @@
 {
   "active": true,
   "connections": {
-    "Baserow - Get row (trigger)": {
-      "main": [
-        [
-          {
-            "node": "Switch - Baserow Event",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Webhook": {
       "main": [
         [
           {
-            "node": "Baserow - Get row (trigger)",
+            "node": "Split Out - Each Row",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Switch - Baserow Event": {
+    "Split Out - Each Row": {
+      "main": [
+        [
+          {
+            "node": "If - There is an action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - There is an action": {
+      "main": [
+        [
+          {
+            "node": "Switch - By Action",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch - By Action": {
       "main": [
         [
           {
@@ -40,6 +58,17 @@
           }
         ]
       ]
+    },
+    "Execute Workflow - Resume Analysis": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2024-10-22T14:34:28.719Z",
@@ -49,102 +78,6 @@
   },
   "name": "Job Application Pipeline",
   "nodes": [
-    {
-      "parameters": {
-        "databaseId": 124,
-        "tableId": 592,
-        "limit": 1,
-        "additionalOptions": {
-          "filters": {
-            "fields": [
-              {
-                "field": 5615,
-                "value": "={{ $json.body.items[0].uuid }}"
-              }
-            ]
-          }
-        }
-      },
-      "id": "82595385-b4a2-438d-9571-a2c52f3253fe",
-      "name": "Baserow - Get row (trigger)",
-      "type": "n8n-nodes-base.baserow",
-      "typeVersion": 1,
-      "position": [
-        360,
-        1100
-      ],
-      "credentials": {
-        "baserowApi": {
-          "id": "d2WUYcb60dACjFtq",
-          "name": "Baserow account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $('Webhook').item.json.body.event_type }}",
-                    "rightValue": "rows.updated",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Row Update"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "ed7a3726-be25-4855-8d1d-07bbc9f26fa5",
-                    "leftValue": "={{ $('Webhook').item.json.body.event_type }}",
-                    "rightValue": "rows.created",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "New Row"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "c12d3d73-538d-4fe1-8ea9-4ac2f873b40b",
-      "name": "Switch - Baserow Event",
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        560,
-        1100
-      ]
-    },
     {
       "parameters": {
         "workflowId": {
@@ -161,7 +94,7 @@
       "typeVersion": 1.1,
       "position": [
         880,
-        900
+        980
       ]
     },
     {
@@ -195,14 +128,158 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        160,
-        1100
+        -80,
+        1320
       ],
       "webhookId": "535f349d-458a-4afa-b419-11c3c4d06f81",
       "credentials": {
         "httpHeaderAuth": {
           "id": "2Bo6EzO1uNxkaXtR",
           "name": "JobSearch Baserow Webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body.items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        140,
+        1320
+      ],
+      "id": "f2bc9c9c-4c16-45bd-b9c4-afc1ba68794c",
+      "name": "Split Out - Each Row"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e94884d8-9f5b-40f6-8d30-7b7dd19d3e68",
+              "leftValue": "={{ $json.Action }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        380,
+        1320
+      ],
+      "id": "dde709a8-001b-401b-a85e-0a87b23cd2cb",
+      "name": "If - There is an action"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        660,
+        1500
+      ],
+      "id": "22fb6785-c105-4db6-b12f-330a7c8fd8a8",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Action.value }}",
+                    "rightValue": "Resume Analysis",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Resume Analysis"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "53fdb702-e25e-41f9-96a8-35b146491ae7",
+                    "leftValue": "={{ $json.Action.value }}",
+                    "rightValue": "Folder Setup",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Folder Setup"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        660,
+        1180
+      ],
+      "id": "31566a8d-91b4-4ed3-b5d5-9cb4472fb857",
+      "name": "Switch - By Action"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        980
+      ],
+      "id": "9a9d2528-daa3-4ad9-b143-5a5f1a1050a6",
+      "name": "Discord",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "hf6RAiISd5zNhDZr",
+          "name": "Discord Webhook account"
         }
       }
     }
@@ -214,24 +291,24 @@
           "headers": {
             "host": "automation.macapinlac.network",
             "user-agent": "python-requests/2.31.0",
-            "content-length": "18296",
+            "content-length": "12216",
             "accept": "*/*",
             "accept-encoding": "gzip, br",
             "cdn-loop": "cloudflare; loops=1",
             "cf-connecting-ip": "216.232.192.78",
             "cf-ipcountry": "CA",
-            "cf-ray": "8e50de1e9b028443-YVR",
+            "cf-ray": "8eb50f1dcf1c2536-SJC",
             "cf-visitor": "{\"scheme\":\"https\"}",
             "content-type": "application/json",
             "jobsearch": "#NMtdYS2f2c606",
-            "x-baserow-delivery": "8b121417-b479-40d6-8439-4637a74e76ff",
+            "x-baserow-delivery": "70a15b69-37f4-4e1d-8628-06ed7ff42c32",
             "x-baserow-event": "rows.updated",
-            "x-forwarded-for": "162.158.146.114",
+            "x-forwarded-for": "172.69.22.152",
             "x-forwarded-host": "automation.macapinlac.network",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "cddf95658d4f",
-            "x-real-ip": "162.158.146.114"
+            "x-real-ip": "172.69.22.152"
           },
           "params": {},
           "query": {},
@@ -239,38 +316,52 @@
             "table_id": 592,
             "database_id": 124,
             "workspace_id": 31,
-            "event_id": "8b121417-b479-40d6-8439-4637a74e76ff",
+            "event_id": "70a15b69-37f4-4e1d-8628-06ed7ff42c32",
             "event_type": "rows.updated",
             "items": [
               {
-                "id": 10,
-                "order": "10.00000000000000000000",
-                "uuid": "bae3bac1-928f-433f-b831-ce2de3548a28",
-                "Position": "",
-                "Company": "Jane App",
-                "NextCloud_Path": "/Jobs/",
+                "id": 7,
+                "order": "7.00000000000000000000",
+                "uuid": "9714bfb0-03ed-4ba1-8238-21c4181c5472",
+                "Position": "Senior Manager, Software Development",
+                "Company": "Nicola Weath",
+                "NextCloud_Path": "/Jobs/Nicola Weath/Senior Manager, Software Development/",
                 "Closing Date": null,
-                "Posting Text": "We are excited to announce this new opportunity for a Development Manager to join Jane’s Accounts Group and lead our Marketing Development team. This team’s current charter today consists of developing the Jane Marketing Website, which is a stable and established application. This application is used for our Demo Booking flow, which is often the initial touch point in our customer journey. You will be leading and mentoring small team of developers, helping them grow and mature through continuous improvement. In addition, as a Development Manager at Jane you will be helping establish best practices and implementing processes for you team to enable them to do their best work.\n\nIn 2025 we see an opportunity to grow the responsibilities of this team. In particular, we are extending their current charter to reimagine the Sign Up flow. You will be driving the direction and execution of the new user Sign Up Experience, while providing continuous delight in our customer journey. This would include running A/B test experiments, to improve and optimize our conversion and activation rates. For this position, we are looking for a technical leader who is experienced in leading development teams in an agile environment.\n\nLike with all positions at Jane, this position is a remote position, allowing you to work anywhere you want across Canada. Building a delighted team who can delight our customers is part of Jane’s DNA. In our most recent company-wide health check, 99% of our team agreed that our founders demonstrate people are important to Jane’s success. On top of that, 98% of our team felt Manager cares about them as human beings and that they are supported when needing to arrange time off from work. We’d never claim to be perfect, but we’re working hard to listen to our people and improve each day.\n\nWe really want the people who work at Jane to love being here, so it's important that we start with a bit about what makes our company unique and try to be as transparent as possible. Our values also provide some insights into Jane and hopefully, you’ll have a better idea if this might be the kind of company you want to be part of.\n\nBefore we were Jane, our Co-Founders were solving problems for their own clinics not realizing that a few years later, this team would grow to support tens of thousands of healthcare practices in more than 60 countries. Our platform is now helping to modernize the world of practice management software. We enable the likes of physiotherapists, mental health counsellors, chiropractors, and other allied health practitioners to run their practices in a digital-first way through features such as online booking, charting, scheduling, telehealth, and billing along with an evolving library of features. You can see more of them here . Although we’ve grown, still to this day, we’re rooted in solving clinics’ problems and making sure we don’t lose sight of Jane’s vision.\n\nWe have remained profitable for the past seven years, we’re product-led and growing organically (and responsibly) to the point where 85% of our customer growth is either from customer referrals or word of mouth. Growth like this is unique, especially in the world of SaaS, and it doesn’t happen by chance. We have a brilliant team of over 400 Janers who are doing an amazing job of listening to our customers, building what they need, and providing industry-leading support. We pride ourselves on flexibility & autonomy, some of our team block out their calendars to pick up their children from school (and this is normal at Jane), and we even have a #kids channel in Slack.\n\nWe’re not a clock-in clock-out system-type environment. With that being said, we’re not going to paint the picture of a perfect environment either. We’re a company that’s scaling quickly, we have many moving parts, many of us are doing this for the first time and sometimes, we don’t have processes in place or clear views which can require a lot of resourcefulness and a passion for problem-solving.\n\nWith all that to say, if you’re looking for an environment where you can grow, stretch yourself, and work with some incredibly talented people on problems that are positively impacting people's lives, Jane could be the place for you.\n\nThe Impact You Could Have\n\n    Lead and mentor a team of 2-3 developers, fostering a collaborative and supportive environment.\n    Help define the teams identity and establish the team’s culture.\n    Implement best practices and processes that will help deliver value to our marketing team and customers.\n    Maintain an existing application, while taking on new initiatives and developing new features.\n    Your role will have a direct impact and deliver value for every single customer that signs up with Jane.\n    The work you do will help Jane grow, by helping Jane scale as we continue to provide great experiences to our customers.\n    Work closely with product leaders to shape the roadmap, provide estimates, and swiftly execute ideas to drive customer impact.\n\nThe Experience We Feel We Need\n\n    3+ years experience managing development teams.\n    5+ years experience working with Agile methodologies.\n    Experience as a technical leader, worked across different platforms, including the Ruby on Rails and React JS ecosystem.\n    Experience in delivering incremental value to our users with small slices, and iterating on the feedback that was received.\n    You are deeply curious about customer behaviour and using that date to make data driven decisions.\n    Experience working in a marketing department or closely with marketing teams (content, design, strategy).\n    Broad understanding of marketing concepts, solutions and products.\n\nCompensation Expectations For The Role\n\nJane’s committed to paying our team members fairly, clearly, and above all, paying for growth. This role has a minimum annual salary of $146,300 and maximum annual salary of $228,600. As you may have noticed, this salary range is quite large, and this is intentional to account for the growth someone will experience in the role throughout their time at Jane (i.e., from building the skills, to accomplished, to highly proficient, all the way to achieving excellence in the role). When hiring talented folks to join the Jane team, we’ve found that new team members are best set up for success when hired with the expectation of being fully accomplished in the role, which for this role would reflect a starting salary of $173,800.\n\nIt's also possible to join Jane at a salary above or below this, which would mean a salary below $173,800 typically reflects someone who has all the potential to be fully accomplished in the role but doesn't yet possess all the skills required, while a salary above $173,800 is typically for individuals who are currently in this role at Jane and had the opportunity to make a significant positive impact on our customers, product and company with deep Jane knowledge. At Jane, we pay for growth, which means that you’ll continue to have conversations about your career development with your manager and see your compensation grow over time as you build an amazing career with us.\n\nPaying clearly is one of our compensation fundamentals to help folks build trust in the compensation process at Jane. To better understand Jane’s compensation fundamentals and how this range is determined, click on this link here for a short video walkthrough of how it all works! We also welcome you to ask as many questions as you’d like about compensation throughout the interview process to ensure you feel confident and build trust through the process.\n\nMore information on our benefits can be found here !\n\nAt Jane, we’re committed to fostering an environment that allows you to come to work as your truest self. We believe it’s important to actively recognize, embrace, and celebrate our differences in order to make Jane an inclusive, equitable, and diverse workplace.\n\nWe want to build a team of people who make conversations rich with perspective and experience. We are committed to listening to every voice in order to learn and grow because doing this will allow us to meet the needs of the diverse community of helpers that Jane serves.\n\nWe do not tolerate discrimination, prejudice, or oppressive isms of any kind. Employment is decided on the basis of qualifications, merit, experience, and the needs of the Jane community. We encourage anyone who requires accommodation or adjustments throughout the interview process to let us know, and we will do our best to support you.",
-                "Posting URL": "https://www.linkedin.com/jobs/view/3999453921/",
-                "Resume Version": "1.0.0",
-                "Cover Letter Version": "1.0.0",
-                "Stage": null
+                "Posting Text": "Senior Manager, Software Development\nat Nicola Wealth\nVancouver, BC\nAbout Nicola Wealth:\nWe have a lot to be proud of at Nicola Wealth. Our sophisticated financial planning, our diversified private investment funds and their exceptional performance, our 99% client retention rate and our award-winning culture, combine to position us as a national leader in wealth management. Recognized as a Best Managed Company and one of Canada’s Top Employers, we are dedicated to upholding our firm’s values through this phase of significant growth.\n\nBy bringing together smart, dedicated and supportive colleagues from diverse backgrounds, we deliver extraordinary client service in a values-driven work environment. The collaboration, creativity and entrepreneurial spirit we were founded on provides the opportunity for you to make a real impact and build a rewarding career. We are passionate about our business, our culture and investing deeply in your growth and development to build for the future. If you have this same drive, then let’s talk!\n\nAbout the Team:\nOur Technology Team is a dynamic group of innovators, problem-solvers, and tech enthusiasts.  They drive digital transformation, elevate user experiences, and empower our company to thrive in the ever-evolving tech landscape. \n\nPurpose of the Role:\nThe Senior Manager of Development is responsible for managing the leads of multiple teams of software developers to deliver high-quality software products. Reporting into the VP of Development, this role will oversee the planning, design, development, testing, and deployment of specific products. This role will partner closely with other departments, such as marketing, and the wealth advisory team, to ensure that the tools and systems developed meet their needs and the needs of our clients.  \n\nThis is a hybrid role and will be located in our Vancouver offices.  \n\nCore Responsibilities:\nDrive a high-quality software development process which maintains a spirit of fast fails, testing-in-production, and continuous integration/deployment.  \nEffectively work in partnership with multiple stakeholders across the company to understand their goals, needs and desired outcomes, and ensure software solutions are the design process are meeting their objectives and needs.  \nWork collaboratively with the Director of Development and other leaders across the company to produce, socialize and gain buy-in for products.  \nLead and manage several software development teams to ensure each team is resourced effectively, the right skills are within the team and there is a high level of engagement and performance across the team.  \nProvide coaching, feedback, developmental opportunities, to direct/indirect reports.  \nReviews design approach to ensure that designed solutions are architecturally sound.  \nRequired Skills & Qualifications:\n5 years or more of experience managing in the software industry, with at least one year of experience managing other managers.  \nDemonstrable experience in:  \nWorking with diverse stakeholders across the business; Skilled in understanding their needs, consulting and working in partnership and ultimately meeting their needs/objectives  \nHiring and building teams of world-class developers  \nAutomation of testing, coverage, and deployments (CI/CD)  \nAutomation of on demand environments  \nArchitecting complex software systems  \nExtensive knowledge of web protocols, containers, and containerized deployment (docker/k8s), security protocols, encryption standards  \nAbility to follow development processes and work with the team to develop suggestions on how to improve them.  \nPrefers a Lean approach to managing work, focusing on completion of started work.   \nDegree in Software Engineering or Computer Science is considered an asset.  \nBasic SQL database experience, including schema design.  \nCompensation & Benefits Package:\nThis position comes with a base salary range of $130,000 - $160,000 plus a competitive performance bonus, RRSP contribution and participation in our profit-sharing program. Base salary will be commensurate with experience, skills, and qualifications. \n\nAt Nicola Wealth, our people grow our business, delight our clients, and live our values every day. Our comprehensive compensation and benefits package reflects our appreciation for this commitment. Whether it’s participating in our profit sharing and benefit programs on day one, or the opportunity to participate in our share ownership program, our people are able to go beyond a conventional salary and bonus structure. To learn more about our complete package, visit: www.nicolawealth.com/total-rewards.\n\n \n\nPlease include both a cover letter and resume in support of your application. We are an inclusive, equal opportunity employer. For more information about this and other roles: www.nicolawealth.com/careers.\n\nIt is our priority to remove barriers to provide equal access to employment. Should you require reasonable accommodation during the recruitment process please contact us at accessibility@nicolawealth.com and we will work with you to meet your needs. All information shared during the accommodation request process will be stored and used in a manner that is consistent with applicable laws and Nicola Wealth policies.\n\nThank you for your interest in a career with Nicola Wealth!",
+                "Posting URL": "https://nicolawealth.com/jobs?7697371002?gh_jid=7697371002",
+                "Resume Version": "1.0.1",
+                "Cover Letter Version": "",
+                "Stage": {
+                  "id": 2797,
+                  "value": "Not Applied",
+                  "color": "darker-green"
+                },
+                "Action": {
+                  "id": 2901,
+                  "value": "Resume Analysis",
+                  "color": "light-orange"
+                }
               }
             ],
             "old_items": [
               {
-                "id": 10,
-                "order": "10.00000000000000000000",
-                "uuid": "0860deca-4979-4621-8cbc-f0632891d11a",
-                "Position": "",
-                "Company": "Jane App",
-                "NextCloud_Path": "/Jobs/",
+                "id": 7,
+                "order": "7.00000000000000000000",
+                "uuid": "9714bfb0-03ed-4ba1-8238-21c4181c5472",
+                "Position": "Senior Manager, Software Development",
+                "Company": "Nicola Weath",
+                "NextCloud_Path": "/Jobs/Nicola Weath/Senior Manager, Software Development/",
                 "Closing Date": null,
-                "Posting Text": "We are excited to announce this new opportunity for a Development Manager to join Jane’s Accounts Group and lead our Marketing Development team. This team’s current charter today consists of developing the Jane Marketing Website, which is a stable and established application. This application is used for our Demo Booking flow, which is often the initial touch point in our customer journey. You will be leading and mentoring small team of developers, helping them grow and mature through continuous improvement. In addition, as a Development Manager at Jane you will be helping establish best practices and implementing processes for you team to enable them to do their best work.\n\nIn 2025 we see an opportunity to grow the responsibilities of this team. In particular, we are extending their current charter to reimagine the Sign Up flow. You will be driving the direction and execution of the new user Sign Up Experience, while providing continuous delight in our customer journey. This would include running A/B test experiments, to improve and optimize our conversion and activation rates. For this position, we are looking for a technical leader who is experienced in leading development teams in an agile environment.\n\nLike with all positions at Jane, this position is a remote position, allowing you to work anywhere you want across Canada. Building a delighted team who can delight our customers is part of Jane’s DNA. In our most recent company-wide health check, 99% of our team agreed that our founders demonstrate people are important to Jane’s success. On top of that, 98% of our team felt Manager cares about them as human beings and that they are supported when needing to arrange time off from work. We’d never claim to be perfect, but we’re working hard to listen to our people and improve each day.\n\nWe really want the people who work at Jane to love being here, so it's important that we start with a bit about what makes our company unique and try to be as transparent as possible. Our values also provide some insights into Jane and hopefully, you’ll have a better idea if this might be the kind of company you want to be part of.\n\nBefore we were Jane, our Co-Founders were solving problems for their own clinics not realizing that a few years later, this team would grow to support tens of thousands of healthcare practices in more than 60 countries. Our platform is now helping to modernize the world of practice management software. We enable the likes of physiotherapists, mental health counsellors, chiropractors, and other allied health practitioners to run their practices in a digital-first way through features such as online booking, charting, scheduling, telehealth, and billing along with an evolving library of features. You can see more of them here . Although we’ve grown, still to this day, we’re rooted in solving clinics’ problems and making sure we don’t lose sight of Jane’s vision.\n\nWe have remained profitable for the past seven years, we’re product-led and growing organically (and responsibly) to the point where 85% of our customer growth is either from customer referrals or word of mouth. Growth like this is unique, especially in the world of SaaS, and it doesn’t happen by chance. We have a brilliant team of over 400 Janers who are doing an amazing job of listening to our customers, building what they need, and providing industry-leading support. We pride ourselves on flexibility & autonomy, some of our team block out their calendars to pick up their children from school (and this is normal at Jane), and we even have a #kids channel in Slack.\n\nWe’re not a clock-in clock-out system-type environment. With that being said, we’re not going to paint the picture of a perfect environment either. We’re a company that’s scaling quickly, we have many moving parts, many of us are doing this for the first time and sometimes, we don’t have processes in place or clear views which can require a lot of resourcefulness and a passion for problem-solving.\n\nWith all that to say, if you’re looking for an environment where you can grow, stretch yourself, and work with some incredibly talented people on problems that are positively impacting people's lives, Jane could be the place for you.\n\nThe Impact You Could Have\n\n    Lead and mentor a team of 2-3 developers, fostering a collaborative and supportive environment.\n    Help define the teams identity and establish the team’s culture.\n    Implement best practices and processes that will help deliver value to our marketing team and customers.\n    Maintain an existing application, while taking on new initiatives and developing new features.\n    Your role will have a direct impact and deliver value for every single customer that signs up with Jane.\n    The work you do will help Jane grow, by helping Jane scale as we continue to provide great experiences to our customers.\n    Work closely with product leaders to shape the roadmap, provide estimates, and swiftly execute ideas to drive customer impact.\n\nThe Experience We Feel We Need\n\n    3+ years experience managing development teams.\n    5+ years experience working with Agile methodologies.\n    Experience as a technical leader, worked across different platforms, including the Ruby on Rails and React JS ecosystem.\n    Experience in delivering incremental value to our users with small slices, and iterating on the feedback that was received.\n    You are deeply curious about customer behaviour and using that date to make data driven decisions.\n    Experience working in a marketing department or closely with marketing teams (content, design, strategy).\n    Broad understanding of marketing concepts, solutions and products.\n\nCompensation Expectations For The Role\n\nJane’s committed to paying our team members fairly, clearly, and above all, paying for growth. This role has a minimum annual salary of $146,300 and maximum annual salary of $228,600. As you may have noticed, this salary range is quite large, and this is intentional to account for the growth someone will experience in the role throughout their time at Jane (i.e., from building the skills, to accomplished, to highly proficient, all the way to achieving excellence in the role). When hiring talented folks to join the Jane team, we’ve found that new team members are best set up for success when hired with the expectation of being fully accomplished in the role, which for this role would reflect a starting salary of $173,800.\n\nIt's also possible to join Jane at a salary above or below this, which would mean a salary below $173,800 typically reflects someone who has all the potential to be fully accomplished in the role but doesn't yet possess all the skills required, while a salary above $173,800 is typically for individuals who are currently in this role at Jane and had the opportunity to make a significant positive impact on our customers, product and company with deep Jane knowledge. At Jane, we pay for growth, which means that you’ll continue to have conversations about your career development with your manager and see your compensation grow over time as you build an amazing career with us.\n\nPaying clearly is one of our compensation fundamentals to help folks build trust in the compensation process at Jane. To better understand Jane’s compensation fundamentals and how this range is determined, click on this link here for a short video walkthrough of how it all works! We also welcome you to ask as many questions as you’d like about compensation throughout the interview process to ensure you feel confident and build trust through the process.\n\nMore information on our benefits can be found here !\n\nAt Jane, we’re committed to fostering an environment that allows you to come to work as your truest self. We believe it’s important to actively recognize, embrace, and celebrate our differences in order to make Jane an inclusive, equitable, and diverse workplace.\n\nWe want to build a team of people who make conversations rich with perspective and experience. We are committed to listening to every voice in order to learn and grow because doing this will allow us to meet the needs of the diverse community of helpers that Jane serves.\n\nWe do not tolerate discrimination, prejudice, or oppressive isms of any kind. Employment is decided on the basis of qualifications, merit, experience, and the needs of the Jane community. We encourage anyone who requires accommodation or adjustments throughout the interview process to let us know, and we will do our best to support you.",
-                "Posting URL": "https://www.linkedin.com/jobs/view/3999453921/",
-                "Resume Version": "1.0.0",
+                "Posting Text": "Senior Manager, Software Development\nat Nicola Wealth\nVancouver, BC\nAbout Nicola Wealth:\nWe have a lot to be proud of at Nicola Wealth. Our sophisticated financial planning, our diversified private investment funds and their exceptional performance, our 99% client retention rate and our award-winning culture, combine to position us as a national leader in wealth management. Recognized as a Best Managed Company and one of Canada’s Top Employers, we are dedicated to upholding our firm’s values through this phase of significant growth.\n\nBy bringing together smart, dedicated and supportive colleagues from diverse backgrounds, we deliver extraordinary client service in a values-driven work environment. The collaboration, creativity and entrepreneurial spirit we were founded on provides the opportunity for you to make a real impact and build a rewarding career. We are passionate about our business, our culture and investing deeply in your growth and development to build for the future. If you have this same drive, then let’s talk!\n\nAbout the Team:\nOur Technology Team is a dynamic group of innovators, problem-solvers, and tech enthusiasts.  They drive digital transformation, elevate user experiences, and empower our company to thrive in the ever-evolving tech landscape. \n\nPurpose of the Role:\nThe Senior Manager of Development is responsible for managing the leads of multiple teams of software developers to deliver high-quality software products. Reporting into the VP of Development, this role will oversee the planning, design, development, testing, and deployment of specific products. This role will partner closely with other departments, such as marketing, and the wealth advisory team, to ensure that the tools and systems developed meet their needs and the needs of our clients.  \n\nThis is a hybrid role and will be located in our Vancouver offices.  \n\nCore Responsibilities:\nDrive a high-quality software development process which maintains a spirit of fast fails, testing-in-production, and continuous integration/deployment.  \nEffectively work in partnership with multiple stakeholders across the company to understand their goals, needs and desired outcomes, and ensure software solutions are the design process are meeting their objectives and needs.  \nWork collaboratively with the Director of Development and other leaders across the company to produce, socialize and gain buy-in for products.  \nLead and manage several software development teams to ensure each team is resourced effectively, the right skills are within the team and there is a high level of engagement and performance across the team.  \nProvide coaching, feedback, developmental opportunities, to direct/indirect reports.  \nReviews design approach to ensure that designed solutions are architecturally sound.  \nRequired Skills & Qualifications:\n5 years or more of experience managing in the software industry, with at least one year of experience managing other managers.  \nDemonstrable experience in:  \nWorking with diverse stakeholders across the business; Skilled in understanding their needs, consulting and working in partnership and ultimately meeting their needs/objectives  \nHiring and building teams of world-class developers  \nAutomation of testing, coverage, and deployments (CI/CD)  \nAutomation of on demand environments  \nArchitecting complex software systems  \nExtensive knowledge of web protocols, containers, and containerized deployment (docker/k8s), security protocols, encryption standards  \nAbility to follow development processes and work with the team to develop suggestions on how to improve them.  \nPrefers a Lean approach to managing work, focusing on completion of started work.   \nDegree in Software Engineering or Computer Science is considered an asset.  \nBasic SQL database experience, including schema design.  \nCompensation & Benefits Package:\nThis position comes with a base salary range of $130,000 - $160,000 plus a competitive performance bonus, RRSP contribution and participation in our profit-sharing program. Base salary will be commensurate with experience, skills, and qualifications. \n\nAt Nicola Wealth, our people grow our business, delight our clients, and live our values every day. Our comprehensive compensation and benefits package reflects our appreciation for this commitment. Whether it’s participating in our profit sharing and benefit programs on day one, or the opportunity to participate in our share ownership program, our people are able to go beyond a conventional salary and bonus structure. To learn more about our complete package, visit: www.nicolawealth.com/total-rewards.\n\n \n\nPlease include both a cover letter and resume in support of your application. We are an inclusive, equal opportunity employer. For more information about this and other roles: www.nicolawealth.com/careers.\n\nIt is our priority to remove barriers to provide equal access to employment. Should you require reasonable accommodation during the recruitment process please contact us at accessibility@nicolawealth.com and we will work with you to meet your needs. All information shared during the accommodation request process will be stored and used in a manner that is consistent with applicable laws and Nicola Wealth policies.\n\nThank you for your interest in a career with Nicola Wealth!",
+                "Posting URL": "https://nicolawealth.com/jobs?7697371002?gh_jid=7697371002",
+                "Resume Version": "1.0.1",
                 "Cover Letter Version": "",
-                "Stage": null
+                "Stage": {
+                  "id": 2797,
+                  "value": "Not Applied",
+                  "color": "darker-green"
+                },
+                "Action": null
               }
             ]
           },
@@ -293,6 +384,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-11-22T15:53:00.000Z",
-  "versionId": "011ba3ba-63e9-4842-b09c-4ae5ae5edeff"
+  "updatedAt": "2024-12-01T18:19:48.000Z",
+  "versionId": "b99a5d89-7b00-4da3-964f-c566bcce19a6"
 }
