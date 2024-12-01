@@ -98,7 +98,28 @@
       "main": [
         [
           {
+            "node": "Set Paths",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud - Save Analysis Data": {
+      "main": [
+        []
+      ]
+    },
+    "Set Paths": {
+      "main": [
+        [
+          {
             "node": "Nextcloud - Save Analysis Data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Discord",
             "type": "main",
             "index": 0
           }
@@ -286,7 +307,7 @@
     {
       "parameters": {
         "authentication": "oAuth2",
-        "path": "={{ $('Set Variables').item.json.nextcloud_path }}/AI Analysis (Resume) - {{ $now.format(\"yyyy-MM-dd\") }}.md",
+        "path": "={{ $json.NextCloud_Path }}",
         "fileContent": "={{ $json.message.content }}"
       },
       "id": "639f131c-5f6f-410e-816d-7f8083274e8e",
@@ -294,9 +315,10 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1720,
+        1940,
         660
       ],
+      "alwaysOutputData": true,
       "credentials": {
         "nextCloudOAuth2Api": {
           "id": "fLXJCCubxnE7gtwF",
@@ -347,7 +369,7 @@
         "messages": {
           "values": [
             {
-              "content": "=I want you to act as a recruiter for {{ $json.company }} horing for a {{ $json.position }}.  I am considering applying for this job and am trying to determine if I am a good fit for the position and how my resume might be improved.\n\n**Step 1:** Review the job description:\n\n{{ $json.posting }}\n\n**End of job description**\n\n**Step 2:** Review my resume text:\n\n{{ $json.resume }}\n\n**End of resume text**\n\n**Step 4:** Compare the job description and resume to each other and provide the following information:\n\n- Determine whether I am a good candidate for this role and provide the percentage estimate the resume matches the job description.  This percentage should be determined by whether I have demonstrated expertise for each of the qualifications listed in the job description.  I expect this percentage to be provided to me as a number, even if this is your best estimate without a specific assessment tool.\n- Identify any skills that should be added to the technical proficiencies section based off skillsets identified in the Job Posting and Resume.\n- Extract the salary / pay information from the job description, if it is not available say \"Salary was not included.\"\n- Rate my strengths for the role. Include the relevant text from the job posting and the relevant text from my resume. Put this analysis under the header of \"Strengths\"\n- Help me identify where I am weak for this role. Put this analysis under the header of \"Weaknesses\"\n\nIn a section called \"Resume Improvements\":\n- Do a check of the resume regarding acronyms that cannot be understood and need to be expanded upon. Show where these are in the resume.\n- Specify how I can improve this resume to be more compelling to recruiters. Provide suggestions on where to incorporate this on the resume. \n\n\nTake your time and be thorough."
+              "content": "=I want you to act as a Human Resources recruiter for {{ $json.company }}, hiring for the position of {{ $json.position }}. I am considering applying for this job and need your expertise to assess how well my resume aligns with the job description and identify opportunities to improve my resume for this role.\n\nFollow the steps outlined below. Use clear formatting, standardized methods for evaluation, and examples where applicable to ensure consistency.\n\n---\n\n### **Step 1: Review the Job Description**\n\nHere is the job description for your review:\n\n{{ $json.posting }}\n\n**End of Job Description**\n\n---\n\n### **Step 2: Review My Resume**\n\nHere is my resume for your review:\n\n{{ $json.resume }}\n\n**End of Resume Text**\n\n---\n\n### **Step 3: Analyze Job Fit**\n\n#### **Step 3.1: Break Down the Job Description**\n\nOrganize the job description into the following categories:\n\n- **Job Responsibilities**: Key tasks and duties.\n- **Required Skills/Qualifications**: Must-haves (e.g., degrees, certifications, years of experience).\n- **Preferred Skills**: Nice-to-haves but not mandatory.\n- **Soft Skills**: Interpersonal or cultural competencies.\n\n#### **Step 3.2: Match Experience to Requirements**\n\nFor each category, compare your resume with the job description using a **three-tier rating system**:\n\n- **Fully Meets**: Directly demonstrated in the resume.\n- **Partially Meets**: Related experience or transferable skill is present but not fully aligned.\n- **Does Not Meet**: No evidence of experience or skill in this area.\n\nProvide the analysis in a **table format**.\n\n**Example Table for Fit Analysis**:\n\n|**Requirement**|**Your Skills/Experience**|**Rating**|**Notes**|\n|---|---|---|---|\n|5+ years of project management|6 years leading teams|Fully Meets|Matches requirement completely.|\n|Knowledge of Salesforce CRM|HubSpot CRM experience|Partially Meets|Transferable CRM knowledge.|\n|Bachelor's in Marketing|B.A. in Communications|Partially Meets|Overlap in related coursework.|\n\n#### **Step 3.3: Identify Transferable Skills**\n\nHighlight skills or experiences from the resume that may be applied to the job requirements even if they are not exact matches.\n\n**Example Output**:\n\n- _Requirement_: \"Experience leading marketing campaigns\" → Your role as a project manager involved coordinating marketing and internal campaigns, demonstrating transferable leadership skills.\n- _Requirement_: \"Knowledge of SEO\" → You have basic familiarity with keyword research and content optimization.\n\n#### **Step 3.4: Evaluate Technical Skills**\n\nCompare specific tools, software, or technical expertise mentioned in the job description with those listed in the resume.\n\n**Example Table for Technical Skills**:\n\n|**Tool/Software**|**Your Experience**|**Fit?**|\n|---|---|---|\n|Salesforce CRM|HubSpot CRM experience|Partially Meets|\n|Google Analytics|Advanced user, certified|Fully Meets|\n\n#### **Step 3.5: Assess Soft Skills**\n\nEvaluate soft skills listed in the job description and provide examples from the resume that demonstrate these.\n\n**Example Output**:\n\n- _Requirement_: \"Strong communication skills\" → In your last role, you presented monthly strategy updates to executives, showcasing excellent communication skills.\n- _Requirement_: \"Team player\" → Managed a cross-functional team to deliver projects on time, reflecting collaboration and leadership abilities.\n\n#### **Step 3.6: Address Experience Gaps**\n\nIdentify areas where qualifications are missing or underemphasized and suggest actionable ways to address these in the resume or application.\n\n---\n\n### **Step 4: Provide an Assessment**\n\n#### **4.1: Candidate Fit Summary**\n\n- **Overall Fit Percentage**: Calculate the percentage match based on this weightage:\n    - **Required Skills**: 50%\n    - **Preferred Skills**: 30%\n    - **Soft Skills**: 20%\n\n**Example Fit Calculation**:\n\n- Required Skills: 80% match → Weighted score: 40%\n    \n- Preferred Skills: 50% match → Weighted score: 15%\n    \n- Soft Skills: 90% match → Weighted score: 18%  \n    **Total Fit Percentage**: 73%\n    \n- **Strengths**: Highlight areas where the resume aligns strongly with the job requirements. Use specific quotes from the job description and the resume.\n    \n\n**Example Strengths Output**:\n\n- _Job Description_: \"Proven ability to lead teams.\"\n    \n- _Resume_: \"Led a team of 12 in executing a $1M project, achieving a 20% cost reduction.\"\n    \n- **Weaknesses**: Identify areas of misalignment or missing qualifications and suggest ways to address these.\n    \n\n**Example Weaknesses Output**:\n\n- _Job Description_: \"5+ years of experience in data analysis.\"\n- _Resume_: \"2 years of data analysis experience, primarily in a supporting role.\"\n\n#### **4.2: Salary Information**\n\n- Extract salary/pay information from the job description. If unavailable, state: _\"Salary information was not included.\"_\n\n---\n\n### **Step 5: Recommend Resume Improvements**\n\nIn this section, provide a detailed suggestions of how I can optimize my resume for both recruiters and ATS systems. Consider the following:\n\n#### **5.1: ATS Optimization**\n\n- Formatting: Ensure that the resume follows simple, traditional formatting with clear section headings (e.g., \"Work Experience,\" \"Education,\" \"Skills\"). Avoid complex layouts, graphics, or tables that could confuse ATS systems.\n- Keywords: Verify that my resume includes keywords directly from the job description. For example, if the job posting mentions \"project management,\" ensure that my resume includes this exact term (and related terms like \"program management\" or \"cross-functional leadership\").\n- Job Titles: Check that the job titles on my resume are standardized. If my role had a unique title, consider adding the industry-standard version in parentheses (e.g., \"Project Manager (Project Lead)\").     \n- Headings: Review my section headings to ensure they match the standard ones used by ATS systems (e.g., \"Work Experience\" instead of \"Where I’ve Worked\").\n- Abbreviations and Acronyms: Check my resume for abbreviations or acronyms that could confuse ATS systems. Make sure to spell out terms at least once, followed by the abbreviation in parentheses. For example, \"Search Engine Optimization (SEO)\" should be used instead of just \"SEO.\"\n- Action Verbs: Ensure that my resume uses strong action verbs like \"managed,\" \"developed,\" and \"led\" to clearly highlight achievements and contributions.\n\n\n#### **5.2: Enhancing Compellingness**\n\nProvide recommendations on how I can improve my resume to make it more compelling to recruiters.\n\n- Suggest specific ways to improve the resume:\n    - Add measurable accomplishments (e.g., \"Increased sales by 15% over 12 months\").\n    - Include missing technical or soft skills explicitly.\n    - Reframe descriptions to better align with the job requirements.\n\n---\n\n### **Instructions**\n\n- Be thorough in your analysis.\n- Use structured tables and bullet points for clarity.\n- Provide actionable feedback that I can implement to improve my resume and application.\n\n---"
             }
           ]
         },
@@ -367,9 +389,81 @@
           "name": "OpenAi account"
         }
       }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=Resume Analysis completed for {{ $('Set Variables').item.json.position }} ({{ $('Set Variables').item.json.company }}): {{ $json.NextCloud_Path }}.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1940,
+        880
+      ],
+      "id": "d4385084-7207-4d50-a465-ae3cc959dcf9",
+      "name": "Discord",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "hf6RAiISd5zNhDZr",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b486573a-12fb-45b3-8c1e-5427b1f00aa6",
+              "name": "NextCloud_Path",
+              "value": "={{ $('Set Variables').item.json.nextcloud_path }}/AI Analysis (Resume) - {{ $now.format(\"yyyy-MM-dd\") }}.md",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1720,
+        660
+      ],
+      "id": "9821bb36-8fe3-452f-b175-786906869ab3",
+      "name": "Set Paths"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Execute Workflow Trigger": [
+      {
+        "json": {
+          "id": 7,
+          "order": "7.00000000000000000000",
+          "uuid": "9714bfb0-03ed-4ba1-8238-21c4181c5472",
+          "Position": "Senior Manager, Software Development",
+          "Company": "Nicola Weath",
+          "NextCloud_Path": "/Jobs/Nicola Weath/Senior Manager, Software Development/",
+          "Closing Date": null,
+          "Posting Text": "Senior Manager, Software Development\nat Nicola Wealth\nVancouver, BC\nAbout Nicola Wealth:\nWe have a lot to be proud of at Nicola Wealth. Our sophisticated financial planning, our diversified private investment funds and their exceptional performance, our 99% client retention rate and our award-winning culture, combine to position us as a national leader in wealth management. Recognized as a Best Managed Company and one of Canada’s Top Employers, we are dedicated to upholding our firm’s values through this phase of significant growth.\n\nBy bringing together smart, dedicated and supportive colleagues from diverse backgrounds, we deliver extraordinary client service in a values-driven work environment. The collaboration, creativity and entrepreneurial spirit we were founded on provides the opportunity for you to make a real impact and build a rewarding career. We are passionate about our business, our culture and investing deeply in your growth and development to build for the future. If you have this same drive, then let’s talk!\n\nAbout the Team:\nOur Technology Team is a dynamic group of innovators, problem-solvers, and tech enthusiasts.  They drive digital transformation, elevate user experiences, and empower our company to thrive in the ever-evolving tech landscape. \n\nPurpose of the Role:\nThe Senior Manager of Development is responsible for managing the leads of multiple teams of software developers to deliver high-quality software products. Reporting into the VP of Development, this role will oversee the planning, design, development, testing, and deployment of specific products. This role will partner closely with other departments, such as marketing, and the wealth advisory team, to ensure that the tools and systems developed meet their needs and the needs of our clients.  \n\nThis is a hybrid role and will be located in our Vancouver offices.  \n\nCore Responsibilities:\nDrive a high-quality software development process which maintains a spirit of fast fails, testing-in-production, and continuous integration/deployment.  \nEffectively work in partnership with multiple stakeholders across the company to understand their goals, needs and desired outcomes, and ensure software solutions are the design process are meeting their objectives and needs.  \nWork collaboratively with the Director of Development and other leaders across the company to produce, socialize and gain buy-in for products.  \nLead and manage several software development teams to ensure each team is resourced effectively, the right skills are within the team and there is a high level of engagement and performance across the team.  \nProvide coaching, feedback, developmental opportunities, to direct/indirect reports.  \nReviews design approach to ensure that designed solutions are architecturally sound.  \nRequired Skills & Qualifications:\n5 years or more of experience managing in the software industry, with at least one year of experience managing other managers.  \nDemonstrable experience in:  \nWorking with diverse stakeholders across the business; Skilled in understanding their needs, consulting and working in partnership and ultimately meeting their needs/objectives  \nHiring and building teams of world-class developers  \nAutomation of testing, coverage, and deployments (CI/CD)  \nAutomation of on demand environments  \nArchitecting complex software systems  \nExtensive knowledge of web protocols, containers, and containerized deployment (docker/k8s), security protocols, encryption standards  \nAbility to follow development processes and work with the team to develop suggestions on how to improve them.  \nPrefers a Lean approach to managing work, focusing on completion of started work.   \nDegree in Software Engineering or Computer Science is considered an asset.  \nBasic SQL database experience, including schema design.  \nCompensation & Benefits Package:\nThis position comes with a base salary range of $130,000 - $160,000 plus a competitive performance bonus, RRSP contribution and participation in our profit-sharing program. Base salary will be commensurate with experience, skills, and qualifications. \n\nAt Nicola Wealth, our people grow our business, delight our clients, and live our values every day. Our comprehensive compensation and benefits package reflects our appreciation for this commitment. Whether it’s participating in our profit sharing and benefit programs on day one, or the opportunity to participate in our share ownership program, our people are able to go beyond a conventional salary and bonus structure. To learn more about our complete package, visit: www.nicolawealth.com/total-rewards.\n\n \n\nPlease include both a cover letter and resume in support of your application. We are an inclusive, equal opportunity employer. For more information about this and other roles: www.nicolawealth.com/careers.\n\nIt is our priority to remove barriers to provide equal access to employment. Should you require reasonable accommodation during the recruitment process please contact us at accessibility@nicolawealth.com and we will work with you to meet your needs. All information shared during the accommodation request process will be stored and used in a manner that is consistent with applicable laws and Nicola Wealth policies.\n\nThank you for your interest in a career with Nicola Wealth!",
+          "Posting URL": "https://nicolawealth.com/jobs?7697371002?gh_jid=7697371002",
+          "Resume Version": "1.0.1",
+          "Cover Letter Version": "",
+          "Stage": {
+            "id": 2797,
+            "value": "Not Applied",
+            "color": "darker-green"
+          },
+          "Action": {
+            "id": 2901,
+            "value": "Resume Analysis",
+            "color": "light-orange"
+          }
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -383,6 +477,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2024-11-02T15:55:14.000Z",
-  "versionId": "3bb3d8aa-44f4-4fd3-bcb6-da0a1a29dca1"
+  "updatedAt": "2024-12-01T19:41:05.000Z",
+  "versionId": "49132c9b-5df6-4132-a111-c27484e0544e"
 }
