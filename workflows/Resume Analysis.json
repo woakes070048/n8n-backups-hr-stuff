@@ -435,35 +435,7 @@
       "name": "Set Paths"
     }
   ],
-  "pinData": {
-    "Execute Workflow Trigger": [
-      {
-        "json": {
-          "id": 7,
-          "order": "7.00000000000000000000",
-          "uuid": "9714bfb0-03ed-4ba1-8238-21c4181c5472",
-          "Position": "Senior Manager, Software Development",
-          "Company": "Nicola Weath",
-          "NextCloud_Path": "/Jobs/Nicola Weath/Senior Manager, Software Development/",
-          "Closing Date": null,
-          "Posting Text": "Senior Manager, Software Development\nat Nicola Wealth\nVancouver, BC\nAbout Nicola Wealth:\nWe have a lot to be proud of at Nicola Wealth. Our sophisticated financial planning, our diversified private investment funds and their exceptional performance, our 99% client retention rate and our award-winning culture, combine to position us as a national leader in wealth management. Recognized as a Best Managed Company and one of Canada’s Top Employers, we are dedicated to upholding our firm’s values through this phase of significant growth.\n\nBy bringing together smart, dedicated and supportive colleagues from diverse backgrounds, we deliver extraordinary client service in a values-driven work environment. The collaboration, creativity and entrepreneurial spirit we were founded on provides the opportunity for you to make a real impact and build a rewarding career. We are passionate about our business, our culture and investing deeply in your growth and development to build for the future. If you have this same drive, then let’s talk!\n\nAbout the Team:\nOur Technology Team is a dynamic group of innovators, problem-solvers, and tech enthusiasts.  They drive digital transformation, elevate user experiences, and empower our company to thrive in the ever-evolving tech landscape. \n\nPurpose of the Role:\nThe Senior Manager of Development is responsible for managing the leads of multiple teams of software developers to deliver high-quality software products. Reporting into the VP of Development, this role will oversee the planning, design, development, testing, and deployment of specific products. This role will partner closely with other departments, such as marketing, and the wealth advisory team, to ensure that the tools and systems developed meet their needs and the needs of our clients.  \n\nThis is a hybrid role and will be located in our Vancouver offices.  \n\nCore Responsibilities:\nDrive a high-quality software development process which maintains a spirit of fast fails, testing-in-production, and continuous integration/deployment.  \nEffectively work in partnership with multiple stakeholders across the company to understand their goals, needs and desired outcomes, and ensure software solutions are the design process are meeting their objectives and needs.  \nWork collaboratively with the Director of Development and other leaders across the company to produce, socialize and gain buy-in for products.  \nLead and manage several software development teams to ensure each team is resourced effectively, the right skills are within the team and there is a high level of engagement and performance across the team.  \nProvide coaching, feedback, developmental opportunities, to direct/indirect reports.  \nReviews design approach to ensure that designed solutions are architecturally sound.  \nRequired Skills & Qualifications:\n5 years or more of experience managing in the software industry, with at least one year of experience managing other managers.  \nDemonstrable experience in:  \nWorking with diverse stakeholders across the business; Skilled in understanding their needs, consulting and working in partnership and ultimately meeting their needs/objectives  \nHiring and building teams of world-class developers  \nAutomation of testing, coverage, and deployments (CI/CD)  \nAutomation of on demand environments  \nArchitecting complex software systems  \nExtensive knowledge of web protocols, containers, and containerized deployment (docker/k8s), security protocols, encryption standards  \nAbility to follow development processes and work with the team to develop suggestions on how to improve them.  \nPrefers a Lean approach to managing work, focusing on completion of started work.   \nDegree in Software Engineering or Computer Science is considered an asset.  \nBasic SQL database experience, including schema design.  \nCompensation & Benefits Package:\nThis position comes with a base salary range of $130,000 - $160,000 plus a competitive performance bonus, RRSP contribution and participation in our profit-sharing program. Base salary will be commensurate with experience, skills, and qualifications. \n\nAt Nicola Wealth, our people grow our business, delight our clients, and live our values every day. Our comprehensive compensation and benefits package reflects our appreciation for this commitment. Whether it’s participating in our profit sharing and benefit programs on day one, or the opportunity to participate in our share ownership program, our people are able to go beyond a conventional salary and bonus structure. To learn more about our complete package, visit: www.nicolawealth.com/total-rewards.\n\n \n\nPlease include both a cover letter and resume in support of your application. We are an inclusive, equal opportunity employer. For more information about this and other roles: www.nicolawealth.com/careers.\n\nIt is our priority to remove barriers to provide equal access to employment. Should you require reasonable accommodation during the recruitment process please contact us at accessibility@nicolawealth.com and we will work with you to meet your needs. All information shared during the accommodation request process will be stored and used in a manner that is consistent with applicable laws and Nicola Wealth policies.\n\nThank you for your interest in a career with Nicola Wealth!",
-          "Posting URL": "https://nicolawealth.com/jobs?7697371002?gh_jid=7697371002",
-          "Resume Version": "1.0.1",
-          "Cover Letter Version": "",
-          "Stage": {
-            "id": 2797,
-            "value": "Not Applied",
-            "color": "darker-green"
-          },
-          "Action": {
-            "id": 2901,
-            "value": "Resume Analysis",
-            "color": "light-orange"
-          }
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
@@ -477,6 +449,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2024-12-01T19:41:05.000Z",
-  "versionId": "49132c9b-5df6-4132-a111-c27484e0544e"
+  "updatedAt": "2024-12-01T21:13:49.000Z",
+  "versionId": "84a3ee37-e95c-4500-9e1b-e54bf237c40f"
 }
