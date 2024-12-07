@@ -1,17 +1,6 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
-    "When clicking \"Execute Workflow\"": {
-      "main": [
-        [
-          {
-            "node": "Baserow",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Baserow": {
       "main": [
         [
@@ -65,7 +54,7 @@
             "index": 0
           },
           {
-            "node": "Nextcloud1",
+            "node": "Baserow - Mark created",
             "type": "main",
             "index": 0
           }
@@ -99,22 +88,33 @@
         ]
       ]
     },
-    "Schedule Trigger": {
+    "Nextcloud": {
       "main": [
         [
           {
-            "node": "Baserow",
+            "node": "Discord",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Nextcloud": {
+    "Webhook": {
       "main": [
         [
           {
-            "node": "Discord",
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Baserow",
             "type": "main",
             "index": 0
           }
@@ -130,37 +130,11 @@
   "name": "Build 1:1 markdown file in Journal Inbox",
   "nodes": [
     {
-      "parameters": {},
-      "id": "785e96d1-6c12-45ba-bd56-30a78567c158",
-      "name": "When clicking \"Execute Workflow\"",
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        420,
-        520
-      ]
-    },
-    {
       "parameters": {
+        "operation": "get",
         "databaseId": 33,
         "tableId": 583,
-        "returnAll": true,
-        "additionalOptions": {
-          "filters": {
-            "fields": [
-              {
-                "field": 5547,
-                "operator": "date_equal",
-                "value": "={{ $today.toFormat('yyyy-MM-dd') }}"
-              },
-              {
-                "field": 5546,
-                "operator": "boolean",
-                "value": "true"
-              }
-            ]
-          }
-        }
+        "rowId": "={{ $json.id }}"
       },
       "id": "65471095-23b2-4c9e-a9a6-69d8e4aed338",
       "name": "Baserow",
@@ -313,7 +287,7 @@
       "type": "n8n-nodes-base.discord",
       "typeVersion": 2,
       "position": [
-        2660,
+        2460,
         540
       ],
       "credentials": {
@@ -326,38 +300,6 @@
     },
     {
       "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "triggerAtHour": 6
-            }
-          ]
-        }
-      },
-      "id": "a131c740-a8dc-4b9a-92e5-066aa02eb015",
-      "name": "Schedule Trigger",
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.1,
-      "position": [
-        420,
-        300
-      ]
-    },
-    {
-      "parameters": {
-        "content": "If a file already exists with the same date, then don't overwrite it"
-      },
-      "id": "37524b42-c3f0-4f67-9da6-892a2993f801",
-      "name": "Sticky Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        2180,
-        760
-      ]
-    },
-    {
-      "parameters": {
         "authentication": "oAuth2",
         "path": "=/Journal/Inbox/{{ $json.Name }}.md",
         "fileContent": "={{ $json.notes_data }}"
@@ -367,7 +309,7 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        2460,
+        2260,
         540
       ],
       "credentials": {
@@ -381,28 +323,152 @@
     },
     {
       "parameters": {
-        "authentication": "oAuth2",
-        "resource": "folder",
-        "operation": "list",
-        "path": "/Journal/Inbox/"
+        "httpMethod": "POST",
+        "path": "b26c8119-d87a-4a6c-97ae-9ddb8fc23874",
+        "authentication": "headerAuth",
+        "options": {}
       },
-      "id": "27b0f583-c7cf-4de4-99d4-49e6da8d3683",
-      "name": "Nextcloud1",
-      "type": "n8n-nodes-base.nextCloud",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
       "position": [
-        2280,
-        380
+        240,
+        520
       ],
+      "id": "cf4daa3e-7a08-4c52-9353-4cecbc9113ee",
+      "name": "Webhook",
+      "webhookId": "b26c8119-d87a-4a6c-97ae-9ddb8fc23874",
       "credentials": {
-        "nextCloudOAuth2Api": {
-          "id": "fLXJCCubxnE7gtwF",
-          "name": "NextCloud account"
+        "httpHeaderAuth": {
+          "id": "VyI3OVswBv8ZksDK",
+          "name": "1:1 Baserow Webhook"
         }
       }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body.items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        440,
+        520
+      ],
+      "id": "cb94e412-03af-4f4f-9f01-b112ef4d249a",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 33,
+        "tableId": 583,
+        "rowId": "={{ $('Split Out').item.json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 6012,
+              "fieldValue": "false"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2260,
+        760
+      ],
+      "id": "4a4443ef-693c-4889-aeca-9be9bd648f46",
+      "name": "Baserow - Mark created",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      },
+      "disabled": true
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "automation.macapinlac.network",
+            "user-agent": "python-requests/2.31.0",
+            "content-length": "861",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "216.232.192.78",
+            "cf-ipcountry": "CA",
+            "cf-ray": "8ee6505d09c76c8d-SEA",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "content-type": "application/json",
+            "oneonone": "LpR59d9%Di0zMc",
+            "x-baserow-delivery": "b6edcd72-f658-47d1-bfcc-08818f8e5ee9",
+            "x-baserow-event": "rows.updated",
+            "x-forwarded-for": "172.71.147.32",
+            "x-forwarded-host": "automation.macapinlac.network",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "cddf95658d4f",
+            "x-real-ip": "172.71.147.32"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "table_id": 583,
+            "database_id": 33,
+            "workspace_id": 31,
+            "event_id": "b6edcd72-f658-47d1-bfcc-08818f8e5ee9",
+            "event_type": "rows.updated",
+            "items": [
+              {
+                "id": 4,
+                "order": "4.00000000000000000000",
+                "Name": "Kee Lim",
+                "Known From": {
+                  "id": 2748,
+                  "value": "ICBC - staff",
+                  "color": "light-yellow"
+                },
+                "Active": true,
+                "Next meeting": "2024-09-19",
+                "monica_contact_id": "172",
+                "nextcloud_path": "/Meetings/ICBC/1on1s/Kee Lim/",
+                "todoist_tag": "keelim",
+                "monica_activity_id": "15",
+                "Create Notes File": true
+              }
+            ],
+            "old_items": [
+              {
+                "id": 4,
+                "order": "4.00000000000000000000",
+                "Name": "Kee Lim",
+                "Known From": {
+                  "id": 2748,
+                  "value": "ICBC - staff",
+                  "color": "light-yellow"
+                },
+                "Active": true,
+                "Next meeting": "2024-09-19",
+                "monica_contact_id": "172",
+                "nextcloud_path": "/Meetings/ICBC/1on1s/Kee Lim/",
+                "todoist_tag": "keelim",
+                "monica_activity_id": "15",
+                "Create Notes File": false
+              }
+            ]
+          },
+          "webhookUrl": "https://automation.macapinlac.network/webhook/b26c8119-d87a-4a6c-97ae-9ddb8fc23874",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -415,7 +481,7 @@
       "name": "production"
     }
   ],
-  "triggerCount": 0,
-  "updatedAt": "2024-10-24T18:17:53.000Z",
-  "versionId": "e4ba8c93-dd0d-4062-a446-bc470813267b"
+  "triggerCount": 1,
+  "updatedAt": "2024-12-07T19:23:29.000Z",
+  "versionId": "426fe1fb-dfae-4446-940e-e795c731e1d0"
 }
