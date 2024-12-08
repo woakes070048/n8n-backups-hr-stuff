@@ -52,11 +52,6 @@
             "node": "Nextcloud",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "Baserow - Mark created",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
@@ -114,6 +109,17 @@
       "main": [
         [
           {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
             "node": "Baserow",
             "type": "main",
             "index": 0
@@ -141,7 +147,7 @@
       "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
-        640,
+        860,
         520
       ],
       "credentials": {
@@ -170,7 +176,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 2.1,
       "position": [
-        1620,
+        1840,
         540
       ]
     },
@@ -180,7 +186,7 @@
           "values": [
             {
               "name": "Frontmatter",
-              "stringValue": "=---\nname: {{ $json['Name'] }}\nnote_type: Scheduled meeting\nmeeting_date: {{ $json['Next meeting'] }}\nmeeting_type: One on one\nmonica:\n  contact_id: {{ $json.monica_contact_id }}\n  activity_id: {{ $json.monica_activity_id }}\ntags:\n  - One on one\n\n---"
+              "stringValue": "=---\nname: {{ $json['Name'] }}\nmeeting_date: {{ $json['Next meeting'] }}\nstatus: incomplete\nmonica:\n  summary: One on one\n  contact_id: {{ $json.monica_contact_id }}\n  activity_id: {{ $json.monica_activity_id }}\n\n---"
             }
           ]
         },
@@ -191,7 +197,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.2,
       "position": [
-        1820,
+        2040,
         540
       ]
     },
@@ -206,7 +212,7 @@
       "type": "n8n-nodes-base.moveBinaryData",
       "typeVersion": 1.1,
       "position": [
-        1340,
+        1560,
         780
       ]
     },
@@ -227,7 +233,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.2,
       "position": [
-        2040,
+        2260,
         540
       ]
     },
@@ -248,7 +254,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.2,
       "position": [
-        860,
+        1080,
         520
       ]
     },
@@ -263,7 +269,7 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1120,
+        1340,
         780
       ],
       "alwaysOutputData": true,
@@ -287,7 +293,7 @@
       "type": "n8n-nodes-base.discord",
       "typeVersion": 2,
       "position": [
-        2460,
+        2680,
         540
       ],
       "credentials": {
@@ -295,8 +301,7 @@
           "id": "hf6RAiISd5zNhDZr",
           "name": "Discord Webhook account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -309,7 +314,7 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        2260,
+        2480,
         540
       ],
       "credentials": {
@@ -318,7 +323,6 @@
           "name": "NextCloud account"
         }
       },
-      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -360,128 +364,59 @@
     },
     {
       "parameters": {
-        "operation": "update",
-        "databaseId": 33,
-        "tableId": 583,
-        "rowId": "={{ $('Split Out').item.json.id }}",
-        "fieldsUi": {
-          "fieldValues": [
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
             {
-              "fieldId": 6012,
-              "fieldValue": "false"
+              "id": "aaf45582-bd2c-4e77-8b7a-80d6bc8ec40f",
+              "leftValue": "={{ $json['Build Note'] }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
             }
-          ]
-        }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-base.baserow",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
       "position": [
-        2260,
-        760
+        660,
+        520
       ],
-      "id": "4a4443ef-693c-4889-aeca-9be9bd648f46",
-      "name": "Baserow - Mark created",
-      "credentials": {
-        "baserowApi": {
-          "id": "d2WUYcb60dACjFtq",
-          "name": "Baserow account"
-        }
-      },
-      "disabled": true
+      "id": "3a0dd964-d715-451a-bd97-bcd0b6a72637",
+      "name": "Filter"
     }
   ],
-  "pinData": {
-    "Webhook": [
-      {
-        "json": {
-          "headers": {
-            "host": "automation.macapinlac.network",
-            "user-agent": "python-requests/2.31.0",
-            "content-length": "861",
-            "accept": "*/*",
-            "accept-encoding": "gzip, br",
-            "cdn-loop": "cloudflare; loops=1",
-            "cf-connecting-ip": "216.232.192.78",
-            "cf-ipcountry": "CA",
-            "cf-ray": "8ee6505d09c76c8d-SEA",
-            "cf-visitor": "{\"scheme\":\"https\"}",
-            "content-type": "application/json",
-            "oneonone": "LpR59d9%Di0zMc",
-            "x-baserow-delivery": "b6edcd72-f658-47d1-bfcc-08818f8e5ee9",
-            "x-baserow-event": "rows.updated",
-            "x-forwarded-for": "172.71.147.32",
-            "x-forwarded-host": "automation.macapinlac.network",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "cddf95658d4f",
-            "x-real-ip": "172.71.147.32"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "table_id": 583,
-            "database_id": 33,
-            "workspace_id": 31,
-            "event_id": "b6edcd72-f658-47d1-bfcc-08818f8e5ee9",
-            "event_type": "rows.updated",
-            "items": [
-              {
-                "id": 4,
-                "order": "4.00000000000000000000",
-                "Name": "Kee Lim",
-                "Known From": {
-                  "id": 2748,
-                  "value": "ICBC - staff",
-                  "color": "light-yellow"
-                },
-                "Active": true,
-                "Next meeting": "2024-09-19",
-                "monica_contact_id": "172",
-                "nextcloud_path": "/Meetings/ICBC/1on1s/Kee Lim/",
-                "todoist_tag": "keelim",
-                "monica_activity_id": "15",
-                "Create Notes File": true
-              }
-            ],
-            "old_items": [
-              {
-                "id": 4,
-                "order": "4.00000000000000000000",
-                "Name": "Kee Lim",
-                "Known From": {
-                  "id": 2748,
-                  "value": "ICBC - staff",
-                  "color": "light-yellow"
-                },
-                "Active": true,
-                "Next meeting": "2024-09-19",
-                "monica_contact_id": "172",
-                "nextcloud_path": "/Meetings/ICBC/1on1s/Kee Lim/",
-                "todoist_tag": "keelim",
-                "monica_activity_id": "15",
-                "Create Notes File": false
-              }
-            ]
-          },
-          "webhookUrl": "https://automation.macapinlac.network/webhook/b26c8119-d87a-4a6c-97ae-9ddb8fc23874",
-          "executionMode": "production"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2024-10-21T01:31:06.740Z",
-      "updatedAt": "2024-10-21T01:31:06.740Z",
-      "id": "IvxaDJAqZrWQAVKk",
-      "name": "production"
+      "createdAt": "2024-12-07T20:35:10.543Z",
+      "updatedAt": "2024-12-07T20:35:10.543Z",
+      "id": "3J5m8c8YNebX22pe",
+      "name": "NextCloud Inbox"
+    },
+    {
+      "createdAt": "2024-12-07T20:29:42.195Z",
+      "updatedAt": "2024-12-07T20:29:42.195Z",
+      "id": "6MFJ0FQpF15MlP3q",
+      "name": "One on one"
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-12-07T19:23:29.000Z",
-  "versionId": "426fe1fb-dfae-4446-940e-e795c731e1d0"
+  "updatedAt": "2024-12-07T20:45:19.000Z",
+  "versionId": "462a26f9-f1c1-465a-94f9-80424cb15923"
 }
