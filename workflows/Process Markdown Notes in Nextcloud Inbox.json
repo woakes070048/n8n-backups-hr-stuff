@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "When clicking ‘Test workflow’": {
       "main": [
@@ -84,6 +84,28 @@
         [
           {
             "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baserow": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Inbox Files",
             "type": "main",
             "index": 0
           }
@@ -281,8 +303,7 @@
           "id": "MQNOIs99uoEzemTz",
           "name": "Monica CRM account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -304,7 +325,7 @@
       "typeVersion": 1,
       "position": [
         1640,
-        -60
+        -20
       ],
       "id": "dfee3eb3-33f3-485d-a6f7-b24ec5bea2ec",
       "name": "Baserow",
@@ -314,15 +335,73 @@
           "name": "Baserow account"
         }
       }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "move",
+        "path": "={{ $('Nextcloud - Download Markdown').item.json.path.urlDecode() }}",
+        "toPath": "={{ $json.nextcloud_path }}{{ $('Front Matter Node').item.json.data.meeting_date.toDateTime().format('yyyy-MM-dd') }}.md"
+      },
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1860,
+        -20
+      ],
+      "id": "f9e4850c-4be8-4565-851d-f629ad0072a9",
+      "name": "Nextcloud",
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 2
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -200
+      ],
+      "id": "ad5e2477-f4e3-44b4-9521-516dc4a1fdb0",
+      "name": "Schedule Trigger"
     }
   ],
   "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
-  "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2024-12-07T20:21:22.000Z",
-  "versionId": "799ed28e-2210-4e04-a8b3-89b86f015c78"
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2024-12-07T20:35:10.543Z",
+      "updatedAt": "2024-12-07T20:35:10.543Z",
+      "id": "3J5m8c8YNebX22pe",
+      "name": "NextCloud Inbox"
+    },
+    {
+      "createdAt": "2024-12-07T20:29:42.195Z",
+      "updatedAt": "2024-12-07T20:29:42.195Z",
+      "id": "6MFJ0FQpF15MlP3q",
+      "name": "One on one"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-12-07T20:36:11.000Z",
+  "versionId": "e023ef6c-6bd5-4f1c-9660-e6aea3d63466"
 }
