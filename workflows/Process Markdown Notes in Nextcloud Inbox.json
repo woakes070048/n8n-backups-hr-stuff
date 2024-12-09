@@ -249,7 +249,7 @@
             {
               "id": "92706053-c4f9-4be5-85dc-27cb0bdb7ba4",
               "leftValue": "={{ $json.data.status.toLowerCase() }}",
-              "rightValue": "completed",
+              "rightValue": "complete",
               "operator": {
                 "type": "string",
                 "operation": "equals",
@@ -287,7 +287,7 @@
         "activityTypeId": "={{ $json.data.monica.activity_id }}",
         "contacts": "={{ $json.data.monica.contact_id.toString() }}",
         "happenedAt": "={{ $json.data.meeting_date.toDateTime().format('yyyy-MM-dd') }}",
-        "summary": "={{ $json.data.meeting_type }}",
+        "summary": "={{ $json.data.monica.summary }}",
         "additionalFields": {}
       },
       "id": "3e2f929e-085d-4512-9a58-13883c032814",
@@ -402,6 +402,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-12-07T20:36:11.000Z",
-  "versionId": "e023ef6c-6bd5-4f1c-9660-e6aea3d63466"
+  "updatedAt": "2024-12-08T22:25:34.000Z",
+  "versionId": "ebaa8da8-a218-47b7-9b60-2efcea69f008"
 }
