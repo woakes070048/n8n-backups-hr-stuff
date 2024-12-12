@@ -308,7 +308,7 @@
       "parameters": {
         "authentication": "oAuth2",
         "path": "={{ $json.NextCloud_Path }}",
-        "fileContent": "={{ $json.message.content }}"
+        "fileContent": "={{ $json.analysis }}"
       },
       "id": "639f131c-5f6f-410e-816d-7f8083274e8e",
       "name": "Nextcloud - Save Analysis Data",
@@ -420,6 +420,12 @@
               "name": "NextCloud_Path",
               "value": "={{ $('Set Variables').item.json.nextcloud_path }}/AI Analysis (Resume) - {{ $now.format(\"yyyy-MM-dd\") }}.md",
               "type": "string"
+            },
+            {
+              "id": "256f27b2-2f5e-4821-8762-f2315248cdaa",
+              "name": "analysis",
+              "value": "={{ $json.message.content }}",
+              "type": "string"
             }
           ]
         },
@@ -477,6 +483,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2024-12-10T14:59:54.000Z",
-  "versionId": "73a2d397-310e-4944-8fa6-39acf809daf4"
+  "updatedAt": "2024-12-12T17:28:05.000Z",
+  "versionId": "506c05ac-cde0-4273-ba8e-ccb423cfd5cd"
 }
