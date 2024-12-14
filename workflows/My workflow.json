@@ -5,18 +5,7 @@
       "main": [
         [
           {
-            "node": "Baserow - All one on ones",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Baserow - All one on ones": {
-      "main": [
-        [
-          {
-            "node": "Monica CRM",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -24,78 +13,35 @@
       ]
     }
   },
-  "createdAt": "2024-10-27T07:20:20.493Z",
-  "id": "Tlyrr8u0O34UTeD1",
-  "meta": {
-    "templateCredsSetupCompleted": true
-  },
+  "createdAt": "2024-12-14T04:21:13.274Z",
+  "id": "WW4JSF83TQlqRRuS",
+  "meta": null,
   "name": "My workflow",
   "nodes": [
     {
       "parameters": {},
-      "id": "544df73a-f446-467e-af48-485058030b70",
-      "name": "When clicking ‘Test workflow’",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        540,
-        380
-      ]
+        0,
+        0
+      ],
+      "id": "288e3ede-1d10-4556-86f7-5823e3298e8f",
+      "name": "When clicking ‘Test workflow’"
     },
     {
       "parameters": {
-        "databaseId": 33,
-        "tableId": 583,
-        "returnAll": true,
-        "additionalOptions": {
-          "filters": {
-            "fields": [
-              {
-                "field": 5546,
-                "operator": "boolean",
-                "value": "true"
-              }
-            ]
-          }
-        }
+        "url": "https://anime-facts-rest-api.herokuapp.com/api/v1/fma_brotherhood",
+        "options": {}
       },
-      "id": "510be26d-fc3b-403e-b9f4-b967f0fff09b",
-      "name": "Baserow - All one on ones",
-      "type": "n8n-nodes-base.baserow",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        720,
-        380
+        220,
+        0
       ],
-      "credentials": {
-        "baserowApi": {
-          "id": "d2WUYcb60dACjFtq",
-          "name": "Baserow account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "returnAll": true,
-        "filters": {
-          "query": "={{ $json.Name }}"
-        }
-      },
-      "id": "b09895a4-e4b2-4bdb-9c3e-00c3220000b8",
-      "name": "Monica CRM",
-      "type": "n8n-nodes-base.monicaCrm",
-      "typeVersion": 1,
-      "position": [
-        940,
-        380
-      ],
-      "credentials": {
-        "monicaCrmApi": {
-          "id": "MQNOIs99uoEzemTz",
-          "name": "Monica CRM account"
-        }
-      }
+      "id": "7c25ae59-5da4-4207-8b21-83d4e466ed72",
+      "name": "HTTP Request"
     }
   ],
   "pinData": {},
@@ -105,6 +51,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2024-10-27T07:23:48.000Z",
-  "versionId": "280d8f07-6f9d-47a7-9f17-3092b8cd91ab"
+  "updatedAt": "2024-12-14T04:21:13.274Z",
+  "versionId": "8b03f103-c360-4057-a6d5-905c723c7bdb"
 }
