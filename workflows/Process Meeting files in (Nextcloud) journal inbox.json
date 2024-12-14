@@ -185,7 +185,8 @@
           "options": {
             "caseSensitive": true,
             "leftValue": "",
-            "typeValidation": "strict"
+            "typeValidation": "strict",
+            "version": 1
           },
           "conditions": [
             {
@@ -310,7 +311,7 @@
       ],
       "credentials": {
         "monicaCrmApi": {
-          "id": "Gyg2sJkCy8J13rTe",
+          "id": "MQNOIs99uoEzemTz",
           "name": "Monica CRM account"
         }
       }
@@ -405,6 +406,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2024-10-21T02:11:55.000Z",
-  "versionId": "ed61d248-de80-46c2-8aef-e3c247243e5a"
+  "updatedAt": "2024-12-14T16:28:06.000Z",
+  "versionId": "df0e6266-0d6c-4838-ba6d-044022f93eec"
 }
