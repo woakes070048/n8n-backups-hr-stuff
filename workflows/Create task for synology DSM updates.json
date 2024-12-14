@@ -94,12 +94,12 @@
             {
               "value1": "={{ $json.Subject }}",
               "operation": "contains",
-              "value2": "yukari is out-of-date"
+              "value2": "yukari are out-of-date"
             },
             {
               "value1": "={{ $json.Subject }}",
               "operation": "contains",
-              "value2": "yukari are out-of-date"
+              "value2": "yukari is out-of-date"
             }
           ]
         },
@@ -110,7 +110,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        400,
+        300,
         440
       ]
     },
@@ -137,7 +137,7 @@
       "type": "n8n-nodes-base.todoist",
       "typeVersion": 2,
       "position": [
-        680,
+        580,
         320
       ],
       "credentials": {
@@ -154,7 +154,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        680,
+        580,
         560
       ]
     },
@@ -198,7 +198,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1120,
+        1020,
         320
       ],
       "webhookId": "f6228b9f-2c6f-4f9e-af29-98c2cbc3acbf",
@@ -247,7 +247,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        900,
+        800,
         320
       ],
       "webhookId": "c9e1c877-418f-4ac4-8fb2-396f774240bf",
@@ -270,13 +270,13 @@
   },
   "tags": [
     {
-      "createdAt": "2024-10-21T01:31:06.740Z",
-      "updatedAt": "2024-10-21T01:31:06.740Z",
-      "id": "IvxaDJAqZrWQAVKk",
-      "name": "production"
+      "createdAt": "2024-12-14T16:01:22.448Z",
+      "updatedAt": "2024-12-14T16:01:22.448Z",
+      "id": "JjnblIfYKVImzAid",
+      "name": "Todo"
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-11-26T14:21:31.000Z",
-  "versionId": "b0da8285-ae05-47ef-bbef-002b91aaa934"
+  "updatedAt": "2024-12-14T16:16:49.000Z",
+  "versionId": "1dc24cf7-5ada-4150-8725-852afc86728f"
 }
