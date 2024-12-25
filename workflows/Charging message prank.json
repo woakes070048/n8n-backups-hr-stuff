@@ -1,0 +1,277 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Save Fields from Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Fields from Request": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Baserow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook - No AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-12-25T14:20:46.972Z",
+  "id": "ZQs2xReuLXYiZTSE",
+  "meta": null,
+  "name": "Charging message prank",
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"message\": \"{{ $json.message.content }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        820,
+        -300
+      ],
+      "id": "7bc8f0cf-580f-4352-b399-efa9b42830f3",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "charging-prank",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        -180
+      ],
+      "id": "f2043e65-3e2f-4e9a-a080-3e9899f5b52c",
+      "name": "Webhook",
+      "webhookId": "8bf6ed18-0698-4ccc-b7f1-4627cdf513fb",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Z9ZmHE3MBrlhpqjd",
+          "name": "Pranks Header"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c3e80254-563c-452a-8c9f-dc7ae298c33c",
+              "name": "name",
+              "value": "={{ $json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "71cb46c6-51ef-41c3-bc63-52cae5f7647b",
+              "name": "rating",
+              "value": "={{ $json.body.rating }}",
+              "type": "string"
+            },
+            {
+              "id": "0b835fee-5906-4532-bf48-3a08d51b4d98",
+              "name": "day_of_week",
+              "value": "={{ $json.body.day }}",
+              "type": "string"
+            },
+            {
+              "id": "ab5bc0ec-13a1-4e6c-9cf7-81e1cc0ebfd9",
+              "name": "time_of_day",
+              "value": "={{ $json.body.time }}",
+              "type": "string"
+            },
+            {
+              "id": "581fe376-164d-4180-8e6a-042e445bfc81",
+              "name": "battery_level",
+              "value": "={{ $json.body.battery }}",
+              "type": "string"
+            },
+            {
+              "id": "0a06fa82-c8cf-46e6-a4a1-aba45c0434a8",
+              "name": "baserow_id",
+              "value": "={{ $json.body.baserow_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        -180
+      ],
+      "id": "53fb6346-e042-4640-9bf8-38c54af63996",
+      "name": "Save Fields from Request"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Create a funny and creative message that is said aloud when a phone is plugged into a charger. The message should include or consider:\n\n- The user's name (if provided): {{ $json.name }}\n- The time of day for situational humor: {{ $json.time_of_day }}\n- The day of the week for added context if relevant: {{ $json.day_of_week }}\n- The phone's current battery percentage: {{ $json.battery_level }}%\n- The specified humor rating (G, PG, PG-13, or R): {{ $json.rating }}\n\nThe message should be engaging, humorous, and appropriate for the chosen rating. For example, use light-hearted jokes for G and PG, playful sarcasm for PG-13, and edgier humor for R.\n\nEnforce these constraints:\n- Keep the message to 2-5 seconds when read by Siri.\n- Do not include any emojis in the message.\n- Do not surround the message in quotes.\n- Provide your message as simple text."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.7,
+      "position": [
+        440,
+        -180
+      ],
+      "id": "1612cb23-4c21-4ea4-958f-220d6204e545",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      },
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Holy smokes, you need a new phone!\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        820,
+        -80
+      ],
+      "id": "7edd27d5-78c4-44ce-9da8-7d43319ebf70",
+      "name": "Respond to Webhook - No AI"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "databaseId": 135,
+        "tableId": 627,
+        "rowId": "={{ $json.baserow_id }}"
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        440,
+        20
+      ],
+      "id": "831e99b7-e2d5-49dc-ab65-7943bce42915",
+      "name": "Baserow",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "automation.macapinlac.network",
+            "user-agent": "BackgroundShortcutRunner/3301.1 CFNetwork/3826.400.101 Darwin/24.3.0",
+            "content-length": "83",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "accept-language": "en-CA,en-US;q=0.9,en;q=0.8",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "64.180.171.183",
+            "cf-ipcountry": "CA",
+            "cf-ray": "8f79e2712c882dc1-YVR",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "content-type": "application/json",
+            "pranks": "RitchieRocks",
+            "priority": "u=3",
+            "x-forwarded-for": "162.158.146.135",
+            "x-forwarded-host": "automation.macapinlac.network",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "cddf95658d4f",
+            "x-real-ip": "162.158.146.135"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "time": "07:32",
+            "rating": "PG-13",
+            "day": "Wednesday",
+            "battery": "80",
+            "name": "Ritchie",
+            "baserow_id": 2
+          },
+          "webhookUrl": "https://automation.macapinlac.network/webhook/charging-prank",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-12-25T14:20:50.413Z",
+      "updatedAt": "2024-12-25T14:20:50.413Z",
+      "id": "q2vjPH5iboDju7Il",
+      "name": "prank"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-12-25T15:49:59.000Z",
+  "versionId": "a389328d-6eb9-44b8-83a1-797890c0aae5"
+}
