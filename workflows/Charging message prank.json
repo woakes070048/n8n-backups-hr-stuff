@@ -217,48 +217,7 @@
       "onError": "continueErrorOutput"
     }
   ],
-  "pinData": {
-    "Webhook": [
-      {
-        "json": {
-          "headers": {
-            "host": "automation.macapinlac.network",
-            "user-agent": "BackgroundShortcutRunner/3301.1 CFNetwork/3826.400.101 Darwin/24.3.0",
-            "content-length": "83",
-            "accept": "*/*",
-            "accept-encoding": "gzip, br",
-            "accept-language": "en-CA,en-US;q=0.9,en;q=0.8",
-            "cdn-loop": "cloudflare; loops=1",
-            "cf-connecting-ip": "64.180.171.183",
-            "cf-ipcountry": "CA",
-            "cf-ray": "8f79e2712c882dc1-YVR",
-            "cf-visitor": "{\"scheme\":\"https\"}",
-            "content-type": "application/json",
-            "pranks": "RitchieRocks",
-            "priority": "u=3",
-            "x-forwarded-for": "162.158.146.135",
-            "x-forwarded-host": "automation.macapinlac.network",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "cddf95658d4f",
-            "x-real-ip": "162.158.146.135"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "time": "07:32",
-            "rating": "PG-13",
-            "day": "Wednesday",
-            "battery": "80",
-            "name": "Ritchie",
-            "baserow_id": 2
-          },
-          "webhookUrl": "https://automation.macapinlac.network/webhook/charging-prank",
-          "executionMode": "production"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
@@ -272,6 +231,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-12-25T15:49:59.000Z",
-  "versionId": "a389328d-6eb9-44b8-83a1-797890c0aae5"
+  "updatedAt": "2024-12-26T15:39:34.000Z",
+  "versionId": "cc42ebe0-2a6b-42b8-b1e5-b0914568f475"
 }
