@@ -271,7 +271,8 @@
           "id": "fLXJCCubxnE7gtwF",
           "name": "NextCloud account"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -321,6 +322,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2024-12-15T21:32:15.000Z",
-  "versionId": "9345dc1b-174c-4665-9df2-b6668b4d5252"
+  "updatedAt": "2024-12-28T17:38:53.000Z",
+  "versionId": "452ae628-f491-4bd2-b010-3ce8d7bbdace"
 }
