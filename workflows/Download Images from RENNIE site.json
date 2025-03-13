@@ -615,7 +615,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nvar _images = [];\n\nfor (const item of $input.all()) {\n  if (item.json.raw_json.includes(\"var images\")) {\n    eval(item.json.raw_json);\n    // console.log(images);\n    for (const _image of images.split(\"|\")) {\n      _img_data = JSON.parse(_image);\n      _img_url = _img_data.url.trim();\n      _img_filename = _img_url.substring(_img_url.lastIndexOf('/')+1);\n      _images.push({\n        image_url: _img_url,\n        image_filename: _img_filename\n      });\n    }\n  }\n}\n\nreturn _images;"
+        "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nvar _images = [];\n// console.log($input.all());\nfor (const item of $input.all()) {\n\n  // console.log(item.json.raw_json);\n  \n  if (item.json.raw_json.includes(\"media\")) {\n    _data = JSON.parse(item.json.raw_json);\n    console.log(_data.props.pageProps.listing.media);\n    images = _data.props.pageProps.listing.media;\n    // console.log(images);\n    for (const _image of images) {\n      _img_url = _image.mediaUrl.trim();\n      // _img_filename = _img_url.substring(_img_url.lastIndexOf('/')+1);\n      _images.push({\n        image_url: _img_url\n        // image_filename: _img_filename\n      });\n    }\n  }\n}\n\nreturn _images;"
       },
       "id": "c82a1921-e267-445b-bbb1-2464ad204464",
       "name": "Code - Parse Images from Listing",
@@ -929,7 +929,7 @@
           "values": [
             {
               "key": "raw_json",
-              "cssSelector": "div.listing-show-gallery-container script",
+              "cssSelector": "script#__NEXT_DATA__",
               "returnValue": "html"
             }
           ]
@@ -969,7 +969,70 @@
       }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "automation.macapinlac.network",
+            "user-agent": "python-requests/2.31.0",
+            "content-length": "605",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "172.218.242.244",
+            "cf-ipcountry": "CA",
+            "cf-ray": "91f66c1eb9b5df18-SEA",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "chowkai": "iZEQm6PvZKPTMk",
+            "content-type": "application/json",
+            "x-baserow-delivery": "75346cad-cbfc-4859-967b-94ffc7dd3858",
+            "x-baserow-event": "rows.created",
+            "x-forwarded-for": "162.158.42.235",
+            "x-forwarded-host": "automation.macapinlac.network",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "cddf95658d4f",
+            "x-real-ip": "162.158.42.235"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "table_id": 582,
+            "database_id": 46,
+            "workspace_id": 38,
+            "event_id": "75346cad-cbfc-4859-967b-94ffc7dd3858",
+            "event_type": "rows.created",
+            "items": [
+              {
+                "id": 102,
+                "order": "102.00000000000000000000",
+                "uuid": "37433dbc-6d08-44e3-8150-0496a108adf7",
+                "Write Up": null,
+                "Listing URL": "https://rennie.com/listings/interurban-489-way-marine-gateway-1704-vancouver-371401",
+                "List Price": null,
+                "Post Draft": null,
+                "Use Presented By": false,
+                "mls_number": null,
+                "beds": null,
+                "baths": null,
+                "square feet": null,
+                "address": null,
+                "city": null,
+                "type": {
+                  "id": 2746,
+                  "value": "Just listed",
+                  "color": "light-brown"
+                }
+              }
+            ]
+          },
+          "webhookUrl": "https://automation.macapinlac.network/webhook/e7f8d349-47f3-4c84-8e80-0d9cb43f96a1",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -983,6 +1046,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-12-07T20:51:52.000Z",
-  "versionId": "c8a55639-ec1c-44ca-97aa-d82a60871d26"
+  "updatedAt": "2025-03-13T15:12:40.000Z",
+  "versionId": "373f2b5a-b431-4d17-9438-42d6d6278d15"
 }
