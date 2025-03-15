@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Filter - ICBC Weekly Files",
+            "node": "Filter - Weekly Files",
             "type": "main",
             "index": 0
           }
@@ -72,7 +72,7 @@
         ]
       ]
     },
-    "Filter - ICBC Weekly Files": {
+    "Filter - Weekly Files": {
       "main": [
         [
           {
@@ -162,7 +162,7 @@
       "parameters": {
         "authentication": "oAuth2",
         "resource": "folder",
-        "path": "=Journal/{{ $json.Year }}"
+        "path": "=/Journal/{{ $json.Year }}"
       },
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
@@ -179,18 +179,19 @@
           "name": "NextCloud account"
         }
       },
+      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "authentication": "oAuth2",
         "resource": "folder",
-        "path": "=Journal/{{ $('Extract File Details (Year, Month and File Type)').item.json.Year }}/Weekly"
+        "path": "=/Journal/{{ $('Extract File Details (Year, Month and File Type)').item.json.Year }}/Weekly"
       },
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1300,
+        1260,
         -220
       ],
       "id": "d9ef728d-c137-4ed9-8447-f55c5704eb70",
@@ -202,6 +203,7 @@
           "name": "NextCloud account"
         }
       },
+      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -213,7 +215,7 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1500,
+        1440,
         -220
       ],
       "id": "dff036fd-9f44-4c88-b6d7-99b6b3a05ae2",
@@ -225,6 +227,7 @@
           "name": "NextCloud account"
         }
       },
+      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -234,7 +237,7 @@
             {
               "id": "2b768710-5d36-4b24-9da8-446310dbf16d",
               "name": "Destination",
-              "value": "=Journal/{{ $json.Year }}/Weekly/{{ $json.Week }}/{{ $json['File Type'] }}",
+              "value": "=/Journal/{{ $json.Year }}/Weekly/{{ $json.Week }}/{{ $json['File Type'] }}",
               "type": "string"
             }
           ]
@@ -254,8 +257,8 @@
     {
       "parameters": {
         "authentication": "oAuth2",
-        "operation": "move",
-        "path": "={{ $('Filter - ICBC Weekly Files').item.json.path.urlDecode() }}",
+        "operation": "copy",
+        "path": "=/{{ $('Filter - Weekly Files').item.json.path.urlDecode() }}",
         "toPath": "={{ $json.Destination }}"
       },
       "type": "n8n-nodes-base.nextCloud",
@@ -272,6 +275,7 @@
           "name": "NextCloud account"
         }
       },
+      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -305,7 +309,7 @@
         0
       ],
       "id": "c58130ee-09af-4c19-9d6d-ab2d438fb100",
-      "name": "Filter - ICBC Weekly Files"
+      "name": "Filter - Weekly Files"
     }
   ],
   "pinData": {},
@@ -322,6 +326,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2024-12-28T17:38:53.000Z",
-  "versionId": "452ae628-f491-4bd2-b010-3ce8d7bbdace"
+  "updatedAt": "2025-03-15T16:18:27.000Z",
+  "versionId": "b3148de4-ec4d-4e0b-8af4-4fb8c51fce8a"
 }
