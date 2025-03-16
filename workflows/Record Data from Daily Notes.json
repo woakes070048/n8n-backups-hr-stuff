@@ -1,0 +1,38 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-03-16T02:06:11.283Z",
+  "id": "yg1QSZTAY9GyAETT",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Record Data from Daily Notes",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "33cd5069-b6b8-415a-8af0-80bd26a9c31e",
+      "name": "When clicking ‘Test workflow’"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-16T02:10:08.000Z",
+  "versionId": "4bf374eb-5a0c-46a9-8b7a-45993de24210"
+}
