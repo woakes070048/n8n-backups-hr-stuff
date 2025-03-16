@@ -1,9 +1,119 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "When clicking ‘Test workflow’": {
       "main": [
-        []
+        [
+          {
+            "node": "Edit Fields - Set Test Date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields - Set Test Date": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields - Day Before",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields - Day Before": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields - Process Date Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Front Matter Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Front Matter Node": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields - Process Date Info": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Download Daily Notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud - Download Daily Notes": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields - Process Date Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields - Process Date Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -19,20 +129,399 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -580,
+        -300
       ],
       "id": "33cd5069-b6b8-415a-8af0-80bd26a9c31e",
       "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "220ed089-2afc-4e1c-a588-38d1b7c81437",
+              "name": "ProcessDate",
+              "value": "={{ new Date('2025-03-15').toDateTime() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -360,
+        -300
+      ],
+      "id": "539bc3ae-857e-463a-abc5-cebb984146c6",
+      "name": "Edit Fields - Set Test Date"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d74579b4-342c-4559-bdb1-5ef0d7f58384",
+              "name": "DateToProcess",
+              "value": "={{ new Date($json.ProcessDate).minus(1, 'days').toDateTime() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -140,
+        -300
+      ],
+      "id": "7179a500-7dca-42b6-8f16-9adf4f6efb3f",
+      "name": "Edit Fields - Day Before"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        520,
+        -300
+      ],
+      "id": "e3b20b9c-b8fc-4e22-8120-bff5ccbfa5b3",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.data }}"
+      },
+      "type": "@icttroacon/n8n-nodes-front-matter.frontMatter",
+      "typeVersion": 1,
+      "position": [
+        740,
+        -300
+      ],
+      "id": "cb6783aa-07e0-4519-b89b-8f93c25a016c",
+      "name": "Front Matter Node",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "db5b3240-3fd7-4629-9eea-4b5ea70fa2a9",
+              "name": "Year",
+              "value": "={{ new Date($json.DateToProcess).format('yyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "54f5bd85-a35b-4421-9d12-fc1557df3c61",
+              "name": "Month",
+              "value": "={{ new Date($json.DateToProcess).format('MM') }}",
+              "type": "string"
+            },
+            {
+              "id": "44ea3249-c16e-42e6-828c-d23a22a76d68",
+              "name": "JournalFilename",
+              "value": "={{ new Date($json.DateToProcess).format('yyyy-MM-dd') }}.md",
+              "type": "string"
+            },
+            {
+              "id": "d2d9ed23-f9df-4ba5-b1f1-c155c7b03153",
+              "name": "DateToProcess",
+              "value": "={{ new Date($json.DateToProcess).format('yyyy-MM-dd') }}",
+              "type": "string"
+            },
+            {
+              "id": "76a19947-b2ea-4aec-bdce-bec0b7fdbd95",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        -300
+      ],
+      "id": "7b57895e-505c-4eee-a265-be2c30dcfbfc",
+      "name": "Edit Fields - Process Date Info"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "download",
+        "path": "=/Apps/obsidian/Second Brain/10 - Journal/Daily/{{ $json.Year }}/{{ $json.Month }}/{{ $json.JournalFilename }}"
+      },
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        300,
+        -300
+      ],
+      "id": "80eb04db-949f-485f-838f-ac1e449f09c9",
+      "name": "Nextcloud - Download Daily Notes",
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "18asdBovR693vPFX7IbyncCxD2viyczcJWa0U63faK34",
+          "mode": "list",
+          "cachedResultName": "Daily Notes Metrics",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18asdBovR693vPFX7IbyncCxD2viyczcJWa0U63faK34/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18asdBovR693vPFX7IbyncCxD2viyczcJWa0U63faK34/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $('Edit Fields - Process Date Info').item.json.DateToProcess }}",
+            "Sleep Quality": "={{ $json.data.autosleep.quality }}",
+            "Sleep Readiness": "={{ $json.data.autosleep.readiness }}",
+            "Time Asleep": "={{ $json.data.autosleep.timeasleep }}",
+            "Sys": "={{ $json.data.omron_heart.sys }}",
+            "Dia": "={{ $json.data.omron_heart.dia }}",
+            "fat %": "={{ $json.data.omron_fat.fat }}",
+            "BMI": "={{ $json.data.omron_fat.bmi }}",
+            "Start Work": "={{ $json.data.work.start }}",
+            "End Work": "={{ $json.data.work.end }}"
+          },
+          "matchingColumns": [
+            "Date"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sleep Quality",
+              "displayName": "Sleep Quality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Sleep Readiness",
+              "displayName": "Sleep Readiness",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time Asleep",
+              "displayName": "Time Asleep",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Sys",
+              "displayName": "Sys",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Dia",
+              "displayName": "Dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fat %",
+              "displayName": "fat %",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BMI",
+              "displayName": "BMI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Start Work",
+              "displayName": "Start Work",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "End Work",
+              "displayName": "End Work",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Working Hours",
+              "displayName": "Working Hours",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1120,
+        -680
+      ],
+      "id": "9125d739-deaf-4bd0-bec0-efc9985875b0",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gqPFMUdJa6mEAjxz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=Recorded daily note data ({{ $('Edit Fields - Process Date Info').item.json.DateToProcess }})\n\n{{ $json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        -480
+      ],
+      "id": "2ae6ff72-74b0-4eea-a933-ec528c39d328",
+      "name": "Discord",
+      "webhookId": "657499c8-1c64-42cf-ad7d-92b519c0a933",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "hf6RAiISd5zNhDZr",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "DateToProcess"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        -520
+      ],
+      "id": "56de49f8-8186-4239-914e-3bb5a977fa0e",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -380,
+        -760
+      ],
+      "id": "e21dd7f1-768a-4155-a959-1d34082ec102",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "subtractFromDate",
+        "magnitude": "={{ $json.timestamp }}",
+        "timeUnit": "weeks",
+        "duration": 1,
+        "outputFieldName": "DateToProcess",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        -760
+      ],
+      "id": "a2f1d588-e370-436d-87e4-85d6c6c222c5",
+      "name": "Date & Time"
     }
   ],
   "pinData": {},
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-03-16T02:10:08.000Z",
-  "versionId": "4bf374eb-5a0c-46a9-8b7a-45993de24210"
+  "triggerCount": 1,
+  "updatedAt": "2025-03-16T19:04:55.000Z",
+  "versionId": "edb62bbf-dcd8-4a9b-baad-f8bc3b53d784"
 }
