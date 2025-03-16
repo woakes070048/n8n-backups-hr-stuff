@@ -1,0 +1,109 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-16T19:05:51.827Z",
+  "id": "pOjkRbfFXoN8mtnU",
+  "meta": null,
+  "name": "Process Daily Notes By Year",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -540,
+        -20
+      ],
+      "id": "f0781747-5877-44ae-a017-f9bb39d41241",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet StartDate = new Date(\"2025-01-31\");\nlet EndDate = new Date(\"2025-03-01\")\nlet CurrentDate = StartDate;\n\nlet dates = [];\n\nwhile (StartDate <= EndDate) {\n  let item = {};\n  item.ProcessDate = new Date(CurrentDate); // Push a copy of the date\n  CurrentDate.setDate(CurrentDate.getDate() + 1); // Increment by 1 day\n  // console.log(item);\n  dates.push(item);\n}\n\nreturn dates;\n/**\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n**/\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        -20
+      ],
+      "id": "8686d779-94f7-457b-a784-f9796b3365d9",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "yg1QSZTAY9GyAETT",
+          "mode": "list",
+          "cachedResultName": "Record Data from Daily Notes"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "DateToProcess": "={{ new Date($json.ProcessDate).format(\"yyyy-MM-dd\") }}"
+          },
+          "matchingColumns": [
+            "DateToProcess"
+          ],
+          "schema": [
+            {
+              "id": "DateToProcess",
+              "displayName": "DateToProcess",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -100,
+        -20
+      ],
+      "id": "9841fddf-1900-4c2d-b1b4-c9151d86150d",
+      "name": "Execute Workflow"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-16T19:34:08.000Z",
+  "versionId": "888068a9-3f73-40d2-94ba-7c2da7a4d04f"
+}
