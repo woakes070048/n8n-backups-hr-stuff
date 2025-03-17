@@ -16,7 +16,41 @@
       "main": [
         [
           {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
             "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -42,7 +76,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet StartDate = new Date(\"2025-01-31\");\nlet EndDate = new Date(\"2025-03-01\")\nlet CurrentDate = StartDate;\n\nlet dates = [];\n\nwhile (StartDate <= EndDate) {\n  let item = {};\n  item.ProcessDate = new Date(CurrentDate); // Push a copy of the date\n  CurrentDate.setDate(CurrentDate.getDate() + 1); // Increment by 1 day\n  // console.log(item);\n  dates.push(item);\n}\n\nreturn dates;\n/**\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n**/\n\nreturn $input.all();"
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet StartDate = new Date(\"2025-02-19\");\nlet EndDate = new Date()\nlet CurrentDate = StartDate;\n\nlet dates = [];\n\nwhile (StartDate <= EndDate) {\n  let item = {};\n  item.ProcessDate = new Date(CurrentDate); // Push a copy of the date\n  CurrentDate.setDate(CurrentDate.getDate() + 1); // Increment by 1 day\n  // console.log(item);\n  dates.push(item);\n}\n\nreturn dates;\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -90,11 +124,39 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -100,
-        -20
+        340,
+        100
       ],
       "id": "9841fddf-1900-4c2d-b1b4-c9151d86150d",
       "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        120,
+        100
+      ],
+      "id": "2400591a-0402-41de-a281-0853356d9929",
+      "name": "Wait",
+      "webhookId": "08c7ec7e-b2ed-4758-985e-ce845ca79a46"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -100,
+        -20
+      ],
+      "id": "5ab6efd9-f948-499f-8091-a96d19069a0a",
+      "name": "Loop Over Items"
     }
   ],
   "pinData": {},
@@ -104,6 +166,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-03-16T19:34:08.000Z",
-  "versionId": "888068a9-3f73-40d2-94ba-7c2da7a4d04f"
+  "updatedAt": "2025-03-17T00:35:29.000Z",
+  "versionId": "05ca87cc-b00e-49ca-acd1-f6a71350c5fa"
 }
