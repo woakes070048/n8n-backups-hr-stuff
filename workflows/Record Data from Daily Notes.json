@@ -189,8 +189,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        520,
-        -300
+        540,
+        -480
       ],
       "id": "e3b20b9c-b8fc-4e22-8120-bff5ccbfa5b3",
       "name": "Extract from File"
@@ -202,8 +202,8 @@
       "type": "@icttroacon/n8n-nodes-front-matter.frontMatter",
       "typeVersion": 1,
       "position": [
-        740,
-        -300
+        760,
+        -480
       ],
       "id": "cb6783aa-07e0-4519-b89b-8f93c25a016c",
       "name": "Front Matter Node",
@@ -275,7 +275,8 @@
           "id": "fLXJCCubxnE7gtwF",
           "name": "NextCloud account"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -422,7 +423,7 @@
       "typeVersion": 4.5,
       "position": [
         1120,
-        -680
+        -800
       ],
       "id": "9125d739-deaf-4bd0-bec0-efc9985875b0",
       "name": "Google Sheets",
@@ -443,7 +444,7 @@
       "typeVersion": 2,
       "position": [
         1120,
-        -480
+        -600
       ],
       "id": "2ae6ff72-74b0-4eea-a933-ec528c39d328",
       "name": "Discord",
@@ -522,6 +523,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-03-16T19:04:55.000Z",
-  "versionId": "edb62bbf-dcd8-4a9b-baad-f8bc3b53d784"
+  "updatedAt": "2025-03-17T00:34:52.000Z",
+  "versionId": "32cdd29d-f67d-4faf-9498-d4e887ef5d25"
 }
