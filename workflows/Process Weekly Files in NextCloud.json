@@ -179,7 +179,6 @@
           "name": "NextCloud account"
         }
       },
-      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -203,7 +202,6 @@
           "name": "NextCloud account"
         }
       },
-      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -227,7 +225,6 @@
           "name": "NextCloud account"
         }
       },
-      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -275,7 +272,6 @@
           "name": "NextCloud account"
         }
       },
-      "disabled": true,
       "onError": "continueRegularOutput"
     },
     {
@@ -326,6 +322,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-03-15T16:18:27.000Z",
-  "versionId": "b3148de4-ec4d-4e0b-8af4-4fb8c51fce8a"
+  "updatedAt": "2025-03-31T17:22:13.000Z",
+  "versionId": "6f506d61-5f48-4e08-9be1-d45a8be95836"
 }
