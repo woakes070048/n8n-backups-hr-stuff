@@ -16,18 +16,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields - Day Before",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields - Day Before": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields - Process Date Info",
+            "node": "Edit Fields - 1 week before",
             "type": "main",
             "index": 0
           }
@@ -115,6 +104,17 @@
           }
         ]
       ]
+    },
+    "Edit Fields - 1 week before": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields - Process Date Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-03-16T02:06:11.283Z",
@@ -142,7 +142,7 @@
             {
               "id": "220ed089-2afc-4e1c-a588-38d1b7c81437",
               "name": "ProcessDate",
-              "value": "={{ new Date('2025-03-15').toDateTime() }}",
+              "value": "={{ new Date('2025-03-31').toDateTime() }}",
               "type": "string"
             }
           ]
@@ -157,29 +157,6 @@
       ],
       "id": "539bc3ae-857e-463a-abc5-cebb984146c6",
       "name": "Edit Fields - Set Test Date"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "d74579b4-342c-4559-bdb1-5ef0d7f58384",
-              "name": "DateToProcess",
-              "value": "={{ new Date($json.ProcessDate).minus(1, 'days').toDateTime() }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -140,
-        -300
-      ],
-      "id": "7179a500-7dca-42b6-8f16-9adf4f6efb3f",
-      "name": "Edit Fields - Day Before"
     },
     {
       "parameters": {
@@ -509,6 +486,29 @@
       ],
       "id": "a2f1d588-e370-436d-87e4-85d6c6c222c5",
       "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d74579b4-342c-4559-bdb1-5ef0d7f58384",
+              "name": "DateToProcess",
+              "value": "={{ new Date($json.ProcessDate).minus(1, 'week').toDateTime() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -140,
+        -300
+      ],
+      "id": "7179a500-7dca-42b6-8f16-9adf4f6efb3f",
+      "name": "Edit Fields - 1 week before"
     }
   ],
   "pinData": {},
@@ -530,6 +530,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-03-22T15:47:35.000Z",
-  "versionId": "237a99d4-3184-4256-ad71-692d65977783"
+  "updatedAt": "2025-03-31T17:21:19.000Z",
+  "versionId": "401ddb87-2698-4f0c-8f9e-7f12ab864a14"
 }
