@@ -1,0 +1,243 @@
+{
+  "active": false,
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "If not a newsletter or promotion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If not a newsletter or promotion": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "crm_lookup": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-22T13:35:50.452Z",
+  "id": "dnCyk068W1PeqUSl",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Update my personal CRM",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "56b042a4-2d35-4fcf-bfc4-019018ac49c2",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        440,
+        -240
+      ],
+      "id": "d325debf-f335-47ab-8ae8-9b1c203af68d",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bcff5871-180d-44b4-b565-7c4adcebb09a",
+              "leftValue": "={{ $json.To }}",
+              "rightValue": "ritchie+newsletter@macapinlac.com",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "751d7fe0-8a4e-4274-9588-8d9ffda6de6f",
+              "leftValue": "={{ $json.To }}",
+              "rightValue": "ritchie+promotions@macapinlac.com",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "02561fa7-e25b-4a89-ab61-a6af3a341fd8",
+      "name": "If not a newsletter or promotion"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=From: {{ $('Gmail Trigger').item.json.From }}\nSubject: {{ $json.Subject }}\nBody: \n",
+        "options": {
+          "systemMessage": "# Role\nAct as a virtual assistant. Your role is to update a CRM.\n\n# Instructions\n1. Read the provided contact information and correspondence.\n2. Identify"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        440,
+        120
+      ],
+      "id": "a65a2fe3-034b-41bf-94ab-77efc95df75a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        340
+      ],
+      "id": "321e200f-d54e-411c-8711-d0e216f04788",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.threadId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        540,
+        340
+      ],
+      "id": "d5531d74-2a31-4953-9148-204a1c372bd4",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Term', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.monicaCrmTool",
+      "typeVersion": 1,
+      "position": [
+        700,
+        340
+      ],
+      "id": "d947daa5-3833-40d3-9eeb-0f0c1a9ed2a6",
+      "name": "crm_lookup",
+      "credentials": {
+        "monicaCrmApi": {
+          "id": "MQNOIs99uoEzemTz",
+          "name": "Monica CRM account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-04-22T13:54:38.000Z",
+  "versionId": "bdf1df25-82d0-4368-86b4-00ebf95ceddd"
+}
