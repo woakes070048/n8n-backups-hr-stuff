@@ -1,9 +1,34 @@
 {
   "active": false,
-  "connections": {},
-  "createdAt": "2024-12-14T16:57:35.413Z",
-  "id": "TcQvQwX4TTwuuQhs",
-  "meta": null,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-04T15:05:21.237Z",
+  "id": "PHMh1x9Szb1GID8y",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "My workflow 2",
   "nodes": [
     {
@@ -11,11 +36,84 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -300,
-        -140
+        0,
+        0
       ],
-      "id": "9341f264-5852-44ef-93ff-f66fe3454395",
+      "id": "9949267e-c848-4e37-83b0-c3dc9efdc8e3",
       "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "rsmacapinlac@gmail.com",
+        "subject": "Can you check if this works?",
+        "message": "Provide approval for cost?",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "d412eb67-4de8-4d8c-9cd3-f3712d47ef2a",
+      "name": "Gmail",
+      "webhookId": "c9ba6e27-9ca7-4189-9651-6f13510620b7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2ad24ae7-3e95-4463-bc42-1227dc3f595a",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "6d090565-dfeb-4bf8-9752-8476dde57fea",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "d6509b2e-5460-4986-95d2-a89e9ba7e2cf",
+      "name": "If"
     }
   ],
   "pinData": {},
@@ -25,6 +123,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2024-12-14T16:57:35.413Z",
-  "versionId": "0471e703-cdd2-4baa-bc49-b0babcc7ccc5"
+  "updatedAt": "2025-05-04T15:28:00.000Z",
+  "versionId": "d0365c72-54a6-49be-83f6-f8427bc9c8b9"
 }
