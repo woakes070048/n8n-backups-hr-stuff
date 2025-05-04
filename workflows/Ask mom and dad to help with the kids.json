@@ -1,0 +1,189 @@
+{
+  "active": false,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Contacts": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contact": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-03T19:25:53.411Z",
+  "id": "Wx8WDP2FzHsjG8VE",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Ask mom and dad to help with the kids",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "authentication": "n8nUserAuth",
+        "initialMessages": "Hi there! 👋",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e49524cb-52c3-4caf-90cb-f6fd77d31500",
+      "name": "When chat message received",
+      "webhookId": "4370950a-f4b8-4ad4-80ef-50018458f25e"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User query: {{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=# Overview\nAct as an assistant. You're objective is to retrieve the contact information (ie email and phone numbers) of Rafaela Macapinlac and Tito Macapinlac.\n\nTools:\nSearch Contacts - Use this tool to search the contact database for the necessary contact information. Use this tool to retrieve the Contact ID. \nGet Contact - Use this tool to get the contact information.\n\nToday is {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        220,
+        0
+      ],
+      "id": "126812cc-ad4c-4bfe-ad16-d31c46e1552a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        200
+      ],
+      "id": "71027b0a-a11f-446d-9941-a3f4ce6a5f25",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        300,
+        200
+      ],
+      "id": "cb94cbfe-6751-467a-991c-326aa5e48259",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Term', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.monicaCrmTool",
+      "typeVersion": 1,
+      "position": [
+        440,
+        380
+      ],
+      "id": "c0c19f57-6a94-4b13-81e9-2bc3fb2d0e65",
+      "name": "Search Contacts",
+      "credentials": {
+        "monicaCrmApi": {
+          "id": "MQNOIs99uoEzemTz",
+          "name": "Monica CRM account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "contactId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Contact_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.monicaCrmTool",
+      "typeVersion": 1,
+      "position": [
+        560,
+        380
+      ],
+      "id": "5bfeaffa-88b8-4bfb-bb02-491990debf77",
+      "name": "Get Contact",
+      "credentials": {
+        "monicaCrmApi": {
+          "id": "MQNOIs99uoEzemTz",
+          "name": "Monica CRM account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-04T01:10:50.000Z",
+  "versionId": "519dc452-ca82-4c74-b49b-cca355ab1cbd"
+}
