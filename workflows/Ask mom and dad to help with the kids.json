@@ -34,7 +34,7 @@
         ]
       ]
     },
-    "Search Contacts": {
+    "Compose Email": {
       "ai_tool": [
         [
           {
@@ -45,7 +45,7 @@
         ]
       ]
     },
-    "Get Contact": {
+    "Search Contacts": {
       "ai_tool": [
         [
           {
@@ -86,7 +86,7 @@
         "promptType": "define",
         "text": "=User query: {{ $json.chatInput }}",
         "options": {
-          "systemMessage": "=# Overview\nAct as an assistant. You're objective is to retrieve the contact information (ie email and phone numbers) of Rafaela Macapinlac and Tito Macapinlac.\n\nTools:\nSearch Contacts - Use this tool to search the contact database for the necessary contact information. Use this tool to retrieve the Contact ID. \nGet Contact - Use this tool to get the contact information.\n\nToday is {{ $now }}"
+          "systemMessage": "=# Overview\nAct as an assistant. You're objective is to read the incoming query and write an email to coordinate activities with people. \n\n## Tools\nSearch Contacts - Use this tool to search the contact database for the necessary contact information. Use this tool to retrieve the Contact ID. \nGet Contact - Use this tool to get the contact information.\nCompose Email - Use this tool to create an email message.\n\n## Rules\n- Send one email to multiple recipients\n- You must always retrieve the latest email address using 'Search Contacts' and 'Get Contact'\n- Before creating an email you must have the following information:\n  - The date of the event\n  - The start date\n  - What activity is being done\n- If you have incomplete information do not proceed and clarify.\n\n## More Context\n\n- My name is Ritchie\n- Mom is Rafaela Macapinlac\n- Dad is Tito Macapinlac\n- Chyler is my Son\n- Mackenzee is my Daughter\n- Today is {{ $now }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -135,44 +135,54 @@
     },
     {
       "parameters": {
-        "operation": "getAll",
-        "returnAll": true,
-        "filters": {
-          "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Term', ``, 'string') }}"
+        "resource": "draft",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To_Email', ``, 'string') }}"
         }
       },
-      "type": "n8n-nodes-base.monicaCrmTool",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
       "position": [
-        440,
-        380
+        740,
+        360
       ],
-      "id": "c0c19f57-6a94-4b13-81e9-2bc3fb2d0e65",
-      "name": "Search Contacts",
+      "id": "db427826-61cb-44ec-8f1d-481061317f72",
+      "name": "Compose Email",
+      "webhookId": "35a93d2a-bb8a-4f71-be28-1627486fc282",
       "credentials": {
-        "monicaCrmApi": {
-          "id": "MQNOIs99uoEzemTz",
-          "name": "Monica CRM account"
+        "gmailOAuth2": {
+          "id": "RNFupvlyj3Indiwy",
+          "name": "ritchie@macapinlac.com"
         }
       }
     },
     {
       "parameters": {
-        "operation": "get",
-        "contactId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Contact_ID', ``, 'string') }}"
+        "operation": "getAll",
+        "returnAll": true,
+        "fields": [
+          "emailAddresses",
+          "names",
+          "nicknames"
+        ],
+        "useQuery": true,
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "rawData": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('RAW_Data', ``, 'boolean') }}"
       },
-      "type": "n8n-nodes-base.monicaCrmTool",
+      "type": "n8n-nodes-base.googleContactsTool",
       "typeVersion": 1,
       "position": [
-        560,
-        380
+        600,
+        360
       ],
-      "id": "5bfeaffa-88b8-4bfb-bb02-491990debf77",
-      "name": "Get Contact",
+      "id": "654dbeb2-41ac-42cb-a4c8-1043e4870dfc",
+      "name": "Search Contacts",
       "credentials": {
-        "monicaCrmApi": {
-          "id": "MQNOIs99uoEzemTz",
-          "name": "Monica CRM account"
+        "googleContactsOAuth2Api": {
+          "id": "uGmMJiDwcwcjuhcY",
+          "name": "Google Contacts account"
         }
       }
     }
@@ -184,6 +194,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-05-04T01:10:50.000Z",
-  "versionId": "519dc452-ca82-4c74-b49b-cca355ab1cbd"
+  "updatedAt": "2025-05-04T15:19:16.000Z",
+  "versionId": "8cb3292e-6bcf-4be1-bfd6-19b7d0d7c991"
 }
