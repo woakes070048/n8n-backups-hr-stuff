@@ -1,0 +1,253 @@
+{
+  "active": false,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Todo": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create All Day Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Calendar Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-04T15:05:21.237Z",
+  "id": "PHMh1x9Szb1GID8y",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Gwen",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a5273931-8df9-49d2-948e-74dcdf86f5c1",
+      "name": "When chat message received",
+      "webhookId": "80aed180-8f50-4e78-b45f-947a15bf1782"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Your name is Gwen and you're an assistant that can manage calendar events and todo lists.\n\n# Tools\n\n- Create Todo - Use this tool to create todo items. Do not use this tool if you're are not asked to create todo items.\n- Create All-Day Event - Use this tool to create all day calendar events. Do not use this tool if you're are not asked to create calendar events. Ensure that you are also saving the Event ID if further modification is required.\n- Update Calendar Event - Use this tool to update an event's information. The fields that can ben updated are Attendees, Description and Summary.\n\n# Further context\n\nToday is {{ $now }}."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        220,
+        0
+      ],
+      "id": "e01fa936-6c00-48bf-85fd-f063d7190f1c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        220
+      ],
+      "id": "9a48389e-3856-43b4-ba8e-9488ef57283f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        260,
+        220
+      ],
+      "id": "589a8be5-24ea-4b1f-b88a-5008776dd0d9",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "project": {
+          "__rl": true,
+          "value": "2218815165",
+          "mode": "list",
+          "cachedResultName": "Inbox"
+        },
+        "labels": "=",
+        "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Content', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.todoistTool",
+      "typeVersion": 2.1,
+      "position": [
+        860,
+        360
+      ],
+      "id": "08a6de94-5d5d-4d59-bd61-4226c05b3a1e",
+      "name": "Create Todo",
+      "credentials": {
+        "todoistOAuth2Api": {
+          "id": "NJCKeLpADTG146Dn",
+          "name": "Todoist account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "allday": "yes",
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        660,
+        360
+      ],
+      "id": "efcee67b-e338-4c9f-8240-bb0a1de41ddb",
+      "name": "Create All Day Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {
+          "attendeesUi": {
+            "values": {
+              "mode": "replace",
+              "attendees": [
+                "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}"
+              ]
+            }
+          },
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        500,
+        360
+      ],
+      "id": "28e38889-cfe5-491c-83af-47d872f2589e",
+      "name": "Update Calendar Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-05T02:06:19.000Z",
+  "versionId": "501cb200-ca21-424f-a2ae-613a1a2891fd"
+}
