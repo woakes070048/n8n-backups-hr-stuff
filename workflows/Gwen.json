@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "When chat message received": {
       "main": [
@@ -66,6 +66,61 @@
           }
         ]
       ]
+    },
+    "Find Contacts": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Calendar Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Inbox": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Todos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-05-04T15:05:21.237Z",
@@ -77,7 +132,13 @@
   "nodes": [
     {
       "parameters": {
-        "options": {}
+        "public": true,
+        "authentication": "n8nUserAuth",
+        "initialMessages": "Hi there! 👋 My name is Gwen. ",
+        "options": {
+          "allowFileUploads": true,
+          "inputPlaceholder": "How can I assist you today?"
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
@@ -92,7 +153,8 @@
     {
       "parameters": {
         "options": {
-          "systemMessage": "=Your name is Gwen and you're an assistant that can manage calendar events and todo lists.\n\n# Tools\n\n- Create Todo - Use this tool to create todo items. Do not use this tool if you're are not asked to create todo items.\n- Create All-Day Event - Use this tool to create all day calendar events. Do not use this tool if you're are not asked to create calendar events. Ensure that you are also saving the Event ID if further modification is required.\n- Update Calendar Event - Use this tool to update an event's information. The fields that can ben updated are Attendees, Description and Summary.\n\n# Further context\n\nToday is {{ $now }}."
+          "systemMessage": "=Your name is Gwen and you're an assistant that can manage calendar events, files and todo lists.\n\n# Tools\n\n- Create Todo - Use this tool to create todo items. \n- Find Todos - Use this tool to search for todo items. \n- Create an Event - Use this tool to create a calendar event for a specfic time. Ensure that you are also saving the Event ID if further modification is required.\n- Create All-Day Event - Use this tool to create all day calendar events. Ensure that you are also saving the Event ID if further modification is required.\n- Update Calendar Event - Use this tool to update an event's information. The fields that can ben updated are Attendees, Description and Summary. This tool is needed if you are asked to add attendees to an event.\n- Find Calendar Events - Use this tool to search for any calendar event in the calendar. You are allowed to search the following Calendars: \"My Calendar\" and \"Kid's Activity Schedule\".\n- Find Contacts - Use this tool to search for a contact's email address. Do not use this tool if you do not need a person's email address.\n- Save to Inbox - Use this tool to upload files into a Nextcloud Inbox. The Inbox folder path is: \"/Journal/Inbox\". Ensure you are passing through the necessary files to this tool.\n\n# Rules\n\n- Do not use a tool if you do not need to use it.\n- Confirm who you are talking to.\n- If there is no tool to handle the particular task, do not try to action on it. Send a message to identify the gap.\n- When creating calendar events:\n  - If there are no contacts identified assume it is time for blocking\n  - If there is ambiguity on contacts to include, ask and confirm the contact to include.\n  - If there is ambiguity on the summary / title, attempt to create and confirm the summary.\n\n- When creating a todo, unless explicity identified assume the following:\n  - Todo belongs in the Inbox\n  - Todo has no due date\n  - Todo has no labels\n  - Todo labels start with the \"@\" symbol (eg. @home, @computer, etc)\n  - If a Todo due date is found, use the \"Due string\" field\n\n# Further context\n\nAssume you are talking with Ritchie.\nToday is {{ $now }}.",
+          "passthroughBinaryImages": true
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -150,15 +212,16 @@
           "mode": "list",
           "cachedResultName": "Inbox"
         },
-        "labels": "=",
         "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Content', ``, 'string') }}",
-        "options": {}
+        "options": {
+          "dueString": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Due_String', ``, 'string') }}"
+        }
       },
       "type": "n8n-nodes-base.todoistTool",
       "typeVersion": 2.1,
       "position": [
-        860,
-        360
+        1440,
+        320
       ],
       "id": "08a6de94-5d5d-4d59-bd61-4226c05b3a1e",
       "name": "Create Todo",
@@ -190,8 +253,8 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        660,
-        360
+        960,
+        460
       ],
       "id": "efcee67b-e338-4c9f-8240-bb0a1de41ddb",
       "name": "Create All Day Event",
@@ -228,8 +291,8 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        500,
-        360
+        800,
+        460
       ],
       "id": "28e38889-cfe5-491c-83af-47d872f2589e",
       "name": "Update Calendar Event",
@@ -239,6 +302,138 @@
           "name": "ritchie@macapinlac.com"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "fields": [
+          "emailAddresses",
+          "names",
+          "nicknames"
+        ],
+        "useQuery": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Query', ``, 'boolean') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleContactsTool",
+      "typeVersion": 1,
+      "position": [
+        520,
+        460
+      ],
+      "id": "c1ded5f2-ec72-4068-83d5-e79536269ca3",
+      "name": "Find Contacts",
+      "credentials": {
+        "googleContactsOAuth2Api": {
+          "id": "uGmMJiDwcwcjuhcY",
+          "name": "Google Contacts account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        660,
+        460
+      ],
+      "id": "7150ce19-532b-4f7c-b6ba-ab75fc06cad0",
+      "name": "Find Calendar Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', `This is an optional field.`, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1120,
+        460
+      ],
+      "id": "9c1de98a-7096-4b4a-b7cf-099dbe78f915",
+      "name": "Create an Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "path": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('File_Path', ``, 'string') }}",
+        "binaryDataUpload": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Binary_File', ``, 'boolean') }}",
+        "binaryPropertyName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Input_Binary_Field', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.nextCloudTool",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -100
+      ],
+      "id": "90c92136-291c-4eec-94f7-4a72f1cc3d45",
+      "name": "Save to Inbox",
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "getAll",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.todoistTool",
+      "typeVersion": 2.1,
+      "position": [
+        1440,
+        140
+      ],
+      "id": "7c15b211-0c20-4e7f-baf2-6792a5171625",
+      "name": "Find Todos",
+      "credentials": {
+        "todoistOAuth2Api": {
+          "id": "NJCKeLpADTG146Dn",
+          "name": "Todoist account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -246,8 +441,21 @@
     "executionOrder": "v1"
   },
   "staticData": null,
-  "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-05-05T02:06:19.000Z",
-  "versionId": "501cb200-ca21-424f-a2ae-613a1a2891fd"
+  "tags": [
+    {
+      "createdAt": "2025-04-17T02:08:56.822Z",
+      "updatedAt": "2025-04-17T02:08:56.822Z",
+      "id": "5sZvu3z47q8AvebH",
+      "name": "chat"
+    },
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-05T17:05:09.000Z",
+  "versionId": "316ccb88-c09e-4f62-8750-30643daf808d"
 }
