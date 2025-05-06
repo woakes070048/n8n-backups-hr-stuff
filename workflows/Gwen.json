@@ -121,6 +121,17 @@
           }
         ]
       ]
+    },
+    "Delete Calendar Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-05-04T15:05:21.237Z",
@@ -153,7 +164,7 @@
     {
       "parameters": {
         "options": {
-          "systemMessage": "=Your name is Gwen and you're an assistant that can manage calendar events, files and todo lists.\n\n# Tools\n\n- Create Todo - Use this tool to create todo items. \n- Find Todos - Use this tool to search for todo items. \n- Create an Event - Use this tool to create a calendar event for a specfic time. Ensure that you are also saving the Event ID if further modification is required.\n- Create All-Day Event - Use this tool to create all day calendar events. Ensure that you are also saving the Event ID if further modification is required.\n- Update Calendar Event - Use this tool to update an event's information. The fields that can ben updated are Attendees, Description and Summary. This tool is needed if you are asked to add attendees to an event.\n- Find Calendar Events - Use this tool to search for any calendar event in the calendar. You are allowed to search the following Calendars: \"My Calendar\" and \"Kid's Activity Schedule\".\n- Find Contacts - Use this tool to search for a contact's email address. Do not use this tool if you do not need a person's email address.\n- Save to Inbox - Use this tool to upload files into a Nextcloud Inbox. The Inbox folder path is: \"/Journal/Inbox\". Ensure you are passing through the necessary files to this tool.\n\n# Rules\n\n- Do not use a tool if you do not need to use it.\n- Confirm who you are talking to.\n- If there is no tool to handle the particular task, do not try to action on it. Send a message to identify the gap.\n- When creating calendar events:\n  - If there are no contacts identified assume it is time for blocking\n  - If there is ambiguity on contacts to include, ask and confirm the contact to include.\n  - If there is ambiguity on the summary / title, attempt to create and confirm the summary.\n\n- When creating a todo, unless explicity identified assume the following:\n  - Todo belongs in the Inbox\n  - Todo has no due date\n  - Todo has no labels\n  - Todo labels start with the \"@\" symbol (eg. @home, @computer, etc)\n  - If a Todo due date is found, use the \"Due string\" field\n\n# Further context\n\nAssume you are talking with Ritchie.\nToday is {{ $now }}.",
+          "systemMessage": "=Your name is Gwen and you're an assistant that can manage calendar events and todo lists.\n\n# Tools\n\n- Create Todo - Use this tool to create todo items. \n- Find Todos - Use this tool to search for todo items. \n- Create an Event - Use this tool to create a calendar event for a specfic time. Ensure that you are also saving the Event ID if further modification is required.\n- Create All-Day Event - Use this tool to create all day calendar events. Ensure that you are also saving the Event ID if further modification is required.\n- Update Calendar Event - Use this tool to update an event's information. The fields that can ben updated are Attendees, Description and Summary. This tool is needed if you are asked to add attendees to an event.\n- Find Calendar Events - Use this tool to search for any calendar event in the calendar. You are allowed to search the following Calendars: \"My Calendar\" and \"Kid's Activity Schedule\".\n- Find Contacts - Use this tool to search for a contact's email address. Do not use this tool if you do not need a person's email address.\n- Save to Inbox - Use this tool to upload files into a Nextcloud Inbox. The Inbox folder path is: \"/Journal/Inbox\". Ensure you are passing through the necessary files to this tool.\n\n\n# Rules\n\n- Do not use a tool if you do not need to use it.\n- Confirm who you are talking to.\n- If there is no tool to handle the particular task, do not try to action on it. Send a message to identify the gap.\n\n# Further context\n\nAssume you are talking with Ritchie.\nToday is {{ $now }}.",
           "passthroughBinaryImages": true
         }
       },
@@ -212,16 +223,15 @@
           "mode": "list",
           "cachedResultName": "Inbox"
         },
+        "labels": "=",
         "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Content', ``, 'string') }}",
-        "options": {
-          "dueString": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Due_String', ``, 'string') }}"
-        }
+        "options": {}
       },
       "type": "n8n-nodes-base.todoistTool",
       "typeVersion": 2.1,
       "position": [
-        1440,
-        320
+        1260,
+        140
       ],
       "id": "08a6de94-5d5d-4d59-bd61-4226c05b3a1e",
       "name": "Create Todo",
@@ -285,6 +295,7 @@
             }
           },
           "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}",
           "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
         }
       },
@@ -372,7 +383,7 @@
         "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
         "additionalFields": {
           "attendees": [],
-          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', `This is an optional field.`, 'string') }}",
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
           "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
         }
       },
@@ -434,6 +445,33 @@
           "name": "Todoist account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1260,
+        460
+      ],
+      "id": "30a0d0b4-8aac-4528-8db4-33fddced3532",
+      "name": "Delete Calendar Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -456,6 +494,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-05T17:05:09.000Z",
-  "versionId": "316ccb88-c09e-4f62-8750-30643daf808d"
+  "updatedAt": "2025-05-05T22:44:08.000Z",
+  "versionId": "8606c9b2-2a9c-43d6-9eb4-c28fd33a92b3"
 }
