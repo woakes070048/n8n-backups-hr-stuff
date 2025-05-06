@@ -1,0 +1,205 @@
+{
+  "active": true,
+  "connections": {
+    "SearchEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpdateEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeleteEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-06T13:17:01.317Z",
+  "id": "Gt7se5a2y8rmENmj",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Ritchie's Google Calendar MCP",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "id": "698eb1e3-27f0-4e7b-b9b7-8245c4cee0fe",
+      "name": "SearchEvent",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        -500,
+        -80
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ $fromAI(\"event_description\", \"The event description\", \"string\") }}",
+          "summary": "={{ $fromAI(\"event_title\", \"The event title\", \"string\") }}"
+        }
+      },
+      "id": "09f201dc-94f0-4fb5-890e-712386c3ffc5",
+      "name": "CreateEvent",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        -380,
+        -80
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {
+          "description": "={{ $fromAI(\"event_description\", \"The event description\", \"string\") }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "summary": "={{ $fromAI(\"event_title\", \"The event title\", \"string\") }}"
+        }
+      },
+      "id": "891128dd-9ad3-4a19-97be-4e6239cdf246",
+      "name": "UpdateEvent",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        -260,
+        -80
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "id": "a374f0b4-9c4c-4aad-9a94-ec5ee39116d0",
+      "name": "DeleteEvent",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        -140,
+        -80
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bearerAuth",
+        "path": "google-calendar-mcp"
+      },
+      "id": "1e16d3fe-65e0-49a9-8195-c0f56212ac29",
+      "name": "Google Calendar MCP",
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "position": [
+        -500,
+        -280
+      ],
+      "webhookId": "f9d9d5ea-6f83-42c8-ae50-ee6c71789bca",
+      "typeVersion": 1,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "IN6rstRLarIMax0J",
+          "name": "MCP Bearer Auth"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-06T13:18:22.000Z",
+  "versionId": "6e05f0c0-70d6-44ad-bd4b-cec4a2cb8d62"
+}
