@@ -45,72 +45,6 @@
         ]
       ]
     },
-    "Create All Day Event": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update Calendar Event": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Find Contacts": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Find Calendar Events": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create an Event": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Save to Inbox": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Find Todos": {
       "ai_tool": [
         [
@@ -122,7 +56,18 @@
         ]
       ]
     },
-    "Delete Calendar Event": {
+    "Gmail MCP Server (Ritchie)": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar MCP (Ritchie)": {
       "ai_tool": [
         [
           {
@@ -164,7 +109,7 @@
     {
       "parameters": {
         "options": {
-          "systemMessage": "=Your name is Gwen and you're an assistant that can manage calendar events and todo lists.\n\n# Tools\n\n- Create Todo - Use this tool to create todo items. \n- Find Todos - Use this tool to search for todo items. \n- Create an Event - Use this tool to create a calendar event for a specfic time. Ensure that you are also saving the Event ID if further modification is required.\n- Create All-Day Event - Use this tool to create all day calendar events. Ensure that you are also saving the Event ID if further modification is required.\n- Update Calendar Event - Use this tool to update an event's information. The fields that can ben updated are Attendees, Description and Summary. This tool is needed if you are asked to add attendees to an event.\n- Find Calendar Events - Use this tool to search for any calendar event in the calendar. You are allowed to search the following Calendars: \"My Calendar\" and \"Kid's Activity Schedule\".\n- Find Contacts - Use this tool to search for a contact's email address. Do not use this tool if you do not need a person's email address.\n- Save to Inbox - Use this tool to upload files into a Nextcloud Inbox. The Inbox folder path is: \"/Journal/Inbox\". Ensure you are passing through the necessary files to this tool.\n\n\n# Rules\n\n- Do not use a tool if you do not need to use it.\n- Confirm who you are talking to.\n- If there is no tool to handle the particular task, do not try to action on it. Send a message to identify the gap.\n\n# Further context\n\nAssume you are talking with Ritchie.\nToday is {{ $now }}.",
+          "systemMessage": "=Your name is Gwen and you're an assistant that can manage email, calendar events, and todo lists.\n\n# Rules\n\n- Do not use a tool if you do not need to use it.\n- Confirm who you are talking to.\n- If there is no tool to handle the particular task, do not try to action on it. Send a message to identify the gap.\n\n# Further context\n\nAssume you are talking with Ritchie.\nToday is {{ $now }}.",
           "passthroughBinaryImages": true
         }
       },
@@ -230,8 +175,8 @@
       "type": "n8n-nodes-base.todoistTool",
       "typeVersion": 2.1,
       "position": [
-        1260,
-        140
+        1120,
+        320
       ],
       "id": "08a6de94-5d5d-4d59-bd61-4226c05b3a1e",
       "name": "Create Todo",
@@ -239,188 +184,6 @@
         "todoistOAuth2Api": {
           "id": "NJCKeLpADTG146Dn",
           "name": "Todoist account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "calendar": {
-          "__rl": true,
-          "value": "ritchie@macapinlac.com",
-          "mode": "list",
-          "cachedResultName": "My Calendar"
-        },
-        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
-        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
-        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
-        "additionalFields": {
-          "allday": "yes",
-          "attendees": [],
-          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
-          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
-        }
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
-      "position": [
-        960,
-        460
-      ],
-      "id": "efcee67b-e338-4c9f-8240-bb0a1de41ddb",
-      "name": "Create All Day Event",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "JdproaL6bpH4FNBR",
-          "name": "ritchie@macapinlac.com"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "calendar": {
-          "__rl": true,
-          "value": "ritchie@macapinlac.com",
-          "mode": "list",
-          "cachedResultName": "My Calendar"
-        },
-        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
-        "updateFields": {
-          "attendeesUi": {
-            "values": {
-              "mode": "replace",
-              "attendees": [
-                "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}"
-              ]
-            }
-          },
-          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
-          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}",
-          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
-        }
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
-      "position": [
-        800,
-        460
-      ],
-      "id": "28e38889-cfe5-491c-83af-47d872f2589e",
-      "name": "Update Calendar Event",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "JdproaL6bpH4FNBR",
-          "name": "ritchie@macapinlac.com"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
-        "fields": [
-          "emailAddresses",
-          "names",
-          "nicknames"
-        ],
-        "useQuery": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Query', ``, 'boolean') }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleContactsTool",
-      "typeVersion": 1,
-      "position": [
-        520,
-        460
-      ],
-      "id": "c1ded5f2-ec72-4068-83d5-e79536269ca3",
-      "name": "Find Contacts",
-      "credentials": {
-        "googleContactsOAuth2Api": {
-          "id": "uGmMJiDwcwcjuhcY",
-          "name": "Google Contacts account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "calendar": {
-          "__rl": true,
-          "value": "ritchie@macapinlac.com",
-          "mode": "list",
-          "cachedResultName": "My Calendar"
-        },
-        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
-        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
-        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
-      "position": [
-        660,
-        460
-      ],
-      "id": "7150ce19-532b-4f7c-b6ba-ab75fc06cad0",
-      "name": "Find Calendar Events",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "JdproaL6bpH4FNBR",
-          "name": "ritchie@macapinlac.com"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "calendar": {
-          "__rl": true,
-          "value": "ritchie@macapinlac.com",
-          "mode": "list",
-          "cachedResultName": "My Calendar"
-        },
-        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
-        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
-        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
-        "additionalFields": {
-          "attendees": [],
-          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
-          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
-        }
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
-      "position": [
-        1120,
-        460
-      ],
-      "id": "9c1de98a-7096-4b4a-b7cf-099dbe78f915",
-      "name": "Create an Event",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "JdproaL6bpH4FNBR",
-          "name": "ritchie@macapinlac.com"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "authentication": "oAuth2",
-        "path": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('File_Path', ``, 'string') }}",
-        "binaryDataUpload": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Binary_File', ``, 'boolean') }}",
-        "binaryPropertyName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Input_Binary_Field', ``, 'string') }}"
-      },
-      "type": "n8n-nodes-base.nextCloudTool",
-      "typeVersion": 1,
-      "position": [
-        1100,
-        -100
-      ],
-      "id": "90c92136-291c-4eec-94f7-4a72f1cc3d45",
-      "name": "Save to Inbox",
-      "credentials": {
-        "nextCloudOAuth2Api": {
-          "id": "fLXJCCubxnE7gtwF",
-          "name": "NextCloud account"
         }
       }
     },
@@ -434,8 +197,8 @@
       "type": "n8n-nodes-base.todoistTool",
       "typeVersion": 2.1,
       "position": [
-        1440,
-        140
+        1240,
+        320
       ],
       "id": "7c15b211-0c20-4e7f-baf2-6792a5171625",
       "name": "Find Todos",
@@ -448,35 +211,49 @@
     },
     {
       "parameters": {
-        "operation": "delete",
-        "calendar": {
-          "__rl": true,
-          "value": "ritchie@macapinlac.com",
-          "mode": "list",
-          "cachedResultName": "My Calendar"
-        },
-        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
-        "options": {}
+        "sseEndpoint": "https://automation.macapinlac.network/mcp/gmail-enhanced/sse",
+        "authentication": "bearerAuth"
       },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
       "position": [
-        1260,
-        460
+        740,
+        340
       ],
-      "id": "30a0d0b4-8aac-4528-8db4-33fddced3532",
-      "name": "Delete Calendar Event",
+      "id": "d355d51e-b3df-45ae-9dae-579edf1730b7",
+      "name": "Gmail MCP Server (Ritchie)",
       "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "JdproaL6bpH4FNBR",
-          "name": "ritchie@macapinlac.com"
+        "httpBearerAuth": {
+          "id": "IN6rstRLarIMax0J",
+          "name": "MCP Bearer Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://automation.macapinlac.network/mcp/google-calendar-mcp/sse",
+        "authentication": "bearerAuth"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        560,
+        340
+      ],
+      "id": "51b8e133-61a6-46e8-bdac-f386ecfa4ef2",
+      "name": "Google Calendar MCP (Ritchie)",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "IN6rstRLarIMax0J",
+          "name": "MCP Bearer Auth"
         }
       }
     }
   ],
   "pinData": {},
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
   },
   "staticData": null,
   "tags": [
@@ -494,6 +271,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-05T22:44:08.000Z",
-  "versionId": "8606c9b2-2a9c-43d6-9eb4-c28fd33a92b3"
+  "updatedAt": "2025-05-06T15:08:47.000Z",
+  "versionId": "1eaf5b97-1a79-4ae5-9d5f-725d19adeb7d"
 }
