@@ -1,0 +1,198 @@
+{
+  "active": false,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add a Restaurant": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-05T20:03:55.388Z",
+  "id": "VJuwevi9NlGQ19uW",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Manage Restaurant Database",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3de4827e-e7d3-41f8-b184-637d6d034ac5",
+      "name": "When chat message received",
+      "webhookId": "beb40bc2-e98c-4ddb-bcd4-b4bf05b69a5d"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        220,
+        0
+      ],
+      "id": "64b34dff-104e-4379-bfc2-8d0da230365c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        20,
+        280
+      ],
+      "id": "e44617a4-881f-49cf-80ec-254a0af3f36b",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        260,
+        280
+      ],
+      "id": "e1755017-11f6-41bf-8691-eebce7a6d87d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "1ea64ade-8b18-80fa-aaa8-e0a6d282eeb5",
+          "mode": "list",
+          "cachedResultName": "Restaurant Database",
+          "cachedResultUrl": "https://www.notion.so/1ea64ade8b1880faaaa8e0a6d282eeb5"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Website|url",
+              "ignoreIfEmpty": true,
+              "urlValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues0_URL', ``, 'string') }}"
+            },
+            {
+              "key": "Address|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues1_Text', ``, 'string') }}"
+            },
+            {
+              "key": "Number|number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        620,
+        280
+      ],
+      "id": "0adcc7fd-b16a-4bf1-b7fb-cb357e0dd7c5",
+      "name": "Add a Restaurant",
+      "credentials": {
+        "notionApi": {
+          "id": "kx6a25aYVvZpLFLC",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        -180
+      ],
+      "id": "945b0719-6c47-4787-bfc6-138cb6f62b55",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-05T20:07:02.000Z",
+  "versionId": "a60c20c3-6cd5-4be4-a476-3ff1ba0c75fa"
+}
