@@ -1,17 +1,6 @@
 {
   "active": true,
   "connections": {
-    "SearchEvent": {
-      "ai_tool": [
-        [
-          {
-            "node": "Google Calendar MCP",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "CreateEvent": {
       "ai_tool": [
         [
@@ -44,6 +33,28 @@
           }
         ]
       ]
+    },
+    "SearchCherylsCalendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SearchRitchiesCalendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-05-06T13:17:01.317Z",
@@ -53,35 +64,6 @@
   },
   "name": "Ritchie's Google Calendar MCP",
   "nodes": [
-    {
-      "parameters": {
-        "operation": "getAll",
-        "calendar": {
-          "__rl": true,
-          "value": "ritchie@macapinlac.com",
-          "mode": "list",
-          "cachedResultName": "My Calendar"
-        },
-        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
-        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
-        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
-        "options": {}
-      },
-      "id": "698eb1e3-27f0-4e7b-b9b7-8245c4cee0fe",
-      "name": "SearchEvent",
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "position": [
-        -500,
-        -80
-      ],
-      "typeVersion": 1.3,
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "JdproaL6bpH4FNBR",
-          "name": "ritchie@macapinlac.com"
-        }
-      }
-    },
     {
       "parameters": {
         "calendar": {
@@ -191,6 +173,66 @@
           "name": "MCP Bearer Auth"
         }
       }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=Consume Google Calendar API. Use this to search Cheryl's work calendar / schedule. \n\n# Rules\n\n- Cheryl's calendar appointments are called shifts.\n- Call a shift either \"Nights\" or \"Days\".\n- The day of the shift is dictated by time it starts. \n- Shifts are ~12 hours.\n- Ignore events that are labeled \"Payday\" or \"Cut-off\".",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "macapinlac.com_dkh2h0n2s6a51h21sek3k3bqbs@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Cheryl's Work"
+        },
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "id": "2f759373-f1cc-4400-8cdb-2b350193c970",
+      "name": "SearchCherylsCalendar",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        0,
+        -80
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "ritchie@macapinlac.com",
+          "mode": "list",
+          "cachedResultName": "My Calendar"
+        },
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "id": "698eb1e3-27f0-4e7b-b9b7-8245c4cee0fe",
+      "name": "SearchRitchiesCalendar",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        -520,
+        -80
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "JdproaL6bpH4FNBR",
+          "name": "ritchie@macapinlac.com"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -200,6 +242,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-05-06T13:18:22.000Z",
-  "versionId": "6e05f0c0-70d6-44ad-bd4b-cec4a2cb8d62"
+  "updatedAt": "2025-05-07T01:32:26.000Z",
+  "versionId": "9d58c780-aee1-4137-8723-2b133a99285a"
 }
