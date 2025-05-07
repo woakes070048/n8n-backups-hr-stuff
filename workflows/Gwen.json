@@ -77,6 +77,28 @@
           }
         ]
       ]
+    },
+    "Update Todo": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Todo": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-05-04T15:05:21.237Z",
@@ -93,7 +115,9 @@
         "initialMessages": "Hi there! 👋 My name is Gwen. ",
         "options": {
           "allowFileUploads": true,
-          "inputPlaceholder": "How can I assist you today?"
+          "inputPlaceholder": "How can I assist you today?",
+          "subtitle": "",
+          "title": "Gwen"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
@@ -168,7 +192,6 @@
           "mode": "list",
           "cachedResultName": "Inbox"
         },
-        "labels": "=",
         "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Content', ``, 'string') }}",
         "options": {}
       },
@@ -248,6 +271,51 @@
           "name": "MCP Bearer Auth"
         }
       }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "update",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}",
+        "updateFields": {
+          "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Content', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.todoistTool",
+      "typeVersion": 2.1,
+      "position": [
+        1000,
+        320
+      ],
+      "id": "62efbd52-7c68-4117-b858-083ab89078cb",
+      "name": "Update Todo",
+      "credentials": {
+        "todoistOAuth2Api": {
+          "id": "NJCKeLpADTG146Dn",
+          "name": "Todoist account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "delete",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.todoistTool",
+      "typeVersion": 2.1,
+      "position": [
+        1360,
+        320
+      ],
+      "id": "f9817673-6996-45fb-9a35-b1d0d3f235a1",
+      "name": "Delete Todo",
+      "credentials": {
+        "todoistOAuth2Api": {
+          "id": "NJCKeLpADTG146Dn",
+          "name": "Todoist account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -271,6 +339,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-06T15:08:47.000Z",
-  "versionId": "1eaf5b97-1a79-4ae5-9d5f-725d19adeb7d"
+  "updatedAt": "2025-05-07T01:48:27.000Z",
+  "versionId": "d162b6c4-681b-43db-a011-6977c19567fe"
 }
