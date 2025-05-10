@@ -34,7 +34,7 @@
         ]
       ]
     },
-    "SearchCherylsCalendar": {
+    "Search Cheryl Work Calendar": {
       "ai_tool": [
         [
           {
@@ -45,7 +45,7 @@
         ]
       ]
     },
-    "SearchRitchiesCalendar": {
+    "Search Ritchie Calendar": {
       "ai_tool": [
         [
           {
@@ -177,7 +177,7 @@
     {
       "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "=Consume Google Calendar API. Use this to search Cheryl's work calendar / schedule. \n\n# Rules\n\n- Cheryl's calendar appointments are called shifts.\n- Call a shift either \"Nights\" or \"Days\".\n- The day of the shift is dictated by time it starts. \n- Shifts are ~12 hours.\n- Ignore events that are labeled \"Payday\" or \"Cut-off\".",
+        "toolDescription": "=Consume Google Calendar API. Use this to search Cheryl's work calendar / schedule. \n\n# Rules\n\n- Cheryl's calendar appointments are called shifts.\n- Call a shift either \"Nights\" or \"Days\".\n- The date of the shift is dictated by time it starts. \n- Shifts are ~12 hours.\n- Ignore events that are labeled \"Payday\" or \"Cut-off\".",
         "operation": "getAll",
         "calendar": {
           "__rl": true,
@@ -191,7 +191,7 @@
         "options": {}
       },
       "id": "2f759373-f1cc-4400-8cdb-2b350193c970",
-      "name": "SearchCherylsCalendar",
+      "name": "Search Cheryl Work Calendar",
       "type": "n8n-nodes-base.googleCalendarTool",
       "position": [
         0,
@@ -220,7 +220,7 @@
         "options": {}
       },
       "id": "698eb1e3-27f0-4e7b-b9b7-8245c4cee0fe",
-      "name": "SearchRitchiesCalendar",
+      "name": "Search Ritchie Calendar",
       "type": "n8n-nodes-base.googleCalendarTool",
       "position": [
         -520,
@@ -242,6 +242,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-05-07T01:32:26.000Z",
-  "versionId": "9d58c780-aee1-4137-8723-2b133a99285a"
+  "updatedAt": "2025-05-10T13:37:14.000Z",
+  "versionId": "70d331a6-9a20-44fc-9434-fe7cd55571c5"
 }
