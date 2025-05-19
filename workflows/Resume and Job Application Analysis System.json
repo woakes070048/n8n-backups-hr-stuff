@@ -1,0 +1,854 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract Baserow Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Action Selected": {
+      "main": [
+        [
+          {
+            "node": "Get Job Posting Page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get User Information": {
+      "main": [
+        [
+          {
+            "node": "Convert Analysis to an Email Friendly Format",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Baserow Info": {
+      "main": [
+        [
+          {
+            "node": "Action Selected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Job Posting Page": {
+      "main": [
+        [
+          {
+            "node": "Extract the body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract the body": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "Update with Posting Information",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update with Posting Information": {
+      "main": [
+        [
+          {
+            "node": "Who is making the request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Download Resume",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reset Action Column",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from Resume PDF": {
+      "main": [
+        [
+          {
+            "node": "Save Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Variables": {
+      "main": [
+        [
+          {
+            "node": "Resume and Job Posting Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Resume": {
+      "main": [
+        [
+          {
+            "node": "Extract from Resume PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resume and Job Posting Analysis": {
+      "main": [
+        [
+          {
+            "node": "Update with Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update with Analysis": {
+      "main": [
+        [
+          {
+            "node": "Who is making the request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email the Analysis": {
+      "main": [
+        []
+      ]
+    },
+    "Convert Analysis to an Email Friendly Format": {
+      "main": [
+        [
+          {
+            "node": "Email the Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Who is making the request": {
+      "main": [
+        [
+          {
+            "node": "Reset Action Column",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Who is making the request2": {
+      "main": [
+        [
+          {
+            "node": "Reset Action Column",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get User Information",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-16T14:35:24.372Z",
+  "id": "VUtMwEGJCT4egEO0",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Resume and Job Application Analysis System",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d8598f70-d498-48c4-9e9a-4fa110cb03ef",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -100,
+        -320
+      ],
+      "id": "ec3c9f09-eb3c-42e7-814b-92ce356cb080",
+      "name": "Webhook",
+      "webhookId": "d8598f70-d498-48c4-9e9a-4fa110cb03ef",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2Bo6EzO1uNxkaXtR",
+          "name": "JobSearch Baserow Webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e9f0a14b-a6f3-4815-aa75-0e72b0a28018",
+                    "leftValue": "={{ $json.body.items[0].Action.value }}",
+                    "rightValue": "Save Posting",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Save Posting"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "34f1ca26-fe26-4bba-ae64-a50490a2d9c5",
+                    "leftValue": "={{ $json.body.items[0].Action.value }}",
+                    "rightValue": "Perform Analysis",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Perform Analysis"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "allMatchingOutputs": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        360,
+        -320
+      ],
+      "id": "70e6e33e-d76b-4941-aec1-de59d31f3060",
+      "name": "Action Selected"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.items[0]['Posting URL'] }}",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        -600
+      ],
+      "id": "f0887668-4d99-482d-a263-e835849e0b71",
+      "name": "Get Job Posting Page"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a4af9297-7a2c-42c6-8fcd-29f9c0b57637",
+              "name": "Name",
+              "value": "={{ $json.Name }}",
+              "type": "string"
+            },
+            {
+              "id": "3c270fc5-db40-4dc5-8b74-f87e172e2bab",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2660,
+        440
+      ],
+      "id": "c4dabec0-5740-47d2-a3cf-4d4b56cc3e75",
+      "name": "Get User Information"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bd335f5a-7278-4f89-8ac7-58c0e14325fa",
+              "name": "body",
+              "value": "={{ $json.body }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        140,
+        -320
+      ],
+      "id": "d26310d9-9408-4c53-8ca5-b7d56d0de984",
+      "name": "Extract Baserow Info"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.body }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "Posting Title",
+              "description": "Job Posting Title",
+              "required": true
+            },
+            {
+              "name": "Company Name",
+              "description": "Company name of the job posting",
+              "required": true
+            },
+            {
+              "name": "Posting Text",
+              "description": "Posting text of the job posting. Include work responsibilities, description of the company, Qualifications, Salary Information.  Format this in markdown.",
+              "required": true
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "You are an expert extraction algorithm that can focus on Job Postings.\nOnly extract relevant information from the text.\n\nIf you do not know the value of an attribute asked to extract, you may omit the attribute's value."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        -600
+      ],
+      "id": "1cf193e6-3240-4920-a6c3-a6a47c6ff83c",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1500,
+        -400
+      ],
+      "id": "49eb01d4-246f-45d2-94f6-7593e9d219a1",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "body",
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1220,
+        -600
+      ],
+      "id": "5a4691b0-9fdc-4940-9d43-26113afc07cb",
+      "name": "Extract the body"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": "={{ $('Action Selected').item.json.body.database_id }}",
+        "tableId": "={{ $('Action Selected').item.json.body.table_id }}",
+        "rowId": "={{ $('Action Selected').item.json.body.items[0].id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 8552,
+              "fieldValue": "={{ $json.output['Posting Title'] }}"
+            },
+            {
+              "fieldId": 8553,
+              "fieldValue": "={{ $json.output['Company Name'] }}"
+            },
+            {
+              "fieldId": 8554,
+              "fieldValue": "={{ $json.output['Posting Text'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1880,
+        -600
+      ],
+      "id": "c7be2480-0f83-426c-90db-b2fd68f7b005",
+      "name": "Update with Posting Information",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": "={{ $('Action Selected').item.json.body.database_id }}",
+        "tableId": "={{ $('Action Selected').item.json.body.table_id }}",
+        "rowId": "={{ $('Action Selected').item.json.body.items[0].id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "={{ $json.ActionColumn_ID }}",
+              "fieldValue": "={{ null }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        3360,
+        80
+      ],
+      "id": "543ae4a9-d7c5-460e-9ff3-bef366c25049",
+      "name": "Reset Action Column",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "480345b7-4d99-4839-adbe-9f4beeff1e71",
+              "leftValue": "={{ $json.body.items[0].Resume }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        80
+      ],
+      "id": "356c62e9-d24e-4380-9663-e6560361f3e8",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.items[0].Resume[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        -160
+      ],
+      "id": "7879202a-b2e1-462a-ad94-14bfd7359b32",
+      "name": "Download Resume"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "3a1b8638-cabb-4e1a-8dcc-bf9ca291a0c0",
+      "name": "Extract from Resume PDF",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27c5a223-e355-415a-8a23-0f5df10dee51",
+              "name": "posting",
+              "value": "={{ $('Action Selected').item.json.body.items[0]['Posting Text'] }}",
+              "type": "string"
+            },
+            {
+              "id": "e1dca750-6d70-4582-afd1-bf25f57ad71c",
+              "name": "resume",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "01ae07a0-65c0-4e64-b587-da3905b47e49",
+              "name": "position",
+              "value": "={{ $('Action Selected').item.json.body.items[0]['Position Title'] }}",
+              "type": "string"
+            },
+            {
+              "id": "c9befc42-9ff9-4872-99ef-2d2d42a11c30",
+              "name": "company",
+              "value": "={{ $('Action Selected').item.json.body.items[0]['Company Name'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e3c5def6-2877-4474-8db8-da40ccaab0f3",
+      "name": "Save Variables",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1460,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.5-preview",
+          "mode": "list",
+          "cachedResultName": "GPT-4.5-PREVIEW"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=I want you to act as a Human Resources recruiter for {{ $json.company }}, hiring for the position of {{ $json.position }}. I am considering applying for this job and need your expertise to assess how well my resume aligns with the job description and identify opportunities to improve my resume for this role.\n\nFollow the steps outlined below. Use clear formatting, standardized methods for evaluation, and examples where applicable to ensure consistency.\n\n---\n\n### **Step 1: Review the Job Description**\n\nHere is the job description for your review:\n\n<job_description>\n{{ $json.posting }}\n</job_description>\n\n---\n\n### **Step 2: Review My Resume**\n\nHere is my resume for your review:\n\n<resume>\n{{ $json.resume }}\n</resume>\n\n---\n\n### **Step 3: Analyze Job Fit**\n\n#### **Step 3.1: Break Down the Job Description**\n\nOrganize the job description into the following categories:\n\n- **Job Responsibilities**: Key tasks and duties.\n- **Required Skills/Qualifications**: Must-haves (e.g., degrees, certifications, years of experience).\n- **Preferred Skills**: Nice-to-haves but not mandatory.\n- **Soft Skills**: Interpersonal or cultural competencies.\n\n#### **Step 3.2: Match Experience to Requirements**\n\nFor each category, compare your resume with the job description using a **three-tier rating system**:\n\n- **Fully Meets**: Directly demonstrated in the resume.\n- **Partially Meets**: Related experience or transferable skill is present but not fully aligned.\n- **Does Not Meet**: No evidence of experience or skill in this area.\n\nProvide the analysis in a **table format**.\n\n**Example Table for Fit Analysis**:\n\n|**Requirement**|**Your Skills/Experience**|**Rating**|**Notes**|\n|---|---|---|---|\n|5+ years of project management|6 years leading teams|Fully Meets|Matches requirement completely.|\n|Knowledge of Salesforce CRM|HubSpot CRM experience|Partially Meets|Transferable CRM knowledge.|\n|Bachelor's in Marketing|B.A. in Communications|Partially Meets|Overlap in related coursework.|\n\n#### **Step 3.3: Identify Transferable Skills**\n\nHighlight skills or experiences from the resume that may be applied to the job requirements even if they are not exact matches.\n\n**Example Output**:\n\n- _Requirement_: \"Experience leading marketing campaigns\" → Your role as a project manager involved coordinating marketing and internal campaigns, demonstrating transferable leadership skills.\n- _Requirement_: \"Knowledge of SEO\" → You have basic familiarity with keyword research and content optimization.\n\n#### **Step 3.4: Evaluate Technical Skills**\n\nCompare specific tools, software, or technical expertise mentioned in the job description with those listed in the resume.\n\n**Example Table for Technical Skills**:\n\n|**Tool/Software**|**Your Experience**|**Fit?**|\n|---|---|---|\n|Salesforce CRM|HubSpot CRM experience|Partially Meets|\n|Google Analytics|Advanced user, certified|Fully Meets|\n\n#### **Step 3.5: Assess Soft Skills**\n\nEvaluate soft skills listed in the job description and provide examples from the resume that demonstrate these.\n\n**Example Output**:\n\n- _Requirement_: \"Strong communication skills\" → In your last role, you presented monthly strategy updates to executives, showcasing excellent communication skills.\n- _Requirement_: \"Team player\" → Managed a cross-functional team to deliver projects on time, reflecting collaboration and leadership abilities.\n\n#### **Step 3.6: Address Experience Gaps**\n\nIdentify areas where qualifications are missing or underemphasized and suggest actionable ways to address these in the resume or application.\n\n---\n\n### **Step 4: Provide an Assessment**\n\n#### **4.1: Candidate Fit Summary**\n\n- **Overall Fit Percentage**: Calculate the percentage match based on this weightage:\n    - **Required Skills**: 50%\n    - **Preferred Skills**: 30%\n    - **Soft Skills**: 20%\n\n**Example Fit Calculation**:\n\n- Required Skills: 80% match → Weighted score: 40%\n    \n- Preferred Skills: 50% match → Weighted score: 15%\n    \n- Soft Skills: 90% match → Weighted score: 18%  \n    **Total Fit Percentage**: 73%\n    \n- **Strengths**: Highlight areas where the resume aligns strongly with the job requirements. Use specific quotes from the job description and the resume.\n    \n\n**Example Strengths Output**:\n\n- _Job Description_: \"Proven ability to lead teams.\"\n    \n- _Resume_: \"Led a team of 12 in executing a $1M project, achieving a 20% cost reduction.\"\n    \n- **Weaknesses**: Identify areas of misalignment or missing qualifications and suggest ways to address these.\n    \n\n**Example Weaknesses Output**:\n\n- _Job Description_: \"5+ years of experience in data analysis.\"\n- _Resume_: \"2 years of data analysis experience, primarily in a supporting role.\"\n\n#### **4.2: Salary Information**\n\n- Extract salary/pay information from the job description. If unavailable, state: _\"Salary information was not included.\"_\n\n---\n\n### **Step 5: Recommend Resume Improvements**\n\nIn this section, provide a detailed suggestions of how I can optimize my resume for both recruiters and ATS systems. Consider the following:\n\n#### **5.1: ATS Optimization**\n\n- Formatting: Ensure that the resume follows simple, traditional formatting with clear section headings (e.g., \"Work Experience,\" \"Education,\" \"Skills\"). Avoid complex layouts, graphics, or tables that could confuse ATS systems.\n- Keywords: Verify that my resume includes keywords directly from the job description. For example, if the job posting mentions \"project management,\" ensure that my resume includes this exact term (and related terms like \"program management\" or \"cross-functional leadership\").\n- Job Titles: Check that the job titles on my resume are standardized. If my role had a unique title, consider adding the industry-standard version in parentheses (e.g., \"Project Manager (Project Lead)\").     \n- Headings: Review my section headings to ensure they match the standard ones used by ATS systems (e.g., \"Work Experience\" instead of \"Where I’ve Worked\").\n- Abbreviations and Acronyms: Check my resume for abbreviations or acronyms that could confuse ATS systems. Make sure to spell out terms at least once, followed by the abbreviation in parentheses. For example, \"Search Engine Optimization (SEO)\" should be used instead of just \"SEO.\"\n- Action Verbs: Ensure that my resume uses strong action verbs like \"managed,\" \"developed,\" and \"led\" to clearly highlight achievements and contributions.\n\n\n#### **5.2: Enhancing Compellingness**\n\nProvide recommendations on how I can improve my resume to make it more compelling to recruiters.\n\n- Suggest specific ways to improve the resume:\n    - Add measurable accomplishments (e.g., \"Increased sales by 15% over 12 months\").\n    - Include missing technical or soft skills explicitly.\n    - Reframe descriptions to better align with the job requirements.\n\n---\n\n### **Instructions**\n\n- Be thorough in your analysis.\n- Be conversational, supportive yet professional in your tone.\n- Ensure that you include a status for Step 1.\n- Ensure that you include a status for Step 2.\n- Use structured tables and bullet points for clarity.\n- Provide actionable feedback that I can implement to improve my resume and application.\n\n---"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ba724574-1883-46aa-aa63-b0a948155f66",
+      "name": "Resume and Job Posting Analysis",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        1680,
+        -160
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ojJVqUWOFMKOOLeQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": "={{ $('Action Selected').item.json.body.database_id }}",
+        "tableId": "={{ $('Action Selected').item.json.body.table_id }}",
+        "rowId": "={{ $('Action Selected').item.json.body.items[0].id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 8555,
+              "fieldValue": "={{ $json.message.content }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2040,
+        -160
+      ],
+      "id": "cba0de32-b76a-44d5-9689-2dcf4003a603",
+      "name": "Update with Analysis",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "mail",
+        "fromEmail": "support@boogienet.com",
+        "fromName": "Job Search Bot",
+        "toEmail": "={{ $json.Email }}",
+        "subject": "=Posting / Resume Analysis: {{ $('Update with Analysis').item.json['Position Title'] }} ({{ $('Update with Analysis').item.json['Company Name'] }})",
+        "contentType": "text/html",
+        "contentValue": "={{ $json.analysis_html }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.sendGrid",
+      "typeVersion": 1,
+      "position": [
+        3120,
+        440
+      ],
+      "id": "700ba0ea-967a-4b66-acac-05f3fc5f6d71",
+      "name": "Email the Analysis",
+      "credentials": {
+        "sendGridApi": {
+          "id": "VtMovXvSYGhENdcJ",
+          "name": "SendGrid account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $('Update with Analysis').item.json.Analysis }}",
+        "destinationKey": "analysis_html",
+        "options": {
+          "tablesHeaderId": true,
+          "tables": true
+        }
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        2900,
+        440
+      ],
+      "id": "f4107575-1d50-4662-840c-654bbfa960e2",
+      "name": "Convert Analysis to an Email Friendly Format"
+    },
+    {
+      "parameters": {
+        "databaseId": 231,
+        "tableId": 863,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 8570,
+                "value": "={{ $('Action Selected').item.json.body.table_id }}"
+              },
+              {
+                "field": 8567,
+                "operator": "boolean",
+                "value": "True"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        -600
+      ],
+      "id": "1324415f-f8fb-4506-b9e6-aac11c883da4",
+      "name": "Who is making the request",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "databaseId": 231,
+        "tableId": 863,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 8570,
+                "value": "={{ $('Action Selected').item.json.body.table_id }}"
+              },
+              {
+                "field": 8567,
+                "operator": "boolean",
+                "value": "True"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        -160
+      ],
+      "id": "34b0be42-db3b-4122-9f4f-3b1c7a19960a",
+      "name": "Who is making the request2",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    },
+    {
+      "createdAt": "2025-05-16T15:20:34.893Z",
+      "updatedAt": "2025-05-16T15:20:34.893Z",
+      "id": "fHbNH0OHojdeVCah",
+      "name": "AI System"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-19T00:11:05.000Z",
+  "versionId": "64334ff5-a6a4-4d18-a990-9df7c2e5609c"
+}
