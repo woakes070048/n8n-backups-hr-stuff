@@ -89,7 +89,7 @@
       "main": [
         [
           {
-            "node": "Update with Posting Information",
+            "node": "Who is making the request",
             "type": "main",
             "index": 0
           }
@@ -100,7 +100,7 @@
       "main": [
         [
           {
-            "node": "Who is making the request",
+            "node": "Reset Action Column (Save Resume)",
             "type": "main",
             "index": 0
           }
@@ -118,7 +118,7 @@
         ],
         [
           {
-            "node": "Reset Action Column",
+            "node": "Who is making the request (No Resume)",
             "type": "main",
             "index": 0
           }
@@ -162,7 +162,7 @@
       "main": [
         [
           {
-            "node": "Update with Analysis",
+            "node": "Who is making the request (analysis)",
             "type": "main",
             "index": 0
           }
@@ -173,7 +173,7 @@
       "main": [
         [
           {
-            "node": "Who is making the request2",
+            "node": "Get User Information",
             "type": "main",
             "index": 0
           }
@@ -182,7 +182,13 @@
     },
     "Email the Analysis": {
       "main": [
-        []
+        [
+          {
+            "node": "Reset Action Column (Perform Analysis)",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Convert Analysis to an Email Friendly Format": {
@@ -200,23 +206,29 @@
       "main": [
         [
           {
-            "node": "Reset Action Column",
+            "node": "Update with Posting Information",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Who is making the request2": {
+    "Who is making the request (analysis)": {
       "main": [
         [
           {
-            "node": "Reset Action Column",
+            "node": "Update with Analysis",
             "type": "main",
             "index": 0
-          },
+          }
+        ]
+      ]
+    },
+    "Who is making the request (No Resume)": {
+      "main": [
+        [
           {
-            "node": "Get User Information",
+            "node": "Reset Action Column (No resume)",
             "type": "main",
             "index": 0
           }
@@ -351,13 +363,13 @@
             {
               "id": "a4af9297-7a2c-42c6-8fcd-29f9c0b57637",
               "name": "Name",
-              "value": "={{ $json.Name }}",
+              "value": "={{ $('Who is making the request (analysis)').item.json.Name }}",
               "type": "string"
             },
             {
               "id": "3c270fc5-db40-4dc5-8b74-f87e172e2bab",
               "name": "Email",
-              "value": "={{ $json.Email }}",
+              "value": "={{ $('Who is making the request (analysis)').item.json.Email }}",
               "type": "string"
             }
           ]
@@ -367,8 +379,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2660,
-        440
+        2620,
+        -160
       ],
       "id": "c4dabec0-5740-47d2-a3cf-4d4b56cc3e75",
       "name": "Get User Information"
@@ -487,16 +499,16 @@
         "fieldsUi": {
           "fieldValues": [
             {
-              "fieldId": 8552,
-              "fieldValue": "={{ $json.output['Posting Title'] }}"
+              "fieldId": "={{ $json.PositionTitleColumn_ID }}",
+              "fieldValue": "={{ $('Information Extractor').item.json.output['Posting Title'] }}"
             },
             {
-              "fieldId": 8553,
-              "fieldValue": "={{ $json.output['Company Name'] }}"
+              "fieldId": "={{ $json.CompanyNameColumn_ID }}",
+              "fieldValue": "={{ $('Information Extractor').item.json.output['Company Name'] }}"
             },
             {
-              "fieldId": 8554,
-              "fieldValue": "={{ $json.output['Posting Text'] }}"
+              "fieldId": "={{ $json.PostingTextColumn_ID }}",
+              "fieldValue": "={{ $('Information Extractor').item.json.output['Posting Text'] }}"
             }
           ]
         }
@@ -504,41 +516,11 @@
       "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
-        1880,
+        2220,
         -600
       ],
       "id": "c7be2480-0f83-426c-90db-b2fd68f7b005",
       "name": "Update with Posting Information",
-      "credentials": {
-        "baserowApi": {
-          "id": "d2WUYcb60dACjFtq",
-          "name": "Baserow account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "databaseId": "={{ $('Action Selected').item.json.body.database_id }}",
-        "tableId": "={{ $('Action Selected').item.json.body.table_id }}",
-        "rowId": "={{ $('Action Selected').item.json.body.items[0].id }}",
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "={{ $json.ActionColumn_ID }}",
-              "fieldValue": "={{ null }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.baserow",
-      "typeVersion": 1,
-      "position": [
-        3360,
-        80
-      ],
-      "id": "543ae4a9-d7c5-460e-9ff3-bef366c25049",
-      "name": "Reset Action Column",
       "credentials": {
         "baserowApi": {
           "id": "d2WUYcb60dACjFtq",
@@ -671,7 +653,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.6,
       "position": [
-        1680,
+        1700,
         -160
       ],
       "credentials": {
@@ -690,8 +672,8 @@
         "fieldsUi": {
           "fieldValues": [
             {
-              "fieldId": 8555,
-              "fieldValue": "={{ $json.message.content }}"
+              "fieldId": "={{ $json.AnalysisColumn_ID }}",
+              "fieldValue": "={{ $('Resume and Job Posting Analysis').item.json.message.content }}"
             }
           ]
         }
@@ -699,7 +681,7 @@
       "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
-        2040,
+        2360,
         -160
       ],
       "id": "cba0de32-b76a-44d5-9689-2dcf4003a603",
@@ -720,13 +702,15 @@
         "subject": "=Posting / Resume Analysis: {{ $('Update with Analysis').item.json['Position Title'] }} ({{ $('Update with Analysis').item.json['Company Name'] }})",
         "contentType": "text/html",
         "contentValue": "={{ $json.analysis_html }}",
-        "additionalFields": {}
+        "additionalFields": {
+          "bccEmail": "rsmacapinlac@boogienet.com"
+        }
       },
       "type": "n8n-nodes-base.sendGrid",
       "typeVersion": 1,
       "position": [
-        3120,
-        440
+        3080,
+        -160
       ],
       "id": "700ba0ea-967a-4b66-acac-05f3fc5f6d71",
       "name": "Email the Analysis",
@@ -750,8 +734,8 @@
       "type": "n8n-nodes-base.markdown",
       "typeVersion": 1,
       "position": [
-        2900,
-        440
+        2860,
+        -160
       ],
       "id": "f4107575-1d50-4662-840c-654bbfa960e2",
       "name": "Convert Analysis to an Email Friendly Format"
@@ -780,7 +764,7 @@
       "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
-        2400,
+        1960,
         -600
       ],
       "id": "1324415f-f8fb-4506-b9e6-aac11c883da4",
@@ -816,11 +800,137 @@
       "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
-        2400,
+        2100,
         -160
       ],
       "id": "34b0be42-db3b-4122-9f4f-3b1c7a19960a",
-      "name": "Who is making the request2",
+      "name": "Who is making the request (analysis)",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": "={{ $('Action Selected').item.json.body.database_id }}",
+        "tableId": "={{ $('Action Selected').item.json.body.table_id }}",
+        "rowId": "={{ $('Action Selected').item.json.body.items[0].id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "={{ $('Who is making the request').item.json.ActionColumn_ID }}",
+              "fieldValue": "={{ null }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2460,
+        -600
+      ],
+      "id": "543ae4a9-d7c5-460e-9ff3-bef366c25049",
+      "name": "Reset Action Column (Save Resume)",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": "={{ $('Action Selected').item.json.body.database_id }}",
+        "tableId": "={{ $('Action Selected').item.json.body.table_id }}",
+        "rowId": "={{ $('Action Selected').item.json.body.items[0].id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "={{ $('Who is making the request (analysis)').item.json.ActionColumn_ID }}",
+              "fieldValue": "={{ null }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        3280,
+        -160
+      ],
+      "id": "d34701fa-5849-484f-847b-444eb2e3e267",
+      "name": "Reset Action Column (Perform Analysis)",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "databaseId": 231,
+        "tableId": 863,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 8570,
+                "value": "={{ $('Action Selected').item.json.body.table_id }}"
+              },
+              {
+                "field": 8567,
+                "operator": "boolean",
+                "value": "True"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        200
+      ],
+      "id": "ce9cae5c-f3fe-46cc-84ac-5eb01f0d4eec",
+      "name": "Who is making the request (No Resume)",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": "={{ $('Action Selected').item.json.body.database_id }}",
+        "tableId": "={{ $('Action Selected').item.json.body.table_id }}",
+        "rowId": "={{ $('Action Selected').item.json.body.items[0].id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "={{ $json.ActionColumn_ID }}",
+              "fieldValue": "={{ null }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        200
+      ],
+      "id": "c71cd43c-29a0-42bc-9755-bc962c33dbe6",
+      "name": "Reset Action Column (No resume)",
       "credentials": {
         "baserowApi": {
           "id": "d2WUYcb60dACjFtq",
@@ -829,7 +939,131 @@
       }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Information Extractor": [
+      {
+        "json": {
+          "output": {
+            "Posting Title": "Manager Middleware Platforms",
+            "Company Name": "ICBC",
+            "Posting Text": "### Position Highlights\nWe are excited to offer a leadership opportunity for the role of Manager, Middleware Platforms—a key position responsible for shaping how we deliver services to our business customers and aligning our technologies and processes with our strategic goals.\n\nReporting to the Senior Manager, Software Technology Platforms, this role oversees a diverse and complex portfolio of technologies that directly support many of the critical business systems serving our customers across British Columbia.\n\nThe Middleware Platforms team is responsible for implementing and maintaining the infrastructure that powers our integration and application hosting platforms. As our systems evolve toward more agile, cloud-based solutions, this infrastructure becomes increasingly vital for our IT operations. In alignment with ICBC’s IT strategy, we are focused on accelerating the delivery of business value through modern, scalable technology.\n\nThis opportunity is ideal for seasoned managers who excel at understanding complex business needs and leveraging technology to drive meaningful organizational transformation.\n\n### Position Requirements\n\nYou are a self-motivated, confident, and results-driven technology leader with a proven track record of managing and continuously enhancing complex IT operations to deliver exceptional, customer-focused services and solutions. You bring a wealth of experience, including:\n\n* Extensive hands-on leadership experience in IT infrastructure, with a solid background in Middleware and Technology Platforms. Experience with technologies such as IBM Integration Software, WebSphere Application Server, Apache, and F5 is considered a strong asset.\n* Effective leadership, with a strategic vision and the ability to coach, mentor, and build high-performing, cross-functional teams that deliver on key milestones and stable platforms.\n* Strong grasp of emerging technologies and their potential to transform business and technical operations. Working knowledge of Cloud computing, IT infrastructure, Cybersecurity, DevOps, and containerization is considered a valuable asset.\n* Proven ability to drive operational improvements, leveraging change management principles to guide teams through technology transformation and continuous improvement.\n* Business acumen and customer-centric mindset, with the ability to align IT initiatives to departmental goals, translating them into improved processes, systems, and business outcomes with measurable ROI.\n* Exceptional relationship-building skills, enabling you to influence direction, lead changes, and collaborate across the organization to translate business needs into effective technology solutions.\n* Operational expertise in managing budgets, third-party service providers, and vendor relationships to ensure value and performance.\n\nAbove all, you bring a deep passion and curiosity for technology and its potential to enrich every aspect of the organization.\n\n### Position Information:\n\n* Salary Range: $116,300.00 - $165,000.00 Annually\n* ICBC provides comprehensive and flexible benefit coverage to all eligible employees including a defined benefit pension plan.\n* Three options of health and dental coverage. Two of those options fully paid by ICBC and with access to Flex credits.\n* 100% employer-paid life insurance, long term disability and travel insurance.\n* Sick leave plan – 100% of pay for a period of a maximum of 8 weeks plus 85% of your pay for a subsequent period of up to 9 weeks.\n* Additional optional insurance coverages.\n* Work arrangements defined: Hybrid 8 – you will work a minimum of 8 days in a 4-week period at your primary office headquarters (typically 2 days per week). The remaining days will be remote within British Columbia.\n\n### About us:\nAt ICBC, it’s our job to make sure the car insurance system works for all British Columbians, today and in the future. If you want to make the most of your skills and expertise while growing your career, we want you. A career at ICBC is an opportunity to be part of a talented, diverse and inclusive team that is driven to serve its customers and community. You can expect a competitive salary, comprehensive benefits and a collaborative work environment. If you are reliable and dependable, contact us today to be part of our talented and diverse team as we work together to create an insurance system we can all be proud of."
+          }
+        }
+      }
+    ],
+    "Resume and Job Posting Analysis": [
+      {
+        "json": {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "### ✅ **Step 1: Review Job Description – STATUS: Completed**\n\nI reviewed the job posting thoroughly. Here is the relevant information clearly organized for ease of comparison with your resume.\n\n---\n\n### ✅ **Step 2: Review Your Resume – STATUS: Completed**\n\nYour resume has been reviewed in detail.\n\n---\n\n## 📝 **Step 3: Analyze Job Fit**\n\n---\n\n### **Step 3.1: Break Down the Job Description**\n\n| Category                  | Details                                                                                     |\n|---------------------------|---------------------------------------------------------------------------------------------|\n| **Job Responsibilities**  | - Oversee Middleware infrastructure (Integration/Application Platforms)<br>- Strategic alignment & transformation<br>- Lead team to enhance service delivery and operations<br>- Manage vendor relationships & budgets<br>- Coach, mentor, build high-performance teams |\n| **Required Skills/Qualifications** | - Extensive IT infrastructure leadership experience<br>- Background in Middleware Platforms<br>- Experience in IBM Integration Software, WebSphere, Apache, F5 (Asset)<br>- Strong understanding of Cloud, Cybersecurity, DevOps, containerization (Asset)<br>- Proven leadership & mentoring skills<br>- Change management experience<br>- Budget & vendor management |\n| **Preferred Skills**      | - Knowledge of emerging technologies (Cloud computing, containerization, cybersecurity)<br>- Experience using IBM middleware suites (WebSphere, Integration Bus)<br>- Exposure to Agile and DevOps transformations |\n| **Soft Skills**           | - Exceptional relationship-building skills<br>- Business acumen and customer-centric mindset<br>- Strategic thinking and visionary leadership<br>- Effective influencer and collaborator<br>- Passion and curiosity for technology |\n\n---\n\n### **Step 3.2: Match Experience to Requirements**\n\n| Requirement | Your Skills/Experience | Rating | Notes |\n|-------------|------------------------|--------|-------|\n| Extensive IT infrastructure leadership exp. | Extensive technical dev. experience, but limited direct infrastructure leadership | Partially Meets | Leadership in technical development/tools; not direct platform infrastructure |\n| Middleware background (IBM/WebSphere/Apache/F5)| Experience with F5 explicitly listed; extensive integration experience | Partially Meets | Good integration exp. (REST APIs, OpenShift), explicitly mentioned F5 usage in an existing project |\n| Cloud & emerging tech (DevOps, Containerization)| Azure, Docker, OpenShift experience | Fully Meets | Explicit experience listed aligns well |\n| Proven leadership & mentoring | Mentored developers and acted as escalation point | Fully Meets | Strong mentoring experience clearly stated |\n| Change management experience | Conducted multiple system transformations & new technology implementations; experience with Contact Centre renewal and process automation projects | Fully Meets | Solid experience demonstrating tech transformation/change management |\n| Vendor & budget management | Experience with RFI & NRFP process and external system integrators/vendors in Contact Centre project | Partially Meets | Demonstrated vendor interaction, but not explicit budget management |\n\n---\n\n### **Step 3.3: Identify Transferable Skills**\n\n- **IT Infrastructure Management** → Your senior roles required extensive coordination across multi-system environments, partnerships with external vendors, and solutions architecture ownership—demonstrating your capabilities for infrastructure oversight.\n- **Middleware Platform Experience** → Your experience with integration platforms (REST APIs, BluePrism, F5, OpenShift, Outsystems) reflect highly transferable skills to Middleware infrastructure.\n- **Budget Management** → You've engaged in RFI/NRFP processes, vendor alignment and architecture/solution selection processes, building foundational skills for detailed budget oversight.\n\n---\n\n### **Step 3.4: Evaluate Technical Skills**\n\n| Technical Skill | Your Experience (per Resume) | Fit? |\n|-----------------|------------------------------|------|\n| IBM Integration Software, WebSphere | Not explicitly stated | Does Not Meet |\n| Apache | Not explicitly stated (though related web tech framework experience present) | Partially Meets |\n| F5 | Listed explicitly, integrations & implementation | Fully Meets |\n| Cloud Technologies (Azure, Containers) | Docker, OpenShift, Azure| Fully Meets |\n| DevOps Practices | Git, Azure, containerized applications & multiple integrations | Fully Meets |\n| Cybersecurity | Not explicitly stated; experience with authentication methods via F5| Partially Meets |\n\n---\n\n### **Step 3.5: Assess Soft Skills**\n\n| Soft Skill Requirement | Your Experience | Fit? | Comments |\n|------------------------|------------------|------|----------|\n| Relationship Building | Extensive cross-team collaboration and leading integrated solutions development | Fully Meets | Proven track record in relationship management |\n| Business Acumen & Customer-Centric Mindset| Delivering customer-facing enterprise renewals, driving clear and efficient solutions | Fully Meets | Demonstrated clear business outcomes (automation increases, process improvement) |\n| Strategic and Visionary Leadership| Owned architectural runway and established team capability | Fully Meets | Clear evidence of strategic architecture leadership |\n| Influencing & Collaboration| Collaboration with external system integrators, business stakeholders, internal teams | Fully Meets | Proven history working with stakeholders at all levels |\n| Passion & Curiosity for Technology| Performing POC for emerging technologies (mobile apps, image recognition, transcription)| Fully Meets | Clearly demonstrated curiosity and practical experiments |\n\n---\n\n### **Step 3.6: Address Experience Gaps**\n\n**Gaps Identified:**\n- Limited direct experience leading Middleware infrastructure platforms (IBM ecosystems—WebSphere, etc.)\n- No direct budgetary management or financial accountability explicitly referenced.\n\n**Ways to Address These Gaps:**\n- Highlight experience as Architecture Owner where you strategically influenced infrastructure-like decisions, platforms upgrades, or stability initiatives.\n- Clearly indicate budget-oriented project involvement (vendor selection, estimation, savings enabled through automation or system efficiency, time-cost savings translated to financial benefits).\n\n---\n\n## 📊 **Step 4: Provide an Assessment**\n\n---\n\n### 4.1: Candidate Fit Summary\n\n- **Overall Fit Percentage**\n\n|Category|Fit Level|Weighted Score|\n|--------|---------|--------------|\n| Required Skills (50%)| Approx. 75%| 37.5%|\n| Preferred Skills (30%)|Approx. 60% |18%|\n| Soft Skills (20%)|Approx. 100% |20%|\n| **Total**| |**75.5%**|\n\n**Overall Fit Percentage**: **75.5%** (High potential candidate; strong transferable skills, some gaps to be addressed)\n\n- **Strengths:**\n  - Strong leadership, mentoring and cross-team collaboration (clearly visible in resume).\n  - Technical depth (Cloud, DevOps, containerization clearly demonstrated).\n  - Exceptional alignment with soft skills requirements—relationship building, influencing, strategic vision.\n\n- **Weaknesses:**\n  - Primary gap is limited explicit Middleware infrastructure platform management (IBM/WebSphere stack).\n  - Limited explicit budget management/financial accountability experience.\n\n### 4.2: Salary Information\n\nSalary information was not explicitly stated in this job description.\n\n---\n\n## ✅ **Step 5: Recommend Resume Improvements**\n\n---\n\n### 5.1: ATS Optimization\n\n- **Formatting:** \n  - Your formatting is generally good. Ensure you maintain a text-based, standardized format. Recommend avoiding two-column layouts or intricate graphics.\n- **Keywords:** \n  - Include explicit keywords like \"Middleware Platforms,\" \"Middleware Infrastructure,\" \"IBM Integration,\" \"WebSphere,\" \"Apache,\" explicitly to attract ATS recognition.\n- **Job Titles:** \n  - Your job titles clearly state responsibility. Consider mapping internal titles clearly to job descriptions, ex: \"Senior Developer & Architect Owner (Middleware/Infrastructure Solutions)\" to match ATS targeted phrases.\n- **Headings:**\n  - Current headings (\"Work Experience,\" \"Education,\" and \"Technical Skills\") are ATS friendly.\n- **Acronyms / Abbreviations:** \n  - Done well. Keep standard acronym expansion format (as you have: Robotic Process Automation (RPA)).\n- **Action Verbs:**\n  - Strong use in current resume already present; try aligning closer to the verbs used in the job description (\"oversee\", \"coach\", \"align\", \"transform\").\n\n### 5.2: Enhancing Compellingness\n\n- **Measurable Outcomes:** Include clearer direct outcomes (e.g., \"Achieved 90% automation rate on invoice processing\"). Consider adding budgetary or financial efficiencies (\"Saved $XXK in resource hours\").\n- **Infrastructure-Related Experience:** Rewrite some project descriptions to clearly outline any indirect infrastructure involvement (platform stability, performance optimization, system-level integrations).\n- **Explicit Middleware experience:** Highlight existing integration experience clearly as Middleware-related platforms. Include projects mentioning F5 integrations more prominently.\n- **Vendor/Budget accountability:** Adjust the current RFI & NRFP descriptions. Highlight your role in assessing financial impacts, resource requirements, or vendor cost savings.\n- **Leadership roles clearly stated:** Adjust your roles to emphasize acting as a mentor and a strategic leader driving decisions/infrastructure planning.\n\n---\n\n## 👍 **Final Notes and Recommendations**\n\nYour resume and experience are solid—aligning strongly, particularly for soft skills, leadership, and Cloud/DevOps capabilities. Explicit Middleware platform experience and budget oversight need clearer emphasis—adapt your resume to surface project examples that emphasize infrastructure-level scope, vendor management, and budget-related impacts clearly.\n\nYou are a compelling candidate for this role. With minor adjustments, your resume and application would benefit greatly and boost your likelihood of capturing the recruiter's immediate attention and effectively passing ATS filters.\n\nFeel free to ask if you need any more support. Wishing you great success in your application!",
+            "refusal": null,
+            "annotations": []
+          },
+          "finish_reason": "stop"
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "automation.macapinlac.network",
+            "user-agent": "python-requests/2.31.0",
+            "content-length": "22339",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "50.98.52.36",
+            "cf-ipcountry": "CA",
+            "cf-ray": "94426d035e916063-YVR",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "content-type": "application/json",
+            "jobsearch": "#NMtdYS2f2c606",
+            "x-baserow-delivery": "7261d9de-f3cf-4b39-a39b-765159921357",
+            "x-baserow-event": "rows.updated",
+            "x-forwarded-for": "162.158.146.28",
+            "x-forwarded-host": "automation.macapinlac.network",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "d4560ee3116b",
+            "x-real-ip": "162.158.146.28"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "table_id": 861,
+            "database_id": 230,
+            "workspace_id": 154,
+            "webhook_id": 7,
+            "event_id": "7261d9de-f3cf-4b39-a39b-765159921357",
+            "event_type": "rows.updated",
+            "items": [
+              {
+                "id": 1,
+                "order": "1.00000000000000000000",
+                "uuid": "a41991ee-9415-41ec-8f89-adc09ad96543",
+                "Posting URL": "https://amazon.jobs/en/jobs/2963780/software-development-manager-content-systems",
+                "Action": null,
+                "Resume": [
+                  {
+                    "url": "https://db.macapinlac.network/media/user_files/iEgOGnIDXZQqZKYyi0xw4w2spJo8Cy3g_a8941d3031cca3cef3ae93481a8cc9954f3e6e88fbf1869f93a064dfa09618eb.pdf",
+                    "thumbnails": null,
+                    "visible_name": "Renee Cheung Resume.pdf",
+                    "name": "iEgOGnIDXZQqZKYyi0xw4w2spJo8Cy3g_a8941d3031cca3cef3ae93481a8cc9954f3e6e88fbf1869f93a064dfa09618eb.pdf",
+                    "size": 32698,
+                    "mime_type": "application/pdf",
+                    "is_image": false,
+                    "image_width": null,
+                    "image_height": null,
+                    "uploaded_at": "2025-05-16T17:20:08.699062+00:00"
+                  }
+                ],
+                "Position Title": "Software Development Manager, Content Systems",
+                "Company Name": "Amazon.com.ca, ULC",
+                "Posting Text": "### DESCRIPTION\n\nAre you passionate about providing an epic experience for every interaction customers have with Amazon?\n\nWe own the largest content marketing system at Amazon driving billions of dollars through marketing sales and Prime memberships. We power content to millions of customers through Amazon website, mobile, email, and other devices across shopping, streaming and reading experiences.\n\nAs a Software Development Manager, you will be responsible for leading a team of engineers in the design, development, testing, and deployment of large-scale systems that handle billions of requests daily. We are building the next generation of content marketing systems to further scale up our business impact. You will have direct ownership over the design and architecture of new components, focusing on enhancing the platform's extensibility, scalability, availability, and latency.\n\nA successful candidate will possess an established background in engineering management, strong technical abilities, excellent project management skills and communication abilities, experience in engineering hiring, and a motivation to achieve results in a fast-paced environment.\n\nKey job responsibilities:\n- Responsible for the overall systems development life cycle\n- Management and execution against project plans and delivery commitments aligning with business\n- Manage the day-to-day activities of the engineering team within an Agile/Scrum environment\n- Management of departmental resources, staffing, mentoring, and enhancing and maintaining a best-of-class engineering team\n- Work closely with the engineers to architect and develop the best technical design and approach\n- Report on status of development, quality, operations, and system performance to management\n\nA day in the life:\nIn this role, you can expect to:\n- Lead a team of excellent engineers to design and build new systems to scale and automate the future of marketing systems\n- Iterate on products using feedback from thousands of users\n- Partner with designers to drive new user experiences\n\nAbout the team:\nThe Content Systems team owns the foundation of merchandising tools at Amazon. Our UIs and APIs provide Amazon employees with the best experience when creating and scheduling content for Amazon's customers. We enforce rules and guardrails through our APIs to protect the Amazon shopping experience. If you are passionate about software engineering and personalized content experiences at scale then we encourage you to apply.\n\n### BASIC QUALIFICATIONS\n\n- 3+ years of engineering team management experience\n- 7+ years of engineering experience\n- 8+ years of leading the definition and development of multi tier web services experience\n- Knowledge of engineering practices and patterns for the full software/hardware/networks development life cycle, including coding standards, code reviews, source control management, build processes, testing, certification, and livesite operations\n- Experience partnering with product or program management teams\n\n### PREFERRED QUALIFICATIONS\n\n- Experience in communicating with users, other technical teams, and senior leadership to collect requirements, describe software product features, technical designs, and product strategy\n- Experience in recruiting, hiring, mentoring/coaching and managing teams of Software Engineers to improve their skills, and make them more effective, product software engineers\n\nAmazon is an equal opportunity employer and does not discriminate on the basis of protected veteran status, disability, or other legally protected status.\n\nThe base salary for this position ranges from $171,400/year up to $286,200/year. Salary is based on a number of factors and may vary depending on job-related knowledge, skills, and experience. Amazon is a total compensation company. Dependent on the position offered, equity, sign-on payments, and other forms of compensation may be provided as part of a total compensation package, in addition to a full range of medical, financial, and/or other benefits.",
+                "Analysis": "### **Step 1: Review the Job Description**\n\nStatus: **Completed** \n\n---\n\n### **Step 2: Review of Resume**\n\nStatus: **Completed** \n\n---\n\n### **Step 3: Analyze Job Fit**\n\n#### **Step 3.1: Break Down the Job Description**\n\n**Job Responsibilities**:\n- Leading a team of engineers in the design, development, testing, and deployment of large-scale systems\n- Engaging within an Agile/Scrum environment\n- Reporting on status of development, quality, operations, and system performance\n- Collaborating with other engineers, designers, and stakeholders\n- Managing the day-to-day activities of the engineering team\n\n**Required Skills/Qualifications**:\n- 3+ years of engineering team management experience\n- 7+ years of engineering experience\n- 8+ years of leading the definition and development of multi-tier web services experience\n- Knowledge of the full software/hardware/networks development life cycle\n\n**Preferred Skills**:\n- Experience communicating with users, other technical teams, and senior leadership\n- Experience in recruiting, hiring, mentoring/coaching and managing teams of Software Engineers\n\n**Soft Skills**:\n- Excellent project management skills and communication abilities\n- A motivation to achieve results in a fast-paced environment\n\n#### **Step 3.2: Match Experience to Requirements**\n\n**Table for Fit Analysis**:\n\n|**Requirement**|**Your Skills/Experience**|**Rating**|**Notes**|\n|---|---|---|---|\n|3+ years of engineering team management|20+ years of managing cross-functional teams|Fully Meets|More than required years of experience.|\n|7+ years of engineering experience|20+ years in digital solutions, including tech lead roles|Fully Meets|More than required years of experience.|\n|8+ years of web services development experience|Experience in leading the re-platform of a large-scale website |Partially Meets|Relevant but not exactly as required.|\n|Knowledge of full software development life cycle|Experience in managing customer-facing digital services|Fully Meets|Matches requirement completely.|\n|Experience communicating with stakeholders|Experience in partnering with business stakeholders and internal IT|Fully Meets|Matches requirement completely.|\n|Recruiting, hiring, mentoring/coaching teams|Managed large teams, no explicit mention of recruiting, hiring, or mentoring|Partially Meets|Partially meets, but could be made more explicit in the resume.|\n\n#### **Step 3.3: Identify Transferable Skills**\n\n- _Requirement_: \"Responsible for the overall systems development life cycle\" → You have managed the systems lifecycle for customer-facing digital services at ICBC, showcasing a transferrable skill.\n- _Requirement_: \"Management of departmental resources, staffing, and enhancing and maintaining a best-of-class engineering team\" → As a Digital Solutions Manager, you have led and managed various teams and resources, demonstrating transferable management skills.\n\n#### **Step 3.4: Evaluate Technical Skills**\n\n**Table for Technical Skills**:\n\n|**Tool/Software**|**Your Experience**|**Fit?**|\n|---|---|---|\n|N/A|N/A|N/A|\n\n*No specific technical tools, software, or methods were mentioned in the job description.*\n\n#### **Step 3.5: Assess Soft Skills**\n\n- _Requirement_: \"Excellent project management skills and communication abilities\" → As a digital solutions manager, you managed various digital initiatives and partnered with numerous stakeholders. This demonstrates strong project management and communication abilities.\n- _Requirement_: \"Motivation to achieve results in a fast-paced environment\" → You efficiently managed a $4M initiative, involving various teams and stakeholders, which reflects your ability to achieve results in a fast-paced environment.\n\n#### **Step 3.6: Address Experience Gaps**\n\n- More explicit mention of experience with recruiting, hiring, mentoring, and coaching team members could make your resume stronger. Include examples of these activities, if applicable.\n- While you have relevant experience, the job requires specific experience in developing multi-tier web services. More details about your role and achievements in this area would be helpful.\n\n---\n\n### **Step 4: Provide an Assessment**\n\n#### **4.1: Candidate Fit Summary**\n\n- **Overall Fit Percentage**: \n\n    - Required Skills: 90% match → Weighted score: 45%\n    - Preferred Skills: 70% match → Weighted score: 21%\n    - Soft Skills: 100% match → Weighted score: 20%  \n    **Total Fit Percentage**: 86%\n\n- **Strengths**: \n    - We noted significant management experience which aligns with the requirement for \"3+ years of engineering team management\".\n    - We also noticed relevant experience in communication with stakeholders, which matches the preferred qualification \"Experience in communicating with users, other technical teams, and senior leadership.\"\n\n- **Weaknesses**:\n    - Your experience in web services development is implicitly referenced and could be elaborated on.\n    - No explicit mention of recruiting, hiring, mentoring, and coaching teams in your resume.\n\n#### **4.2: Salary Information**\n\n- Salary information is included, ranging from $171,400/year up to $286,200/year.\n\n---\n\n### **Step 5: Recommend Resume Improvements**\n\n#### **5.1: ATS Optimization**\n\n- Your resume currently uses clear and traditional formatting, which should be efficient for ATS.\n- Continue using keywords directly from the job description where applicable and natural.\n- Job titles and headings are standardized already, no additional need.\n- Abbreviations and Acronyms are properly spelled out.\n\n#### **5.2: Enhancing Compellingness**\n\n- Adding measurable accomplishments, especially relating to significant cost savings, performance improvements, or successful project completions can strengthen your resume.\n- Making explicit your experience with recruiting, hiring, mentoring, and managing teams would be beneficial.\n- Highlight your specific accomplishments and improvements made in the area of multi-tier web services development."
+              }
+            ],
+            "old_items": [
+              {
+                "id": 1,
+                "order": "1.00000000000000000000",
+                "uuid": "a41991ee-9415-41ec-8f89-adc09ad96543",
+                "Posting URL": "https://amazon.jobs/en/jobs/2963780/software-development-manager-content-systems",
+                "Action": {
+                  "id": 3649,
+                  "value": "Save Posting",
+                  "color": "blue"
+                },
+                "Resume": [
+                  {
+                    "url": "https://db.macapinlac.network/media/user_files/iEgOGnIDXZQqZKYyi0xw4w2spJo8Cy3g_a8941d3031cca3cef3ae93481a8cc9954f3e6e88fbf1869f93a064dfa09618eb.pdf",
+                    "thumbnails": null,
+                    "visible_name": "Renee Cheung Resume.pdf",
+                    "name": "iEgOGnIDXZQqZKYyi0xw4w2spJo8Cy3g_a8941d3031cca3cef3ae93481a8cc9954f3e6e88fbf1869f93a064dfa09618eb.pdf",
+                    "size": 32698,
+                    "mime_type": "application/pdf",
+                    "is_image": false,
+                    "image_width": null,
+                    "image_height": null,
+                    "uploaded_at": "2025-05-16T17:20:08.699062+00:00"
+                  }
+                ],
+                "Position Title": "Software Development Manager, Content Systems",
+                "Company Name": "Amazon.com.ca, ULC",
+                "Posting Text": "### DESCRIPTION\n\nAre you passionate about providing an epic experience for every interaction customers have with Amazon?\n\nWe own the largest content marketing system at Amazon driving billions of dollars through marketing sales and Prime memberships. We power content to millions of customers through Amazon website, mobile, email, and other devices across shopping, streaming and reading experiences.\n\nAs a Software Development Manager, you will be responsible for leading a team of engineers in the design, development, testing, and deployment of large-scale systems that handle billions of requests daily. We are building the next generation of content marketing systems to further scale up our business impact. You will have direct ownership over the design and architecture of new components, focusing on enhancing the platform's extensibility, scalability, availability, and latency.\n\nA successful candidate will possess an established background in engineering management, strong technical abilities, excellent project management skills and communication abilities, experience in engineering hiring, and a motivation to achieve results in a fast-paced environment.\n\nKey job responsibilities:\n- Responsible for the overall systems development life cycle\n- Management and execution against project plans and delivery commitments aligning with business\n- Manage the day-to-day activities of the engineering team within an Agile/Scrum environment\n- Management of departmental resources, staffing, mentoring, and enhancing and maintaining a best-of-class engineering team\n- Work closely with the engineers to architect and develop the best technical design and approach\n- Report on status of development, quality, operations, and system performance to management\n\nA day in the life:\nIn this role, you can expect to:\n- Lead a team of excellent engineers to design and build new systems to scale and automate the future of marketing systems\n- Iterate on products using feedback from thousands of users\n- Partner with designers to drive new user experiences\n\nAbout the team:\nThe Content Systems team owns the foundation of merchandising tools at Amazon. Our UIs and APIs provide Amazon employees with the best experience when creating and scheduling content for Amazon's customers. We enforce rules and guardrails through our APIs to protect the Amazon shopping experience. If you are passionate about software engineering and personalized content experiences at scale then we encourage you to apply.\n\n### BASIC QUALIFICATIONS\n\n- 3+ years of engineering team management experience\n- 7+ years of engineering experience\n- 8+ years of leading the definition and development of multi tier web services experience\n- Knowledge of engineering practices and patterns for the full software/hardware/networks development life cycle, including coding standards, code reviews, source control management, build processes, testing, certification, and livesite operations\n- Experience partnering with product or program management teams\n\n### PREFERRED QUALIFICATIONS\n\n- Experience in communicating with users, other technical teams, and senior leadership to collect requirements, describe software product features, technical designs, and product strategy\n- Experience in recruiting, hiring, mentoring/coaching and managing teams of Software Engineers to improve their skills, and make them more effective, product software engineers\n\nAmazon is an equal opportunity employer and does not discriminate on the basis of protected veteran status, disability, or other legally protected status.\n\nThe base salary for this position ranges from $171,400/year up to $286,200/year. Salary is based on a number of factors and may vary depending on job-related knowledge, skills, and experience. Amazon is a total compensation company. Dependent on the position offered, equity, sign-on payments, and other forms of compensation may be provided as part of a total compensation package, in addition to a full range of medical, financial, and/or other benefits.",
+                "Analysis": "### **Step 1: Review the Job Description**\n\nStatus: **Completed** \n\n---\n\n### **Step 2: Review of Resume**\n\nStatus: **Completed** \n\n---\n\n### **Step 3: Analyze Job Fit**\n\n#### **Step 3.1: Break Down the Job Description**\n\n**Job Responsibilities**:\n- Leading a team of engineers in the design, development, testing, and deployment of large-scale systems\n- Engaging within an Agile/Scrum environment\n- Reporting on status of development, quality, operations, and system performance\n- Collaborating with other engineers, designers, and stakeholders\n- Managing the day-to-day activities of the engineering team\n\n**Required Skills/Qualifications**:\n- 3+ years of engineering team management experience\n- 7+ years of engineering experience\n- 8+ years of leading the definition and development of multi-tier web services experience\n- Knowledge of the full software/hardware/networks development life cycle\n\n**Preferred Skills**:\n- Experience communicating with users, other technical teams, and senior leadership\n- Experience in recruiting, hiring, mentoring/coaching and managing teams of Software Engineers\n\n**Soft Skills**:\n- Excellent project management skills and communication abilities\n- A motivation to achieve results in a fast-paced environment\n\n#### **Step 3.2: Match Experience to Requirements**\n\n**Table for Fit Analysis**:\n\n|**Requirement**|**Your Skills/Experience**|**Rating**|**Notes**|\n|---|---|---|---|\n|3+ years of engineering team management|20+ years of managing cross-functional teams|Fully Meets|More than required years of experience.|\n|7+ years of engineering experience|20+ years in digital solutions, including tech lead roles|Fully Meets|More than required years of experience.|\n|8+ years of web services development experience|Experience in leading the re-platform of a large-scale website |Partially Meets|Relevant but not exactly as required.|\n|Knowledge of full software development life cycle|Experience in managing customer-facing digital services|Fully Meets|Matches requirement completely.|\n|Experience communicating with stakeholders|Experience in partnering with business stakeholders and internal IT|Fully Meets|Matches requirement completely.|\n|Recruiting, hiring, mentoring/coaching teams|Managed large teams, no explicit mention of recruiting, hiring, or mentoring|Partially Meets|Partially meets, but could be made more explicit in the resume.|\n\n#### **Step 3.3: Identify Transferable Skills**\n\n- _Requirement_: \"Responsible for the overall systems development life cycle\" → You have managed the systems lifecycle for customer-facing digital services at ICBC, showcasing a transferrable skill.\n- _Requirement_: \"Management of departmental resources, staffing, and enhancing and maintaining a best-of-class engineering team\" → As a Digital Solutions Manager, you have led and managed various teams and resources, demonstrating transferable management skills.\n\n#### **Step 3.4: Evaluate Technical Skills**\n\n**Table for Technical Skills**:\n\n|**Tool/Software**|**Your Experience**|**Fit?**|\n|---|---|---|\n|N/A|N/A|N/A|\n\n*No specific technical tools, software, or methods were mentioned in the job description.*\n\n#### **Step 3.5: Assess Soft Skills**\n\n- _Requirement_: \"Excellent project management skills and communication abilities\" → As a digital solutions manager, you managed various digital initiatives and partnered with numerous stakeholders. This demonstrates strong project management and communication abilities.\n- _Requirement_: \"Motivation to achieve results in a fast-paced environment\" → You efficiently managed a $4M initiative, involving various teams and stakeholders, which reflects your ability to achieve results in a fast-paced environment.\n\n#### **Step 3.6: Address Experience Gaps**\n\n- More explicit mention of experience with recruiting, hiring, mentoring, and coaching team members could make your resume stronger. Include examples of these activities, if applicable.\n- While you have relevant experience, the job requires specific experience in developing multi-tier web services. More details about your role and achievements in this area would be helpful.\n\n---\n\n### **Step 4: Provide an Assessment**\n\n#### **4.1: Candidate Fit Summary**\n\n- **Overall Fit Percentage**: \n\n    - Required Skills: 90% match → Weighted score: 45%\n    - Preferred Skills: 70% match → Weighted score: 21%\n    - Soft Skills: 100% match → Weighted score: 20%  \n    **Total Fit Percentage**: 86%\n\n- **Strengths**: \n    - We noted significant management experience which aligns with the requirement for \"3+ years of engineering team management\".\n    - We also noticed relevant experience in communication with stakeholders, which matches the preferred qualification \"Experience in communicating with users, other technical teams, and senior leadership.\"\n\n- **Weaknesses**:\n    - Your experience in web services development is implicitly referenced and could be elaborated on.\n    - No explicit mention of recruiting, hiring, mentoring, and coaching teams in your resume.\n\n#### **4.2: Salary Information**\n\n- Salary information is included, ranging from $171,400/year up to $286,200/year.\n\n---\n\n### **Step 5: Recommend Resume Improvements**\n\n#### **5.1: ATS Optimization**\n\n- Your resume currently uses clear and traditional formatting, which should be efficient for ATS.\n- Continue using keywords directly from the job description where applicable and natural.\n- Job titles and headings are standardized already, no additional need.\n- Abbreviations and Acronyms are properly spelled out.\n\n#### **5.2: Enhancing Compellingness**\n\n- Adding measurable accomplishments, especially relating to significant cost savings, performance improvements, or successful project completions can strengthen your resume.\n- Making explicit your experience with recruiting, hiring, mentoring, and managing teams would be beneficial.\n- Highlight your specific accomplishments and improvements made in the area of multi-tier web services development."
+              }
+            ]
+          },
+          "webhookUrl": "https://automation.macapinlac.network/webhook/d8598f70-d498-48c4-9e9a-4fa110cb03ef",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -849,6 +1083,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-19T00:11:05.000Z",
-  "versionId": "64334ff5-a6a4-4d18-a990-9df7c2e5609c"
+  "updatedAt": "2025-05-23T06:29:29.000Z",
+  "versionId": "87254cfb-ce72-493f-9977-69c6e2543e1c"
 }
