@@ -463,8 +463,8 @@
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
-          "id": "ojJVqUWOFMKOOLeQ",
-          "name": "OpenAi account"
+          "id": "Iu2MPBQpwaTZFVC4",
+          "name": "OpenAi account (Job Search)"
         }
       }
     },
@@ -658,8 +658,8 @@
       ],
       "credentials": {
         "openAiApi": {
-          "id": "ojJVqUWOFMKOOLeQ",
-          "name": "OpenAi account"
+          "id": "Iu2MPBQpwaTZFVC4",
+          "name": "OpenAi account (Job Search)"
         }
       }
     },
@@ -1083,6 +1083,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-23T06:29:29.000Z",
-  "versionId": "87254cfb-ce72-493f-9977-69c6e2543e1c"
+  "updatedAt": "2025-05-23T15:17:09.000Z",
+  "versionId": "8fdb6fec-f987-48f8-965f-1f256e27308b"
 }
