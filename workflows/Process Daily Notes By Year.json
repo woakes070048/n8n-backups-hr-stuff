@@ -60,6 +60,7 @@
   },
   "createdAt": "2025-03-16T19:05:51.827Z",
   "id": "pOjkRbfFXoN8mtnU",
+  "isArchived": false,
   "meta": null,
   "name": "Process Daily Notes By Year",
   "nodes": [
