@@ -1,0 +1,321 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Find Victim",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Victim": {
+      "main": [
+        [
+          {
+            "node": "If Active",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Active": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Not Active",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-04T04:16:45.367Z",
+  "id": "ul1Qr5o6CFfJON62",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Phone Prank",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "phoneprank",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d8808e2a-b9dd-4cd6-bda9-237a0161c080",
+      "name": "Webhook",
+      "webhookId": "3e64041b-e2ec-4c82-9bde-97c1fed1a516",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Z9ZmHE3MBrlhpqjd",
+          "name": "Pranks Header"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0aac2381-9e9a-45fb-a065-df3ab64f459f",
+              "name": "body.Who",
+              "value": "={{ $json.body.Who }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ],
+      "id": "547aac4d-6848-4309-8f5e-3eddb5ddd0aa",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "databaseId": 135,
+        "tableId": 627,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 6014,
+                "value": "={{ $json.body.Who }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "00728d7b-4e5c-4c14-b231-9fcb1c280862",
+      "name": "Find Victim",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d2638f72-09a6-443b-9a46-155a9647c5b5",
+              "leftValue": "={{ $json.Active }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        660,
+        0
+      ],
+      "id": "fbe0b162-a6e0-446f-9814-c90795cce93e",
+      "name": "If Active"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"Active\": true,\n  \"msg\": \"{{ $('AI Agent').item.json.output }}\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1640,
+        -180
+      ],
+      "id": "a7022648-1ac3-4c04-aa87-014879955d13",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Find Victim').item.json.Prompt }}",
+        "options": {
+          "systemMessage": "You are a creative copy writer."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        -180
+      ],
+      "id": "16e38756-f5d3-45f9-9e55-3bec9961291d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1000,
+        20
+      ],
+      "id": "9c14f001-11d3-42c7-8b01-27a36e50d40b",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Iu2MPBQpwaTZFVC4",
+          "name": "OpenAi account (Job Search)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"Active\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1060,
+        220
+      ],
+      "id": "67fef460-dd3e-4abc-a190-16a0fd4d8a3c",
+      "name": "Not Active"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 135,
+        "tableId": 627,
+        "rowId": "={{ $('If Active').item.json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 6018,
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        -180
+      ],
+      "id": "387dccc0-b1ae-45d2-9632-093b0133d34e",
+      "name": "Update a row",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-04T05:11:53.000Z",
+  "versionId": "371153fe-a549-48cb-9dba-b3d7dc12ce1a"
+}
