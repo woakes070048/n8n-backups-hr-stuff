@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Webhook": {
       "main": [
@@ -78,7 +78,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook",
+            "node": "Active with message",
             "type": "main",
             "index": 0
           }
@@ -208,21 +208,6 @@
     },
     {
       "parameters": {
-        "respondWith": "json",
-        "responseBody": "={\n  \"Active\": true,\n  \"msg\": \"{{ $('AI Agent').item.json.output }}\"\n} ",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        1640,
-        -180
-      ],
-      "id": "a7022648-1ac3-4c04-aa87-014879955d13",
-      "name": "Respond to Webhook"
-    },
-    {
-      "parameters": {
         "promptType": "define",
         "text": "={{ $('Find Victim').item.json.Prompt }}",
         "options": {
@@ -307,6 +292,21 @@
           "name": "Baserow account"
         }
       }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"Active\": true,\n  \"msg\": \"{{ $('AI Agent').item.json.output }}\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1640,
+        -180
+      ],
+      "id": "a7022648-1ac3-4c04-aa87-014879955d13",
+      "name": "Active with message"
     }
   ],
   "pinData": {},
@@ -315,7 +315,7 @@
   },
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-07-04T05:11:53.000Z",
-  "versionId": "371153fe-a549-48cb-9dba-b3d7dc12ce1a"
+  "triggerCount": 1,
+  "updatedAt": "2025-07-05T06:13:32.000Z",
+  "versionId": "7614a9fc-1de8-4726-bd75-02637ea72f93"
 }
