@@ -149,7 +149,7 @@
       "main": [
         [
           {
-            "node": "SendGrid",
+            "node": "Send email",
             "type": "main",
             "index": 0
           }
@@ -304,6 +304,17 @@
           }
         ]
       ]
+    },
+    "Send email": {
+      "main": [
+        [
+          {
+            "node": "SendGrid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2024-10-21T01:15:11.030Z",
@@ -324,8 +335,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        -1340,
-        540
+        -1344,
+        544
       ]
     },
     {
@@ -402,7 +413,7 @@
       "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
-        1580,
+        1584,
         480
       ],
       "credentials": {
@@ -431,7 +442,7 @@
       "typeVersion": 1,
       "position": [
         560,
-        40
+        48
       ]
     },
     {
@@ -453,7 +464,7 @@
       "typeVersion": 1,
       "position": [
         560,
-        280
+        288
       ]
     },
     {
@@ -472,8 +483,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        260,
-        200
+        272,
+        208
       ]
     },
     {
@@ -499,7 +510,7 @@
       "typeVersion": 1,
       "position": [
         -2400,
-        200
+        208
       ]
     },
     {
@@ -514,8 +525,8 @@
       "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
-        -1560,
-        540
+        -1568,
+        544
       ],
       "credentials": {
         "baserowApi": {
@@ -534,8 +545,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        700,
-        1100
+        704,
+        1104
       ]
     },
     {
@@ -547,8 +558,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        420,
-        1100
+        432,
+        1104
       ],
       "alwaysOutputData": true,
       "continueOnFail": true
@@ -564,7 +575,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 2.1,
       "position": [
-        2360,
+        2368,
         800
       ]
     },
@@ -577,8 +588,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        2920,
-        600
+        2928,
+        608
       ]
     },
     {
@@ -591,7 +602,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 2,
       "position": [
-        2580,
+        2592,
         800
       ]
     },
@@ -631,8 +642,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 2,
       "position": [
-        -1860,
-        740
+        -1856,
+        752
       ]
     },
     {
@@ -647,8 +658,8 @@
       "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
-        -2180,
-        200
+        -2176,
+        208
       ],
       "credentials": {
         "baserowApi": {
@@ -689,8 +700,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 2,
       "position": [
-        -1960,
-        200
+        -1968,
+        208
       ]
     },
     {
@@ -710,15 +721,16 @@
       "type": "n8n-nodes-base.sendGrid",
       "typeVersion": 1,
       "position": [
-        3140,
-        600
+        3568,
+        608
       ],
       "credentials": {
         "sendGridApi": {
           "id": "VtMovXvSYGhENdcJ",
           "name": "SendGrid account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {},
@@ -727,7 +739,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 2.1,
       "position": [
-        -820,
+        -816,
         560
       ]
     },
@@ -770,7 +782,7 @@
       "typeVersion": 1,
       "position": [
         -1040,
-        540
+        544
       ]
     },
     {
@@ -807,8 +819,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
       "position": [
-        -2120,
-        740
+        -2128,
+        752
       ],
       "webhookId": "5c1f815e-d087-455a-9cfd-104218cd793c",
       "credentials": {
@@ -827,7 +839,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        -220,
+        -224,
         400
       ],
       "alwaysOutputData": true,
@@ -851,14 +863,104 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        2900,
-        940
+        2912,
+        944
       ],
       "id": "00b6539d-a149-49c2-a283-5c6e885062eb",
       "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "fromEmail": "homelab@macapinlac.com",
+        "toEmail": "ritchie@macapinlac.com, bmatute@rennie.com",
+        "subject": "={{ $json.address }} {{ $json.mls_number }}",
+        "html": "={{ $json[\"Post Draft\"] }}",
+        "options": {
+          "attachments": "={{ $json.binaryProperties }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        3184,
+        608
+      ],
+      "id": "fbf293f3-d2ac-427c-a279-06daae08efeb",
+      "name": "Send email",
+      "webhookId": "790ba334-0b53-4fb8-9745-5d590d667308",
+      "credentials": {
+        "smtp": {
+          "id": "EJhzttjGW8At1laS",
+          "name": "homelab@macapinlac.com"
+        }
+      }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "automation.macapinlac.network",
+            "user-agent": "python-requests/2.32.3",
+            "content-length": "615",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "66.183.13.87",
+            "cf-ipcountry": "CA",
+            "cf-ray": "96c485d17e7575b0-SEA",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "chowkai": "iZEQm6PvZKPTMk",
+            "content-type": "application/json",
+            "x-baserow-delivery": "73342293-c387-488a-853f-04d688e6bca7",
+            "x-baserow-event": "rows.created",
+            "x-forwarded-for": "172.68.22.132",
+            "x-forwarded-host": "automation.macapinlac.network",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "f7263cef661c",
+            "x-real-ip": "172.68.22.132"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "table_id": 582,
+            "database_id": 46,
+            "workspace_id": 38,
+            "webhook_id": 1,
+            "event_id": "73342293-c387-488a-853f-04d688e6bca7",
+            "event_type": "rows.created",
+            "items": [
+              {
+                "id": 184,
+                "order": "184.00000000000000000000",
+                "uuid": "a302f770-770f-4d88-b677-9acd005e76d5",
+                "Write Up": null,
+                "Listing URL": "https://rennie.com/listings/18th-7250-avenue-ivory-mews-207-burnaby-r3033910",
+                "List Price": null,
+                "Post Draft": null,
+                "Use Presented By": false,
+                "mls_number": null,
+                "beds": null,
+                "baths": null,
+                "square feet": null,
+                "address": null,
+                "city": null,
+                "type": {
+                  "id": 2746,
+                  "value": "Just listed",
+                  "color": "light-brown"
+                }
+              }
+            ]
+          },
+          "webhookUrl": "https://automation.macapinlac.network/webhook/e7f8d349-47f3-4c84-8e80-0d9cb43f96a1",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -872,6 +974,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-03-15T16:06:46.000Z",
-  "versionId": "e22478b1-4af5-4904-bc6e-862ce4c77985"
+  "updatedAt": "2025-08-09T13:05:50.000Z",
+  "versionId": "809bf2b9-9c58-420b-8e99-0fcbb057d6db"
 }
