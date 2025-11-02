@@ -315,8 +315,8 @@
   },
   "shared": [
     {
-      "createdAt": "2024-12-15T17:06:01.787Z",
       "updatedAt": "2024-12-15T17:06:01.787Z",
+      "createdAt": "2024-12-15T17:06:01.787Z",
       "role": "workflow:owner",
       "workflowId": "27VUBhHbq2A7nn10",
       "projectId": "rkuUtfbV4pRJvn4a"
@@ -325,8 +325,8 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2024-12-07T20:35:10.543Z",
       "updatedAt": "2024-12-07T20:35:10.543Z",
+      "createdAt": "2024-12-07T20:35:10.543Z",
       "id": "3J5m8c8YNebX22pe",
       "name": "NextCloud Inbox"
     }
