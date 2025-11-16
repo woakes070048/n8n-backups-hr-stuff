@@ -1,36 +1,66 @@
 {
   "active": false,
-  "connections": {},
-  "createdAt": "2025-06-10T14:21:47.160Z",
-  "id": "Onz2dPgKTQKMOTwZ",
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-15T21:17:46.565Z",
+  "id": "11vH1kOQxEqBiKCg",
   "isArchived": false,
   "meta": null,
   "name": "My workflow",
   "nodes": [
     {
-      "parameters": {
-        "options": {
-          "allowFileUploads": true
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.1,
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
       "position": [
         0,
         0
       ],
-      "id": "3036263a-cffd-4f6f-8aff-cff63764bf11",
-      "name": "When chat message received",
-      "webhookId": "523fbfc1-ee4c-414a-bb24-c362a0131a6c"
+      "id": "247d1935-a924-47f3-944c-c734505b4108",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://www.vbce.ca/travel-rates",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "7ae2a8c3-1cd4-477d-95ee-dd1c1b8ca191",
+      "name": "HTTP Request"
     }
   ],
   "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
+  "shared": [
+    {
+      "updatedAt": "2025-11-15T21:17:46.574Z",
+      "createdAt": "2025-11-15T21:17:46.574Z",
+      "role": "workflow:owner",
+      "workflowId": "11vH1kOQxEqBiKCg",
+      "projectId": "rkuUtfbV4pRJvn4a"
+    }
+  ],
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-06-10T14:21:47.160Z",
-  "versionId": "2bcb6c7a-f6d3-42a7-a473-bd883fd7c6df"
+  "updatedAt": "2025-11-15T21:17:46.565Z",
+  "versionId": "d4231416-bbd5-47a9-8b5a-b4a7f8f6c84d"
 }
