@@ -1,22 +1,11 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Nextcloud - Inbox Files": {
       "main": [
         [
           {
             "node": "Filter - Weekly Files",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When clicking ‘Test workflow’": {
-      "main": [
-        [
-          {
-            "node": "Nextcloud - Inbox Files",
             "type": "main",
             "index": 0
           }
@@ -82,25 +71,49 @@
           }
         ]
       ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Confirm to proceed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirm to proceed": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Inbox Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2024-12-15T17:06:01.781Z",
   "id": "27VUBhHbq2A7nn10",
   "isArchived": false,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "Process Weekly Files in NextCloud",
   "nodes": [
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "eda619ca-5a02-4ee9-85b6-ffc440f25a80",
-      "name": "When clicking ‘Test workflow’"
-    },
     {
       "parameters": {
         "authentication": "oAuth2",
@@ -111,7 +124,7 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        200,
+        416,
         0
       ],
       "id": "4cad7909-7f89-4f98-b2ec-9341e89065f1",
@@ -153,7 +166,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        640,
+        848,
         0
       ],
       "id": "182bbd44-5ba3-4ae4-9a2d-98e717598486",
@@ -168,8 +181,8 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1080,
-        -220
+        1296,
+        -224
       ],
       "id": "603babb6-52d5-423b-a1db-17624c80d890",
       "name": "Nextcloud - Create Year Folder",
@@ -191,8 +204,8 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1260,
-        -220
+        1472,
+        -224
       ],
       "id": "d9ef728d-c137-4ed9-8447-f55c5704eb70",
       "name": "Nextcloud - Create Weekly folder",
@@ -214,8 +227,8 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1440,
-        -220
+        1648,
+        -224
       ],
       "id": "dff036fd-9f44-4c88-b6d7-99b6b3a05ae2",
       "name": "Nextcloud - Create Week Folder",
@@ -246,8 +259,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1080,
-        60
+        1296,
+        64
       ],
       "id": "07770d63-5c63-4d9e-b0b8-fc49865fb909",
       "name": "Set Desination Path"
@@ -255,15 +268,15 @@
     {
       "parameters": {
         "authentication": "oAuth2",
-        "operation": "copy",
+        "operation": "move",
         "path": "=/{{ $('Filter - Weekly Files').item.json.path.urlDecode() }}",
         "toPath": "={{ $json.Destination }}"
       },
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1300,
-        60
+        1520,
+        64
       ],
       "id": "e8fd505c-9485-4bc8-aa41-4505ac02a20a",
       "name": "Nextcloud - File Calendar",
@@ -302,11 +315,101 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        420,
+        640,
         0
       ],
       "id": "c58130ee-09af-4c19-9d6d-ab2d438fb100",
       "name": "Filter - Weekly Files"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -224,
+        240
+      ],
+      "id": "0f8d670b-e58f-4a3d-bbbe-75c0a3da239c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "fromEmail": "homelab@macapinlac.com",
+        "toEmail": "ritchie@macapinlac.com",
+        "subject": "Process NextCloud Inbox?",
+        "message": "I am about to process your NextCloud Inbox. Continue?",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 12
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        240
+      ],
+      "id": "61f5daed-984b-4eb4-af11-64347d54cb20",
+      "name": "Confirm to proceed",
+      "webhookId": "83a7075f-97a0-4dc3-be65-61df2e3c6c64",
+      "credentials": {
+        "smtp": {
+          "id": "EJhzttjGW8At1laS",
+          "name": "homelab@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6ce6adb9-f781-4019-8d0e-d33a3838ad8d",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        240
+      ],
+      "id": "5e8e0e31-d4fc-47a8-8c74-cccb3f6fb1ac",
+      "name": "If"
     }
   ],
   "pinData": {},
@@ -322,7 +425,11 @@
       "projectId": "rkuUtfbV4pRJvn4a"
     }
   ],
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [
     {
       "updatedAt": "2024-12-07T20:35:10.543Z",
@@ -331,7 +438,7 @@
       "name": "NextCloud Inbox"
     }
   ],
-  "triggerCount": 0,
-  "updatedAt": "2025-03-31T17:22:13.000Z",
-  "versionId": "6f506d61-5f48-4e08-9be1-d45a8be95836"
+  "triggerCount": 1,
+  "updatedAt": "2025-11-25T15:41:23.000Z",
+  "versionId": "86c88bad-3b06-47e4-96aa-5220e664bd52"
 }
