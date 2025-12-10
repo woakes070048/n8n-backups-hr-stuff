@@ -1,5 +1,268 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T15:34:51.095Z",
+    "createdAt": "2025-12-04T15:34:51.095Z",
+    "versionId": "1dc24cf7-5ada-4150-8725-852afc86728f",
+    "workflowId": "MsGhRTfJ2tNhU40z",
+    "nodes": [
+      {
+        "parameters": {
+          "conditions": {
+            "string": [
+              {
+                "value1": "={{ $json[\"Subject\"] }}",
+                "operation": "contains",
+                "value2": "update has been detected"
+              },
+              {
+                "value1": "={{ $json.Subject }}",
+                "operation": "contains",
+                "value2": "yukari are out-of-date"
+              },
+              {
+                "value1": "={{ $json.Subject }}",
+                "operation": "contains",
+                "value2": "yukari is out-of-date"
+              }
+            ]
+          },
+          "combineOperation": "any"
+        },
+        "id": "6394c243-2ef2-4e23-ad72-bdf5ca866e7a",
+        "name": "IF",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          300,
+          440
+        ]
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "project": {
+            "__rl": true,
+            "value": "2263595354",
+            "mode": "list",
+            "cachedResultName": "Next Actions"
+          },
+          "labels": [
+            "effort:low",
+            "computer"
+          ],
+          "content": "Update for [yukari.local](http://yukari.local:5000/)",
+          "options": {
+            "description": "={{ $json[\"textPlain\"] }}"
+          }
+        },
+        "id": "c604781c-13f8-4eed-b368-dea41c70898c",
+        "name": "Todoist",
+        "type": "n8n-nodes-base.todoist",
+        "typeVersion": 2,
+        "position": [
+          580,
+          320
+        ],
+        "credentials": {
+          "todoistOAuth2Api": {
+            "id": "NJCKeLpADTG146Dn",
+            "name": "Todoist account"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "id": "88af1bb3-fa54-4d0e-824d-0bee9e10c0ef",
+        "name": "No Operation, do nothing",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          580,
+          560
+        ]
+      },
+      {
+        "parameters": {},
+        "id": "af16376f-d073-4902-9dd3-367c56f6123e",
+        "name": "When clicking ‘Test workflow’",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -220,
+          440
+        ]
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 8
+              }
+            ]
+          }
+        },
+        "id": "21fd17e1-4b0d-404f-aed1-684fef84ddba",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -220,
+          240
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "markAsRead",
+          "messageId": "={{ $json.id }}"
+        },
+        "id": "8449a82f-974c-46e9-aeef-659b389966a4",
+        "name": "Mark email as read",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          1020,
+          320
+        ],
+        "webhookId": "f6228b9f-2c6f-4f9e-af29-98c2cbc3acbf",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "RNFupvlyj3Indiwy",
+            "name": "ritchie@macapinlac.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "returnAll": true,
+          "filters": {
+            "readStatus": "unread"
+          }
+        },
+        "id": "27800d3d-dac8-4e88-b924-48ecebe941fe",
+        "name": "Gmail - Unread emails",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          40,
+          440
+        ],
+        "webhookId": "b51c1ba5-1bdd-4ed6-856c-b76708635582",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "RNFupvlyj3Indiwy",
+            "name": "ritchie@macapinlac.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "thread",
+          "operation": "addLabels",
+          "threadId": "={{ $('IF').item.json.id }}",
+          "labelIds": [
+            "Label_1964591812771859995"
+          ]
+        },
+        "id": "39585402-37b6-46bb-9f9e-fdca49e3ebda",
+        "name": "Gmail",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          800,
+          320
+        ],
+        "webhookId": "c9e1c877-418f-4ac4-8fb2-396f774240bf",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "RNFupvlyj3Indiwy",
+            "name": "ritchie@macapinlac.com"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "IF": {
+        "main": [
+          [
+            {
+              "node": "Todoist",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Test workflow’": {
+        "main": [
+          [
+            {
+              "node": "Gmail - Unread emails",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Gmail - Unread emails",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gmail - Unread emails": {
+        "main": [
+          [
+            {
+              "node": "IF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Todoist": {
+        "main": [
+          [
+            {
+              "node": "Gmail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gmail": {
+        "main": [
+          [
+            {
+              "node": "Mark email as read",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "1dc24cf7-5ada-4150-8725-852afc86728f",
   "connections": {
     "IF": {
       "main": [
