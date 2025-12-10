@@ -1,5 +1,904 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T15:34:51.095Z",
+    "createdAt": "2025-12-04T15:34:51.095Z",
+    "versionId": "809bf2b9-9c58-420b-8e99-0fcbb057d6db",
+    "workflowId": "4vZENGkT0oDcDEvd",
+    "nodes": [
+      {
+        "parameters": {
+          "url": "={{ $json['Listing URL'] }}",
+          "options": {}
+        },
+        "id": "007726f4-063c-4302-81f2-f59f06d2c6db",
+        "name": "HTTP Request",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [
+          -1344,
+          544
+        ]
+      },
+      {
+        "parameters": {
+          "values": {
+            "string": [
+              {
+                "name": "Post Draft",
+                "value": "={{ $('Baserow - Look up').item.json['Write Up'] }}\n\n{{ $json[\"address\"] }}\n{{ $json[\"city\"] }}\n{{ $json[\"Listing Price Prefix\"] }} {{ $json[\"listing_price\"] }}\n\n{{ $json.mls_number }}\n{{ $json.beds }}\n{{ $json.baths }}\n{{ $json.sqft }}\n\n{{ $json[\"site_description\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "430b63b9-165f-4363-bdc1-b5af9a5ec1ed",
+        "name": "Set - Post Draft",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [
+          1280,
+          480
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "databaseId": 46,
+          "tableId": 582,
+          "rowId": "={{ $('Baserow - Look up').item.json.id }}",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": 5530,
+                "fieldValue": "={{ $json[\"Post Draft\"] }}"
+              },
+              {
+                "fieldId": 5532,
+                "fieldValue": "={{ $json.listing_price }}"
+              },
+              {
+                "fieldId": 5535,
+                "fieldValue": "={{ $json.mls_number }}"
+              },
+              {
+                "fieldId": 5536,
+                "fieldValue": "={{ $json.beds }}"
+              },
+              {
+                "fieldId": 5537,
+                "fieldValue": "={{ $json.baths }}"
+              },
+              {
+                "fieldId": 5538,
+                "fieldValue": "={{ $json.sqft }}"
+              },
+              {
+                "fieldId": 5539,
+                "fieldValue": "={{ $json.address }}"
+              },
+              {
+                "fieldId": 5540,
+                "fieldValue": "={{ $json.city }}"
+              },
+              {
+                "fieldId": 5533,
+                "fieldValue": "={{ $json['Post Draft'] }}"
+              },
+              {}
+            ]
+          }
+        },
+        "id": "b35e84ba-372b-442d-a98d-602d71afbf8f",
+        "name": "Baserow - Update Post Draft",
+        "type": "n8n-nodes-base.baserow",
+        "typeVersion": 1,
+        "position": [
+          1584,
+          480
+        ],
+        "credentials": {
+          "baserowApi": {
+            "id": "d2WUYcb60dACjFtq",
+            "name": "Baserow account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "Listing Price Prefix",
+                "value": "Presented at"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f9cd158e-ff1a-41dd-9bcf-00e8db9b654a",
+        "name": "Set - Presented at",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [
+          560,
+          48
+        ]
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "Listing Price Prefix",
+                "value": "Offered at"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "61c7ca8f-e935-448e-8748-d02b36ed56a4",
+        "name": "Set - Offered at",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [
+          560,
+          288
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{ $('Baserow - Look up').item.json['Use Presented By'] }}",
+                "value2": true
+              }
+            ]
+          }
+        },
+        "id": "c4896f91-3318-4af7-8fca-0d0adb0d5f8c",
+        "name": "IF = (Presented | Offered) at",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          272,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combinationMode": "mergeByPosition",
+          "options": {}
+        },
+        "id": "1a7030a7-3e62-4699-b02e-1dad6ac51868",
+        "name": "Merge - Property Listing Prefix",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 2,
+        "position": [
+          960,
+          480
+        ]
+      },
+      {
+        "parameters": {},
+        "id": "80a58156-37fa-424c-954b-2c6aa975b46f",
+        "name": "When clicking \"Execute Workflow\"",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -2400,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "databaseId": 46,
+          "tableId": 582,
+          "rowId": "={{ $json.id }}"
+        },
+        "id": "c00bfbd8-d9da-4da2-b634-4b7e5874d80e",
+        "name": "Baserow - Look up",
+        "type": "n8n-nodes-base.baserow",
+        "typeVersion": 1,
+        "position": [
+          -1568,
+          544
+        ],
+        "credentials": {
+          "baserowApi": {
+            "id": "d2WUYcb60dACjFtq",
+            "name": "Baserow account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.image_url }}",
+          "options": {}
+        },
+        "id": "5783d37a-643f-41ae-ac08-9b855fe4ccfc",
+        "name": "HTTP Request - Download photos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [
+          704,
+          1104
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nvar _images = [];\n// console.log($input.all());\nfor (const item of $input.all()) {\n\n  // console.log(item.json.raw_json);\n  \n  if (item.json.raw_json.includes(\"media\")) {\n    _data = JSON.parse(item.json.raw_json);\n    // console.log(_data.props.pageProps.listing.media);\n    images = _data.props.pageProps.listing.media;\n    // console.log(images);\n    for (const _image of images) {\n      _img_url = _image.mediaUrl.trim();\n      // _img_filename = _img_url.substring(_img_url.lastIndexOf('/')+1);\n      _images.push({\n        image_url: _img_url\n        // image_filename: _img_filename\n      });\n    }\n  }\n}\n\nreturn _images;"
+        },
+        "id": "c82a1921-e267-445b-bbb1-2464ad204464",
+        "name": "Code - Parse Images from Listing",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          432,
+          1104
+        ],
+        "alwaysOutputData": true,
+        "continueOnFail": true
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combinationMode": "multiplex",
+          "options": {}
+        },
+        "id": "6828338a-b8b8-4127-bdf2-1d2150813542",
+        "name": "Merge - Posting and Images",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 2.1,
+        "position": [
+          2368,
+          800
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const binaryProperties = {};\nfor (let i=0;i<items.length;i++) {\n  let item = items[i];\n  binaryProperties[`data${i}`] = item.binary.data;\n}\nlet address = $input.item.json.address;\nlet mls_number = $input.item.json.mls_number;\nlet post_draft = $input.item.json['Post Draft']\n\nreturn [\n  {\n    json: {\n      address: address,\n      mls_number: mls_number,\n      \"Post Draft\": post_draft,\n      image_count: Object.keys(binaryProperties).length,\n      binaryProperties: Object.keys(binaryProperties).join(','),\n    },\n    binary: binaryProperties,\n  }\n]\n"
+        },
+        "id": "663169f9-8dd6-4854-9c33-e0f183f79395",
+        "name": "Code - Group Images",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          2928,
+          608
+        ]
+      },
+      {
+        "parameters": {
+          "batchSize": 20,
+          "options": {}
+        },
+        "id": "0b6524ad-1c2e-41fe-b562-cead3d09aa84",
+        "name": "Split In Batches",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 2,
+        "position": [
+          2592,
+          800
+        ]
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "number": [
+              {
+                "name": "id",
+                "value": "={{ $json.body.items[0].id }}"
+              }
+            ],
+            "string": [
+              {
+                "name": "Listing URL",
+                "value": "={{ $json.body.items[0]['Listing URL'] }}"
+              },
+              {
+                "name": "Post Date",
+                "value": "={{ $json.body.items[0]['Post Date'] }}"
+              },
+              {
+                "name": "Write Up",
+                "value": "={{ $json.body.items[0]['Write Up'] }}"
+              },
+              {
+                "name": "Environment",
+                "value": "={{ $json.headers.environment }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "a809a544-f4ad-4ba3-94a0-575d75f4cdbc",
+        "name": "Set - Process first submitted item",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 2,
+        "position": [
+          -1856,
+          752
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "databaseId": 46,
+          "tableId": 582,
+          "rowId": "38"
+        },
+        "id": "e2796cab-58dc-465d-b4b8-a3ef87171485",
+        "name": "Baserow",
+        "type": "n8n-nodes-base.baserow",
+        "typeVersion": 1,
+        "position": [
+          -2176,
+          208
+        ],
+        "credentials": {
+          "baserowApi": {
+            "id": "d2WUYcb60dACjFtq",
+            "name": "Baserow account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "number": [
+              {
+                "name": "id",
+                "value": "={{ $json.id }}"
+              }
+            ],
+            "string": [
+              {
+                "name": "Listing URL",
+                "value": "={{ $json['Listing URL'] }}"
+              },
+              {
+                "name": "Post Date",
+                "value": "={{ $json['Post Date'] }}"
+              },
+              {
+                "name": "Write Up",
+                "value": "={{ $json['Write Up'] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "411cf675-43db-4c50-834f-1774c3281929",
+        "name": "Clean up RENNIE table data",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 2,
+        "position": [
+          -1968,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "mail",
+          "fromEmail": "support@boogienet.com",
+          "fromName": "Bien's Bottie",
+          "toEmail": "ritchie@macapinlac.com, bmatute@rennie.com",
+          "subject": "={{ $json.address }} {{ $json.mls_number }}",
+          "contentValue": "={{ $json[\"Post Draft\"] }}",
+          "additionalFields": {
+            "attachments": "={{ $json.binaryProperties }}"
+          }
+        },
+        "id": "21846d7c-f204-4828-bf89-c931f0716a99",
+        "name": "SendGrid",
+        "type": "n8n-nodes-base.sendGrid",
+        "typeVersion": 1,
+        "position": [
+          3568,
+          608
+        ],
+        "credentials": {
+          "sendGridApi": {
+            "id": "VtMovXvSYGhENdcJ",
+            "name": "SendGrid account"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {},
+        "id": "70334a5a-b192-49a7-b87c-26e4ec678df9",
+        "name": "Merge",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 2.1,
+        "position": [
+          -816,
+          560
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "string": [
+              {
+                "value1": "={{ $json.raw_json }}",
+                "operation": "isNotEmpty"
+              }
+            ]
+          }
+        },
+        "id": "90a2ca1d-0d25-4d71-b058-0921e450807f",
+        "name": "Filter",
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 1,
+        "position": [
+          -560,
+          560
+        ]
+      },
+      {
+        "parameters": {
+          "extractionValues": {
+            "values": [
+              {
+                "key": "raw_json",
+                "cssSelector": "div#photo-gallery-section script",
+                "returnValue": "html"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "43fae435-b859-44cc-8bf7-0f65bb286ba1",
+        "name": "HTML Extract - Get images from RENNIE listing",
+        "type": "n8n-nodes-base.htmlExtract",
+        "typeVersion": 1,
+        "position": [
+          -1040,
+          544
+        ]
+      },
+      {
+        "parameters": {
+          "extractionValues": {
+            "values": [
+              {
+                "key": "raw_json",
+                "cssSelector": "script#__NEXT_DATA__",
+                "returnValue": "html"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "684f070f-3e30-4056-b216-f850b9313d9b",
+        "name": "HTML Extract - Get images from Non-RENNIE listing",
+        "type": "n8n-nodes-base.htmlExtract",
+        "typeVersion": 1,
+        "position": [
+          -1040,
+          800
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "e7f8d349-47f3-4c84-8e80-0d9cb43f96a1",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "id": "877bf2a1-faaa-4ed3-884d-18147df10194",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          -2128,
+          752
+        ],
+        "webhookId": "5c1f815e-d087-455a-9cfd-104218cd793c",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "fa2MlXCEDLzmkWKW",
+            "name": "ChowKai Baserow Webhook"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nvar data = {};\n// console.log($input.all());\nfor (const item of $input.all()) {\n\n  _data = JSON.parse(item.json.raw_json);\n  console.log(_data.props.pageProps.listing);\n  data.site_description = _data.props.pageProps.listing.publicRemarks;\n  data.mls_number = _data.props.pageProps.listing.listingId;\n  data.beds = _data.props.pageProps.listing.bedroomsCount;\n  data.baths = _data.props.pageProps.listing.bathroomsCount;\n  data.sqft = _data.props.pageProps.listing.buildingAreaTotal;\n  // data.address = _data.props.pageProps.listing.address\n  data.unit_number = _data.props.pageProps.listing.unitNumber;\n  data.street_number = _data.props.pageProps.listing.streetNumber;\n  data.street_name = _data.props.pageProps.listing.streetName;\n  data.street_suffix = _data.props.pageProps.listing.streetSuffix;\n  data.subdivision = _data.props.pageProps.listing.subdivisionName;\n  data.city = _data.props.pageProps.listing.city\n  data.province = _data.props.pageProps.listing.stateOrProvince;\n  \n  data.listing_price = _data.props.pageProps.listing.price;\n  \n  /**\n  images = _data.props.pageProps.listing.media;\n  // console.log(images);\n  for (const _image of images) {\n    _img_url = _image.mediaUrl.trim();\n    // _img_filename = _img_url.substring(_img_url.lastIndexOf('/')+1);\n    _images.push({\n      image_url: _img_url\n      // image_filename: _img_filename\n    });\n    **/\n}\n\nreturn data;"
+        },
+        "id": "2e49aae4-84d2-47dc-b053-20357c25e08a",
+        "name": "Code - Parse listing information",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -224,
+          400
+        ],
+        "alwaysOutputData": true,
+        "continueOnFail": true
+      },
+      {
+        "parameters": {
+          "jsCode": "const pluralize = (val, word, plural = word + \"s\") => {\n  const _pluralize = (num, word, plural = word + \"s\") =>\n    [1, -1].includes(Number(num)) ? word : plural;\n  if (typeof val === \"object\")\n    return (num, word) => _pluralize(num, word, val[word]);\n  return _pluralize(val, word, plural);\n};\n\nconst numberWithCommas = (x) => {\n    return x.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\");\n};\n\n// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.mls_number = \"MLS @ \" + item.json.mls_number;\n  item.json.beds = item.json.beds + \" \" + pluralize(item.json.beds, \"bedroom\");\n  item.json.baths = item.json.baths + \" \" + pluralize(item.json.baths, \"bathroom\");\n  item.json.sqft = numberWithCommas(item.json.sqft) + ' sqft'\n  item.json.listing_price = \"$\" + numberWithCommas(item.json.listing_price);\n\n  item.json.address = item.json.street_number + \" \" + item.json.street_name + \" \"+ item.json.street_suffix + \" \" + item.json.subdivision + \", \" + item.json.city + \" \" + item.json.province;\n  if (item.json.unit_number != \"\") {\n    item.json.address = item.json.unit_number + \"-\" + item.json.address;\n  }\n}\n\nreturn $input.all();"
+        },
+        "id": "9485967b-324d-4d42-8fdd-24e5d4646b83",
+        "name": "Code - Format Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          0,
+          400
+        ]
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          2912,
+          944
+        ],
+        "id": "00b6539d-a149-49c2-a283-5c6e885062eb",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {
+          "fromEmail": "homelab@macapinlac.com",
+          "toEmail": "ritchie@macapinlac.com, bmatute@rennie.com",
+          "subject": "={{ $json.address }} {{ $json.mls_number }}",
+          "html": "={{ $json[\"Post Draft\"] }}",
+          "options": {
+            "attachments": "={{ $json.binaryProperties }}"
+          }
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          3184,
+          608
+        ],
+        "id": "fbf293f3-d2ac-427c-a279-06daae08efeb",
+        "name": "Send email",
+        "webhookId": "790ba334-0b53-4fb8-9745-5d590d667308",
+        "credentials": {
+          "smtp": {
+            "id": "EJhzttjGW8At1laS",
+            "name": "homelab@macapinlac.com"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "HTML Extract - Get images from RENNIE listing",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "HTML Extract - Get images from Non-RENNIE listing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set - Post Draft": {
+        "main": [
+          [
+            {
+              "node": "Baserow - Update Post Draft",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Baserow - Update Post Draft": {
+        "main": [
+          [
+            {
+              "node": "Merge - Posting and Images",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set - Presented at": {
+        "main": [
+          [
+            {
+              "node": "Merge - Property Listing Prefix",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set - Offered at": {
+        "main": [
+          [
+            {
+              "node": "Merge - Property Listing Prefix",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF = (Presented | Offered) at": {
+        "main": [
+          [
+            {
+              "node": "Set - Presented at",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Set - Offered at",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge - Property Listing Prefix": {
+        "main": [
+          [
+            {
+              "node": "Set - Post Draft",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking \"Execute Workflow\"": {
+        "main": [
+          [
+            {
+              "node": "Baserow",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Baserow - Look up": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request - Download photos": {
+        "main": [
+          [
+            {
+              "node": "Merge - Posting and Images",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Code - Parse Images from Listing": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request - Download photos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge - Posting and Images": {
+        "main": [
+          [
+            {
+              "node": "Split In Batches",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code - Group Images": {
+        "main": [
+          [
+            {
+              "node": "Send email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split In Batches": {
+        "main": [
+          [
+            {
+              "node": "Code - Group Images",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set - Process first submitted item": {
+        "main": [
+          [
+            {
+              "node": "Baserow - Look up",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Baserow": {
+        "main": [
+          [
+            {
+              "node": "Clean up RENNIE table data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Clean up RENNIE table data": {
+        "main": [
+          [
+            {
+              "node": "Baserow - Look up",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SendGrid": {
+        "main": [
+          [
+            {
+              "node": "Split In Batches",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Code - Parse listing information",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Code - Parse Images from Listing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTML Extract - Get images from RENNIE listing": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTML Extract - Get images from Non-RENNIE listing": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Set - Process first submitted item",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code - Parse listing information": {
+        "main": [
+          [
+            {
+              "node": "Code - Format Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code - Format Data": {
+        "main": [
+          [
+            {
+              "node": "IF = (Presented | Offered) at",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge - Property Listing Prefix",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Send email": {
+        "main": [
+          [
+            {
+              "node": "SendGrid",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "809bf2b9-9c58-420b-8e99-0fcbb057d6db",
   "connections": {
     "HTTP Request": {
       "main": [
