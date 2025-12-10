@@ -1,5 +1,202 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T15:34:51.095Z",
+    "createdAt": "2025-12-04T15:34:51.095Z",
+    "versionId": "d055b5dc-dc5e-4b73-87d1-7a193ce18dda",
+    "workflowId": "Gt7se5a2y8rmENmj",
+    "nodes": [
+      {
+        "parameters": {
+          "calendar": {
+            "__rl": true,
+            "value": "ritchie@macapinlac.com",
+            "mode": "list",
+            "cachedResultName": "My Calendar"
+          },
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "additionalFields": {
+            "description": "={{ $fromAI(\"event_description\", \"The event description\", \"string\") }}",
+            "summary": "={{ $fromAI(\"event_title\", \"The event title\", \"string\") }}"
+          }
+        },
+        "id": "09f201dc-94f0-4fb5-890e-712386c3ffc5",
+        "name": "CreateEvent",
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "position": [
+          -380,
+          -80
+        ],
+        "typeVersion": 1.3,
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "JdproaL6bpH4FNBR",
+            "name": "ritchie@macapinlac.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "calendar": {
+            "__rl": true,
+            "value": "ritchie@macapinlac.com",
+            "mode": "list",
+            "cachedResultName": "My Calendar"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "updateFields": {
+            "description": "={{ $fromAI(\"event_description\", \"The event description\", \"string\") }}",
+            "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+            "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+            "summary": "={{ $fromAI(\"event_title\", \"The event title\", \"string\") }}"
+          }
+        },
+        "id": "891128dd-9ad3-4a19-97be-4e6239cdf246",
+        "name": "UpdateEvent",
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "position": [
+          -260,
+          -80
+        ],
+        "typeVersion": 1.3,
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "JdproaL6bpH4FNBR",
+            "name": "ritchie@macapinlac.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "calendar": {
+            "__rl": true,
+            "value": "ritchie@macapinlac.com",
+            "mode": "list",
+            "cachedResultName": "My Calendar"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "options": {}
+        },
+        "id": "a374f0b4-9c4c-4aad-9a94-ec5ee39116d0",
+        "name": "DeleteEvent",
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "position": [
+          -140,
+          -80
+        ],
+        "typeVersion": 1.3,
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "JdproaL6bpH4FNBR",
+            "name": "ritchie@macapinlac.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "bearerAuth",
+          "path": "google-calendar-mcp"
+        },
+        "id": "1e16d3fe-65e0-49a9-8195-c0f56212ac29",
+        "name": "Google Calendar MCP",
+        "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+        "position": [
+          -500,
+          -280
+        ],
+        "webhookId": "f9d9d5ea-6f83-42c8-ae50-ee6c71789bca",
+        "typeVersion": 1,
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "IN6rstRLarIMax0J",
+            "name": "MCP Bearer Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "ritchie@macapinlac.com",
+            "mode": "list",
+            "cachedResultName": "My Calendar"
+          },
+          "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "id": "698eb1e3-27f0-4e7b-b9b7-8245c4cee0fe",
+        "name": "SearchCalendar",
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "position": [
+          -520,
+          -80
+        ],
+        "typeVersion": 1.3,
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "JdproaL6bpH4FNBR",
+            "name": "ritchie@macapinlac.com"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "CreateEvent": {
+        "ai_tool": [
+          [
+            {
+              "node": "Google Calendar MCP",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "UpdateEvent": {
+        "ai_tool": [
+          [
+            {
+              "node": "Google Calendar MCP",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DeleteEvent": {
+        "ai_tool": [
+          [
+            {
+              "node": "Google Calendar MCP",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SearchCalendar": {
+        "ai_tool": [
+          [
+            {
+              "node": "Google Calendar MCP",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "d055b5dc-dc5e-4b73-87d1-7a193ce18dda",
   "connections": {
     "CreateEvent": {
       "ai_tool": [
