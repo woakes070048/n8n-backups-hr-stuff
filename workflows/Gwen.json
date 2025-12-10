@@ -1,5 +1,327 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T15:34:51.095Z",
+    "createdAt": "2025-12-04T15:34:51.095Z",
+    "versionId": "b9e8ded8-fffa-4ef2-a9ba-db5d62ae072d",
+    "workflowId": "PHMh1x9Szb1GID8y",
+    "nodes": [
+      {
+        "parameters": {
+          "public": true,
+          "authentication": "n8nUserAuth",
+          "initialMessages": "Hi there! 👋 My name is Gwen. ",
+          "options": {
+            "allowFileUploads": true,
+            "inputPlaceholder": "How can I assist you today?",
+            "subtitle": "",
+            "title": "Gwen"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "a5273931-8df9-49d2-948e-74dcdf86f5c1",
+        "name": "When chat message received",
+        "webhookId": "80aed180-8f50-4e78-b45f-947a15bf1782"
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "=Your name is Gwen and you're an assistant that can manage email, calendar events, and todo lists. You can summarize days using the calendar and todos available to you.\n\n# Rules\n\n- Do not assume, be accurate and truthful\n- Do not use a tool if you do not need to use it.\n- Confirm who you are talking to.\n- If there is no tool to handle the particular task, do not try to action on it. Send a message to identify the gap.\n- If you are receiving an error, output this error\n\n# Tasks\n\n**Providing an overview of a day or specific date**\n\n- Set the date of the request for the given date\n- Start your analysis at 00:01:00\n- End your analysis at 11:59:59\n- Use the \"Search Calendar\" to show me entries for my calendar\n- Show me todos that are due\n- Show me tasks that are due for that day.\n- If it is for today, show me todos that are also overdue.\n\n# Further context\n\nToday is {{ $now }}.",
+            "passthroughBinaryImages": true
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.9,
+        "position": [
+          220,
+          0
+        ],
+        "id": "e01fa936-6c00-48bf-85fd-f063d7190f1c",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4o-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          100,
+          220
+        ],
+        "id": "9a48389e-3856-43b4-ba8e-9488ef57283f",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "ojJVqUWOFMKOOLeQ",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 10
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          260,
+          220
+        ],
+        "id": "589a8be5-24ea-4b1f-b88a-5008776dd0d9",
+        "name": "Simple Memory"
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "project": {
+            "__rl": true,
+            "value": "2218815165",
+            "mode": "list",
+            "cachedResultName": "Inbox"
+          },
+          "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Content', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.todoistTool",
+        "typeVersion": 2.1,
+        "position": [
+          1120,
+          320
+        ],
+        "id": "08a6de94-5d5d-4d59-bd61-4226c05b3a1e",
+        "name": "Create Todo",
+        "credentials": {
+          "todoistOAuth2Api": {
+            "id": "NJCKeLpADTG146Dn",
+            "name": "Todoist account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "operation": "getAll",
+          "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+          "filters": {}
+        },
+        "type": "n8n-nodes-base.todoistTool",
+        "typeVersion": 2.1,
+        "position": [
+          1240,
+          320
+        ],
+        "id": "7c15b211-0c20-4e7f-baf2-6792a5171625",
+        "name": "Find Todos",
+        "credentials": {
+          "todoistOAuth2Api": {
+            "id": "NJCKeLpADTG146Dn",
+            "name": "Todoist account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sseEndpoint": "https://automation.macapinlac.network/mcp/gmail-enhanced/sse",
+          "authentication": "bearerAuth"
+        },
+        "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+        "typeVersion": 1,
+        "position": [
+          740,
+          340
+        ],
+        "id": "d355d51e-b3df-45ae-9dae-579edf1730b7",
+        "name": "Gmail MCP Server (Ritchie)",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "IN6rstRLarIMax0J",
+            "name": "MCP Bearer Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sseEndpoint": "https://automation.macapinlac.network/mcp/google-calendar-mcp/sse",
+          "authentication": "bearerAuth"
+        },
+        "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+        "typeVersion": 1,
+        "position": [
+          560,
+          340
+        ],
+        "id": "51b8e133-61a6-46e8-bdac-f386ecfa4ef2",
+        "name": "Google Calendar MCP (Ritchie)",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "IN6rstRLarIMax0J",
+            "name": "MCP Bearer Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "operation": "update",
+          "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}",
+          "updateFields": {
+            "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Content', ``, 'string') }}"
+          }
+        },
+        "type": "n8n-nodes-base.todoistTool",
+        "typeVersion": 2.1,
+        "position": [
+          1000,
+          320
+        ],
+        "id": "62efbd52-7c68-4117-b858-083ab89078cb",
+        "name": "Update Todo",
+        "credentials": {
+          "todoistOAuth2Api": {
+            "id": "NJCKeLpADTG146Dn",
+            "name": "Todoist account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "operation": "delete",
+          "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}"
+        },
+        "type": "n8n-nodes-base.todoistTool",
+        "typeVersion": 2.1,
+        "position": [
+          1360,
+          320
+        ],
+        "id": "f9817673-6996-45fb-9a35-b1d0d3f235a1",
+        "name": "Delete Todo",
+        "credentials": {
+          "todoistOAuth2Api": {
+            "id": "NJCKeLpADTG146Dn",
+            "name": "Todoist account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Simple Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create Todo": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Find Todos": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gmail MCP Server (Ritchie)": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Calendar MCP (Ritchie)": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update Todo": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete Todo": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "b9e8ded8-fffa-4ef2-a9ba-db5d62ae072d",
   "connections": {
     "When chat message received": {
       "main": [
