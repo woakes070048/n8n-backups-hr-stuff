@@ -1,5 +1,406 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T15:34:51.095Z",
+    "createdAt": "2025-12-04T15:34:51.095Z",
+    "versionId": "462a26f9-f1c1-465a-94f9-80424cb15923",
+    "workflowId": "Y3xsLlcEz2dkZAEA",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "get",
+          "databaseId": 33,
+          "tableId": 583,
+          "rowId": "={{ $json.id }}"
+        },
+        "id": "65471095-23b2-4c9e-a9a6-69d8e4aed338",
+        "name": "Baserow",
+        "type": "n8n-nodes-base.baserow",
+        "typeVersion": 1,
+        "position": [
+          860,
+          520
+        ],
+        "credentials": {
+          "baserowApi": {
+            "id": "d2WUYcb60dACjFtq",
+            "name": "Baserow account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "mergeByFields": {
+            "values": [
+              {
+                "field1": "id",
+                "field2": "id"
+              }
+            ]
+          },
+          "joinMode": "keepEverything",
+          "options": {}
+        },
+        "id": "20d2efdc-78be-4c81-907e-ae98b985af06",
+        "name": "Merge",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 2.1,
+        "position": [
+          1840,
+          540
+        ]
+      },
+      {
+        "parameters": {
+          "fields": {
+            "values": [
+              {
+                "name": "Frontmatter",
+                "stringValue": "=---\nname: {{ $json['Name'] }}\nmeeting_date: {{ $json['Next meeting'] }}\nstatus: incomplete\nmonica:\n  summary: One on one\n  contact_id: {{ $json.monica_contact_id }}\n  activity_id: {{ $json.monica_activity_id }}\n\n---"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8020a732-6cf5-481c-aa2b-0969855aed71",
+        "name": "Build Frontmatter",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          2040,
+          540
+        ]
+      },
+      {
+        "parameters": {
+          "setAllData": false,
+          "destinationKey": "nextcloud_template",
+          "options": {}
+        },
+        "id": "0fae9bb7-910e-4f18-9593-9d08c4cdc4aa",
+        "name": "Incorporate template file",
+        "type": "n8n-nodes-base.moveBinaryData",
+        "typeVersion": 1.1,
+        "position": [
+          1560,
+          780
+        ]
+      },
+      {
+        "parameters": {
+          "fields": {
+            "values": [
+              {
+                "name": "notes_data",
+                "stringValue": "={{ $json.Frontmatter }}\n\n{{ $json[\"nextcloud_template\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "6b2eaf1c-fc1c-4c46-ba27-a2418b8c7ddf",
+        "name": "Build note",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          2260,
+          540
+        ]
+      },
+      {
+        "parameters": {
+          "fields": {
+            "values": [
+              {
+                "name": "nextcloud_template_path",
+                "stringValue": "=/Journal/Templates/{{ $json['Known From'].value.toLowerCase() }}.md"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "2ead2233-7efa-404a-bc36-842d8dcdbe81",
+        "name": "Set Template Path",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          1080,
+          520
+        ]
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "operation": "download",
+          "path": "={{ $json.nextcloud_template_path }}"
+        },
+        "id": "0300c636-bedd-4a3c-9748-5104cc6a1766",
+        "name": "Download MD template",
+        "type": "n8n-nodes-base.nextCloud",
+        "typeVersion": 1,
+        "position": [
+          1340,
+          780
+        ],
+        "alwaysOutputData": true,
+        "notesInFlow": true,
+        "credentials": {
+          "nextCloudOAuth2Api": {
+            "id": "fLXJCCubxnE7gtwF",
+            "name": "NextCloud account"
+          }
+        },
+        "notes": "Need to create a /Journal/Templates/{{ Known From }}.md file regardless."
+      },
+      {
+        "parameters": {
+          "authentication": "webhook",
+          "content": "=New 1:1 created: {{ $('Build note').item.json.Name }} with template: '{{ $('Build note').item.json[\"nextcloud_template_path\"] }}'",
+          "options": {}
+        },
+        "id": "e0fbd549-cb81-4483-b2b3-c1c63d0ea8a2",
+        "name": "Discord",
+        "type": "n8n-nodes-base.discord",
+        "typeVersion": 2,
+        "position": [
+          2680,
+          540
+        ],
+        "credentials": {
+          "discordWebhookApi": {
+            "id": "hf6RAiISd5zNhDZr",
+            "name": "Discord Webhook account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "path": "=/Journal/Inbox/{{ $json.Name }}.md",
+          "fileContent": "={{ $json.notes_data }}"
+        },
+        "id": "651fdcc2-3313-46b9-b94d-1c822161f82c",
+        "name": "Nextcloud",
+        "type": "n8n-nodes-base.nextCloud",
+        "typeVersion": 1,
+        "position": [
+          2480,
+          540
+        ],
+        "credentials": {
+          "nextCloudOAuth2Api": {
+            "id": "fLXJCCubxnE7gtwF",
+            "name": "NextCloud account"
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "b26c8119-d87a-4a6c-97ae-9ddb8fc23874",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          240,
+          520
+        ],
+        "id": "cf4daa3e-7a08-4c52-9353-4cecbc9113ee",
+        "name": "Webhook",
+        "webhookId": "b26c8119-d87a-4a6c-97ae-9ddb8fc23874",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "VyI3OVswBv8ZksDK",
+            "name": "1:1 Baserow Webhook"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "body.items",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          440,
+          520
+        ],
+        "id": "cb94e412-03af-4f4f-9f01-b112ef4d249a",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "aaf45582-bd2c-4e77-8b7a-80d6bc8ec40f",
+                "leftValue": "={{ $json['Build Note'] }}",
+                "rightValue": "true",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          660,
+          520
+        ],
+        "id": "3a0dd964-d715-451a-bd97-bcd0b6a72637",
+        "name": "Filter"
+      }
+    ],
+    "connections": {
+      "Baserow": {
+        "main": [
+          [
+            {
+              "node": "Set Template Path",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Build Frontmatter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Frontmatter": {
+        "main": [
+          [
+            {
+              "node": "Build note",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Incorporate template file": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Build note": {
+        "main": [
+          [
+            {
+              "node": "Nextcloud",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set Template Path": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Download MD template",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download MD template": {
+        "main": [
+          [
+            {
+              "node": "Incorporate template file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Nextcloud": {
+        "main": [
+          [
+            {
+              "node": "Discord",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Baserow",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "462a26f9-f1c1-465a-94f9-80424cb15923",
   "connections": {
     "Baserow": {
       "main": [
