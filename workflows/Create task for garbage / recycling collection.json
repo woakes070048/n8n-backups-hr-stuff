@@ -1,5 +1,245 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T15:34:51.095Z",
+    "createdAt": "2025-12-04T15:34:51.095Z",
+    "versionId": "49447781-09d0-4ab1-8186-b887609a52e6",
+    "workflowId": "QIuj7vCrz3au6Etp",
+    "nodes": [
+      {
+        "parameters": {},
+        "id": "fd8c0614-8017-47fc-b837-f0831101e009",
+        "name": "When clicking \"Execute Workflow\"",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -600,
+          420
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "c473kjhn0n8b79nj1f06o81unmui8mbp@import.calendar.google.com",
+            "mode": "list",
+            "cachedResultName": "3236 E 6th Ave, Vancouver"
+          },
+          "returnAll": true,
+          "options": {
+            "timeMin": "={{ $today.plus({ day: 1 }) }}",
+            "timeMax": "={{ $today.plus({ day: 7 }) }}"
+          }
+        },
+        "id": "17522a82-9b3b-4ebc-8098-b8c39e786ad9",
+        "name": "Google Calendar",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 1,
+        "position": [
+          -380,
+          420
+        ],
+        "alwaysOutputData": true,
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "JdproaL6bpH4FNBR",
+            "name": "ritchie@macapinlac.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "string": [
+              {
+                "value1": "={{ $json.summary.replaceAll(',','').toLowerCase() }}",
+                "operation": "contains",
+                "value2": "=recycling"
+              }
+            ]
+          }
+        },
+        "id": "46181452-592f-4691-8296-554581c16cb4",
+        "name": "IF",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          80,
+          420
+        ]
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "project": {
+            "__rl": true,
+            "value": "2263595354",
+            "mode": "list",
+            "cachedResultName": "Next Actions"
+          },
+          "labels": [
+            "effort:low",
+            "home"
+          ],
+          "content": "=Take out {{ $json.summary.toLowerCase() }}",
+          "options": {
+            "dueDateTime": "={{ $json.start.date_before }} 19:00:00"
+          }
+        },
+        "id": "4fd3b9a1-ad1b-43f3-8e3e-c48ad283fccb",
+        "name": "Todoist",
+        "type": "n8n-nodes-base.todoist",
+        "typeVersion": 2,
+        "position": [
+          340,
+          200
+        ],
+        "credentials": {
+          "todoistOAuth2Api": {
+            "id": "NJCKeLpADTG146Dn",
+            "name": "Todoist account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks",
+                "triggerAtHour": 3
+              }
+            ]
+          }
+        },
+        "id": "000a9fc0-1762-4f61-ab3b-1bd350a53df9",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -600,
+          240
+        ]
+      },
+      {
+        "parameters": {
+          "values": {
+            "string": [
+              {
+                "name": "start.date_before",
+                "value": "={{ DateTime.fromISO($json.start.date).minus({days:1}).format('yyyy-MM-dd') }}"
+              }
+            ]
+          },
+          "options": {
+            "dotNotation": true
+          }
+        },
+        "id": "d9a742d0-d787-4818-b7aa-cfddd358ae8a",
+        "name": "Set",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 2,
+        "position": [
+          -160,
+          420
+        ]
+      },
+      {
+        "parameters": {
+          "authentication": "webhook",
+          "content": "=Created todo: {{ $json.content }} ({{ $json.due.string }})",
+          "options": {}
+        },
+        "id": "451cbf25-323d-45fe-b3b3-af866eec5266",
+        "name": "Discord",
+        "type": "n8n-nodes-base.discord",
+        "typeVersion": 2,
+        "position": [
+          560,
+          200
+        ],
+        "credentials": {
+          "discordWebhookApi": {
+            "id": "hf6RAiISd5zNhDZr",
+            "name": "Discord Webhook account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When clicking \"Execute Workflow\"": {
+        "main": [
+          [
+            {
+              "node": "Google Calendar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Calendar": {
+        "main": [
+          [
+            {
+              "node": "Set",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF": {
+        "main": [
+          [
+            {
+              "node": "Todoist",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Todoist": {
+        "main": [
+          [
+            {
+              "node": "Discord",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Google Calendar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set": {
+        "main": [
+          [
+            {
+              "node": "IF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "49447781-09d0-4ab1-8186-b887609a52e6",
   "connections": {
     "When clicking \"Execute Workflow\"": {
       "main": [
