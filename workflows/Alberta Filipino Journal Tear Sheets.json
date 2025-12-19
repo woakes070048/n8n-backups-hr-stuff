@@ -1,0 +1,1226 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-19T13:05:10.629Z",
+    "createdAt": "2025-12-19T13:05:10.629Z",
+    "versionId": "8d764e07-cc51-449a-90e9-8dfbd1e224ca",
+    "workflowId": "5i5EKNHosLhMG68L",
+    "nodes": [
+      {
+        "parameters": {
+          "databaseId": 265,
+          "tableId": 954,
+          "returnAll": true,
+          "additionalOptions": {}
+        },
+        "type": "n8n-nodes-base.baserow",
+        "typeVersion": 1,
+        "position": [
+          656,
+          0
+        ],
+        "id": "ddc2fc29-7c0f-4f55-8ebc-06034271d760",
+        "name": "Get All Tear Sheets",
+        "credentials": {
+          "baserowApi": {
+            "id": "d2WUYcb60dACjFtq",
+            "name": "Baserow account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "f394a5d1-b48b-41ba-959d-dc0efbd6e59e",
+                "leftValue": "={{ $json.Issue.value }}",
+                "rightValue": "={{ $('Set Issue').item.json.Issue }}",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.3,
+        "position": [
+          880,
+          0
+        ],
+        "id": "b9e019ea-52d2-45e8-8f7d-90fe532183d7",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "databaseId": 265,
+          "tableId": 956,
+          "limit": 1,
+          "additionalOptions": {
+            "filters": {
+              "fields": [
+                {
+                  "field": 9377,
+                  "value": "={{ $json.Issue.value }}"
+                }
+              ]
+            }
+          }
+        },
+        "type": "n8n-nodes-base.baserow",
+        "typeVersion": 1,
+        "position": [
+          1120,
+          192
+        ],
+        "id": "0ecb26c9-81f4-4e3d-9a10-1e943a17c8aa",
+        "name": "Get many rows",
+        "credentials": {
+          "baserowApi": {
+            "id": "d2WUYcb60dACjFtq",
+            "name": "Baserow account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineByPosition",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          1328,
+          16
+        ],
+        "id": "99df0e7b-1557-4c32-af9e-b7ab86b52b48",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "Advertisers",
+          "include": "allOtherFields",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1552,
+          16
+        ],
+        "id": "28b61130-f583-4f93-ad13-92c813e8a648",
+        "name": "Split Out by Advertiser"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "6c9826e7-b214-49de-b1d3-8578914a8f25",
+                "name": "advertiser_id",
+                "value": "={{ $json.Advertisers.id }}",
+                "type": "number"
+              },
+              {
+                "id": "af7f0e89-f001-4acf-8859-f88d50bb0da1",
+                "name": "advertiser_name",
+                "value": "={{ $json.Advertisers.value }}",
+                "type": "string"
+              },
+              {
+                "id": "06389308-c635-45b3-a4cc-3a893a403034",
+                "name": "Issue Name",
+                "value": "={{ $json.Issue }}",
+                "type": "string"
+              },
+              {
+                "id": "0f5a2938-2c1c-452c-b5b6-1a722bfb1b06",
+                "name": "Issue Volume",
+                "value": "={{ $json.Volume }}",
+                "type": "string"
+              },
+              {
+                "id": "346ab8d7-a03d-4764-854c-5c6c52ad16f9",
+                "name": "Issue Number",
+                "value": "={{ $json.Number }}",
+                "type": "string"
+              },
+              {
+                "id": "7ad8f033-e352-43b1-b56f-4d3bca12128d",
+                "name": "Issue Page Filename",
+                "value": "=AFJ_{{ DateTime.fromISO($json[\"Sent to Publisher\"]).format(\"yyyyMMdd\") }}_A{{ String($json['Page Number']).padStart(3,\"0\") }}_P1a.pdf",
+                "type": "string"
+              },
+              {
+                "id": "40d2fd4e-efb2-47fe-9c00-31c0a9d53b7f",
+                "name": "Issue Path",
+                "value": "=/Alberta Filipino Journal/Final Issues/{{ $json.Issue }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1760,
+          16
+        ],
+        "id": "71dc034b-f4fe-4ab2-9c9a-0a34c39b7b88",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "databaseId": 265,
+          "tableId": 955,
+          "rowId": "={{ $json.Advertisers.id }}"
+        },
+        "type": "n8n-nodes-base.baserow",
+        "typeVersion": 1,
+        "position": [
+          1760,
+          192
+        ],
+        "id": "4e9c4f11-a98f-4de4-81e7-7af9ccad6db8",
+        "name": "Get Advertiser",
+        "credentials": {
+          "baserowApi": {
+            "id": "d2WUYcb60dACjFtq",
+            "name": "Baserow account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "advanced": true,
+          "mergeByFields": {
+            "values": [
+              {
+                "field1": "advertiser_id",
+                "field2": "id"
+              }
+            ]
+          },
+          "joinMode": "keepEverything",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          2208,
+          32
+        ],
+        "id": "9e927a1e-b5dc-47c1-b98d-e2cb86c5f662",
+        "name": "Merge1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "90019a58-ba87-4d34-8cc4-b41bf95e0994",
+                "name": "id",
+                "value": "={{ $json.id }}",
+                "type": "number"
+              },
+              {
+                "id": "266c8765-48d0-42ea-bae4-3a0fbdd08134",
+                "name": "advertiser_path",
+                "value": "={{ $json[\"Path Name\"] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1968,
+          192
+        ],
+        "id": "4b792722-b1b4-4b1e-8e30-b9191a6a4273",
+        "name": "Add Advertiser Path"
+      },
+      {
+        "parameters": {
+          "operation": "copy",
+          "path": "={{ $json[\"Issue Path\"] }}/{{ $json[\"Issue Page Filename\"] }}",
+          "toPath": "=/Alberta Filipino Journal/Advertisers/{{ $json.advertiser_path }}/{{ $json.advertiser_name }} - AD - {{ $json['Issue Name'] }}.pdf"
+        },
+        "type": "n8n-nodes-base.nextCloud",
+        "typeVersion": 1,
+        "position": [
+          2416,
+          32
+        ],
+        "id": "dde4909d-2f43-4539-98c6-28ceb2e2acbd",
+        "name": "Copy a file",
+        "credentials": {
+          "nextCloudApi": {
+            "id": "Pzbr0MJ7hyZ2ACzw",
+            "name": "NextCloud account (melanie)"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          2624,
+          192
+        ],
+        "id": "eb65f473-0b34-45b7-b7bc-bff49cb7850f",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "fromEmail": "homelab@macapinlac.com",
+          "toEmail": "ritchie@macapinlac.com",
+          "subject": "[Alberta Filipino Journal] Error: Tear Sheets Script",
+          "emailFormat": "text",
+          "text": "=Error on these advertisers:\n\n{{ $json.data.map(item => `* ${item.advertiser_name} (Error: ${item.error})`).join('\\n')  }}\n\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          2832,
+          192
+        ],
+        "id": "e4247704-ebb4-4f6d-bc81-92f6ec80ed69",
+        "name": "Send error email",
+        "webhookId": "27ccee88-059b-4873-bac8-5125cf03fbd4",
+        "credentials": {
+          "smtp": {
+            "id": "EJhzttjGW8At1laS",
+            "name": "homelab@macapinlac.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "74698eb7-84ad-4379-b42f-fff81891607f",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -48,
+          224
+        ],
+        "id": "c4c9f595-6f4d-4dd0-be65-333b8977b541",
+        "name": "Webhook",
+        "webhookId": "74698eb7-84ad-4379-b42f-fff81891607f",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "dLRS4oox9muSlPpq",
+            "name": "Alberta Filipino Journal HeaderAuth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "247d8d06-c231-417b-b605-0ea4e104d8b7",
+                "leftValue": "={{ $json.body.items[0].Action.id }}",
+                "rightValue": 3840,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          160,
+          224
+        ],
+        "id": "87de82cd-dd09-4c7f-8f42-c6889c28a2f8",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "1bf59821-c13a-4256-a1e3-9911b2da0d63",
+                "name": "Issue",
+                "value": "={{ $json.body.items[0].Issue }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          448,
+          0
+        ],
+        "id": "e7d91c1d-194a-498b-a2ae-51b9a1c470cd",
+        "name": "Set Issue"
+      }
+    ],
+    "connections": {
+      "Get All Tear Sheets": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Get many rows",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many rows": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Split Out by Advertiser",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out by Advertiser": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Get Advertiser",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Advertiser": {
+        "main": [
+          [
+            {
+              "node": "Add Advertiser Path",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Add Advertiser Path": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge1": {
+        "main": [
+          [
+            {
+              "node": "Copy a file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Copy a file": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "Send error email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Set Issue",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set Issue": {
+        "main": [
+          [
+            {
+              "node": "Get All Tear Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Ritchie Macapinlac",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "8d764e07-cc51-449a-90e9-8dfbd1e224ca",
+  "connections": {
+    "Get All Tear Sheets": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Split Out by Advertiser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out by Advertiser": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Advertiser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Advertiser": {
+      "main": [
+        [
+          {
+            "node": "Add Advertiser Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Advertiser Path": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Copy a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy a file": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Send error email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Set Issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Issue": {
+      "main": [
+        [
+          {
+            "node": "Get All Tear Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-19T01:45:03.264Z",
+  "id": "5i5EKNHosLhMG68L",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Alberta Filipino Journal Tear Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "databaseId": 265,
+        "tableId": 954,
+        "returnAll": true,
+        "additionalOptions": {}
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        656,
+        0
+      ],
+      "id": "ddc2fc29-7c0f-4f55-8ebc-06034271d760",
+      "name": "Get All Tear Sheets",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f394a5d1-b48b-41ba-959d-dc0efbd6e59e",
+              "leftValue": "={{ $json.Issue.value }}",
+              "rightValue": "={{ $('Set Issue').item.json.Issue }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        880,
+        0
+      ],
+      "id": "b9e019ea-52d2-45e8-8f7d-90fe532183d7",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "databaseId": 265,
+        "tableId": 956,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 9377,
+                "value": "={{ $json.Issue.value }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        192
+      ],
+      "id": "0ecb26c9-81f4-4e3d-9a10-1e943a17c8aa",
+      "name": "Get many rows",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1328,
+        16
+      ],
+      "id": "99df0e7b-1557-4c32-af9e-b7ab86b52b48",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "Advertisers",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        16
+      ],
+      "id": "28b61130-f583-4f93-ad13-92c813e8a648",
+      "name": "Split Out by Advertiser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6c9826e7-b214-49de-b1d3-8578914a8f25",
+              "name": "advertiser_id",
+              "value": "={{ $json.Advertisers.id }}",
+              "type": "number"
+            },
+            {
+              "id": "af7f0e89-f001-4acf-8859-f88d50bb0da1",
+              "name": "advertiser_name",
+              "value": "={{ $json.Advertisers.value }}",
+              "type": "string"
+            },
+            {
+              "id": "06389308-c635-45b3-a4cc-3a893a403034",
+              "name": "Issue Name",
+              "value": "={{ $json.Issue }}",
+              "type": "string"
+            },
+            {
+              "id": "0f5a2938-2c1c-452c-b5b6-1a722bfb1b06",
+              "name": "Issue Volume",
+              "value": "={{ $json.Volume }}",
+              "type": "string"
+            },
+            {
+              "id": "346ab8d7-a03d-4764-854c-5c6c52ad16f9",
+              "name": "Issue Number",
+              "value": "={{ $json.Number }}",
+              "type": "string"
+            },
+            {
+              "id": "7ad8f033-e352-43b1-b56f-4d3bca12128d",
+              "name": "Issue Page Filename",
+              "value": "=AFJ_{{ DateTime.fromISO($json[\"Sent to Publisher\"]).format(\"yyyyMMdd\") }}_A{{ String($json['Page Number']).padStart(3,\"0\") }}_P1a.pdf",
+              "type": "string"
+            },
+            {
+              "id": "40d2fd4e-efb2-47fe-9c00-31c0a9d53b7f",
+              "name": "Issue Path",
+              "value": "=/Alberta Filipino Journal/Final Issues/{{ $json.Issue }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1760,
+        16
+      ],
+      "id": "71dc034b-f4fe-4ab2-9c9a-0a34c39b7b88",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "databaseId": 265,
+        "tableId": 955,
+        "rowId": "={{ $json.Advertisers.id }}"
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        192
+      ],
+      "id": "4e9c4f11-a98f-4de4-81e7-7af9ccad6db8",
+      "name": "Get Advertiser",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "advanced": true,
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "advertiser_id",
+              "field2": "id"
+            }
+          ]
+        },
+        "joinMode": "keepEverything",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2208,
+        32
+      ],
+      "id": "9e927a1e-b5dc-47c1-b98d-e2cb86c5f662",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "90019a58-ba87-4d34-8cc4-b41bf95e0994",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "266c8765-48d0-42ea-bae4-3a0fbdd08134",
+              "name": "advertiser_path",
+              "value": "={{ $json[\"Path Name\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1968,
+        192
+      ],
+      "id": "4b792722-b1b4-4b1e-8e30-b9191a6a4273",
+      "name": "Add Advertiser Path"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "path": "={{ $json[\"Issue Path\"] }}/{{ $json[\"Issue Page Filename\"] }}",
+        "toPath": "=/Alberta Filipino Journal/Advertisers/{{ $json.advertiser_path }}/{{ $json.advertiser_name }} - AD - {{ $json['Issue Name'] }}.pdf"
+      },
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        2416,
+        32
+      ],
+      "id": "dde4909d-2f43-4539-98c6-28ceb2e2acbd",
+      "name": "Copy a file",
+      "credentials": {
+        "nextCloudApi": {
+          "id": "Pzbr0MJ7hyZ2ACzw",
+          "name": "NextCloud account (melanie)"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2624,
+        192
+      ],
+      "id": "eb65f473-0b34-45b7-b7bc-bff49cb7850f",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "fromEmail": "homelab@macapinlac.com",
+        "toEmail": "ritchie@macapinlac.com",
+        "subject": "[Alberta Filipino Journal] Error: Tear Sheets Script",
+        "emailFormat": "text",
+        "text": "=Error on these advertisers:\n\n{{ $json.data.map(item => `* ${item.advertiser_name} (Error: ${item.error})`).join('\\n')  }}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2832,
+        192
+      ],
+      "id": "e4247704-ebb4-4f6d-bc81-92f6ec80ed69",
+      "name": "Send error email",
+      "webhookId": "27ccee88-059b-4873-bac8-5125cf03fbd4",
+      "credentials": {
+        "smtp": {
+          "id": "EJhzttjGW8At1laS",
+          "name": "homelab@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "74698eb7-84ad-4379-b42f-fff81891607f",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -48,
+        224
+      ],
+      "id": "c4c9f595-6f4d-4dd0-be65-333b8977b541",
+      "name": "Webhook",
+      "webhookId": "74698eb7-84ad-4379-b42f-fff81891607f",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "dLRS4oox9muSlPpq",
+          "name": "Alberta Filipino Journal HeaderAuth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "247d8d06-c231-417b-b605-0ea4e104d8b7",
+              "leftValue": "={{ $json.body.items[0].Action.id }}",
+              "rightValue": 3840,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        160,
+        224
+      ],
+      "id": "87de82cd-dd09-4c7f-8f42-c6889c28a2f8",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1bf59821-c13a-4256-a1e3-9911b2da0d63",
+              "name": "Issue",
+              "value": "={{ $json.body.items[0].Issue }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        0
+      ],
+      "id": "e7d91c1d-194a-498b-a2ae-51b9a1c470cd",
+      "name": "Set Issue"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "automation.macapinlac.network",
+            "user-agent": "python-requests/2.32.5",
+            "content-length": "559",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "albertafilipinojournal": "3VeZl**O5flNMt",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "75.156.53.61",
+            "cf-ipcountry": "CA",
+            "cf-ray": "9b0709e90be1cb87-YVR",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "content-type": "application/json",
+            "x-baserow-delivery": "d09ed6ab-01be-4f3d-9a72-0b6846a8731d",
+            "x-baserow-event": "rows.updated",
+            "x-forwarded-for": "162.159.102.21",
+            "x-forwarded-host": "automation.macapinlac.network",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "96e2da72d9fc",
+            "x-real-ip": "162.159.102.21"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "table_id": 956,
+            "database_id": 265,
+            "workspace_id": 167,
+            "webhook_id": 10,
+            "event_id": "d09ed6ab-01be-4f3d-9a72-0b6846a8731d",
+            "event_type": "rows.updated",
+            "items": [
+              {
+                "id": 1,
+                "order": "1.00000000000000000000",
+                "Issue": "December 2025",
+                "Volume": "18",
+                "Number": "12",
+                "Sent to Publisher": "2025-12-18",
+                "Action": {
+                  "id": 3840,
+                  "value": "Process Tear Sheets",
+                  "color": "light-purple"
+                }
+              }
+            ],
+            "old_items": [
+              {
+                "id": 1,
+                "order": "1.00000000000000000000",
+                "Issue": "December 2025",
+                "Volume": "18",
+                "Number": "12",
+                "Sent to Publisher": "2025-12-18",
+                "Action": null
+              }
+            ]
+          },
+          "webhookUrl": "https://automation.macapinlac.network/webhook/74698eb7-84ad-4379-b42f-fff81891607f",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-19T01:45:03.272Z",
+      "createdAt": "2025-12-19T01:45:03.272Z",
+      "role": "workflow:owner",
+      "workflowId": "5i5EKNHosLhMG68L",
+      "projectId": "rkuUtfbV4pRJvn4a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-19T13:05:10.628Z",
+  "versionId": "8d764e07-cc51-449a-90e9-8dfbd1e224ca"
+}
