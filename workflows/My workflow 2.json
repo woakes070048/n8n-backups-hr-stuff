@@ -7,29 +7,7 @@
       "main": [
         [
           {
-            "node": "List Advertiser Folder",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "List Advertiser Folder": {
-      "main": [
-        [
-          {
-            "node": "Clean Up Paths",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Clean Up Paths": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
+            "node": "Get many rows",
             "type": "main",
             "index": 0
           }
@@ -40,59 +18,18 @@
       "main": [
         [
           {
-            "node": "isEmpty?",
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "Edit Fields": {
       "main": [
         [
           {
-            "node": "Create a row",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Over Items": {
-      "main": [
-        [],
-        [
-          {
-            "node": "Get many rows",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create a row": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "isEmpty?": {
-      "main": [
-        [
-          {
-            "node": "If",
+            "node": "Update a row",
             "type": "main",
             "index": 0
           }
@@ -100,8 +37,8 @@
       ]
     }
   },
-  "createdAt": "2025-12-19T13:06:47.321Z",
-  "id": "djGQKUPqCPeDqjad",
+  "createdAt": "2025-12-19T22:18:04.639Z",
+  "id": "TnNPH0HNlbjWZmMy",
   "isArchived": false,
   "meta": {
     "templateCredsSetupCompleted": true
@@ -116,56 +53,24 @@
         0,
         0
       ],
-      "id": "ceafd6f2-53f3-4203-baa0-760e1df9a669",
+      "id": "dc9365f3-44ca-4d95-96e1-cde2e953ecad",
       "name": "When clicking ‘Execute workflow’"
     },
     {
       "parameters": {
-        "resource": "folder",
-        "operation": "list",
-        "path": "/Alberta Filipino Journal/Advertisers/"
+        "databaseId": 265,
+        "tableId": 955,
+        "returnAll": true,
+        "additionalOptions": {}
       },
-      "type": "n8n-nodes-base.nextCloud",
+      "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
         208,
         0
       ],
-      "id": "a217f51c-d054-408a-ac36-9948dc2c49c7",
-      "name": "List Advertiser Folder",
-      "credentials": {
-        "nextCloudApi": {
-          "id": "Pzbr0MJ7hyZ2ACzw",
-          "name": "NextCloud account (melanie)"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "create",
-        "databaseId": 265,
-        "tableId": 955,
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": 9372,
-              "fieldValue": "={{ $('Loop Over Items').item.json.advertiser }}"
-            },
-            {
-              "fieldId": 9373,
-              "fieldValue": "={{ $('Loop Over Items').item.json.advertiser }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.baserow",
-      "typeVersion": 1,
-      "position": [
-        1584,
-        336
-      ],
-      "id": "40e12622-7f84-42e8-8f52-02ac6e4c5861",
-      "name": "Create a row",
+      "id": "760710fe-5b76-412f-aa4f-d63dc165fcde",
+      "name": "Get many rows",
       "credentials": {
         "baserowApi": {
           "id": "d2WUYcb60dACjFtq",
@@ -178,10 +83,22 @@
         "assignments": {
           "assignments": [
             {
-              "id": "0609c548-9535-4078-9373-336fc88af521",
-              "name": "advertiser",
-              "value": "={{ $json.path.replaceAll(\"%20\",\" \").replaceAll(\"Alberta Filipino Journal/Advertisers/\",\"\").replaceAll(\"/\",\"\") }}",
+              "id": "de262e85-3621-48af-bcfd-e7289122cfbe",
+              "name": "Name",
+              "value": "={{ $json.Name.urlDecode() }}",
               "type": "string"
+            },
+            {
+              "id": "0f61ec31-0242-40ed-a29c-a0f7498bb75d",
+              "name": "Path Name",
+              "value": "={{ $json['Path Name'].urlDecode() }}",
+              "type": "string"
+            },
+            {
+              "id": "92edbd87-e54e-4de3-8713-0c1ddfaaaa71",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "number"
             }
           ]
         },
@@ -193,100 +110,42 @@
         416,
         0
       ],
-      "id": "162975e9-29fc-4d2a-a81f-2ccf707ce492",
-      "name": "Clean Up Paths"
+      "id": "de828dcf-fdb1-47a7-b9f0-c6c6e077767b",
+      "name": "Edit Fields"
     },
     {
       "parameters": {
+        "operation": "update",
         "databaseId": 265,
         "tableId": 955,
-        "limit": 1,
-        "additionalOptions": {
-          "filters": {
-            "fields": [
-              {
-                "field": 9372,
-                "value": "={{ $json.advertiser }}"
-              }
-            ]
-          }
+        "rowId": "={{ $json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 9372,
+              "fieldValue": "={{ $json.Name }}"
+            },
+            {
+              "fieldId": 9373,
+              "fieldValue": "={{ $json['Path Name'] }}"
+            }
+          ]
         }
       },
       "type": "n8n-nodes-base.baserow",
       "typeVersion": 1,
       "position": [
-        832,
-        192
+        624,
+        0
       ],
-      "id": "3361e6af-dc63-4c0c-b506-0ec91f4039e5",
-      "name": "Get many rows",
-      "alwaysOutputData": true,
+      "id": "5bf8c962-ea2d-441e-af4a-dd77b42d0c65",
+      "name": "Update a row",
       "credentials": {
         "baserowApi": {
           "id": "d2WUYcb60dACjFtq",
           "name": "Baserow account"
         }
       }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "c0648eed-25c6-4b90-8962-c99c3ea32a71",
-              "leftValue": "={{$json[\"empty\"]}}",
-              "rightValue": "",
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        1248,
-        192
-      ],
-      "id": "db2310f7-cc8e-4806-aaf9-21d55c4de5fd",
-      "name": "If"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        624,
-        0
-      ],
-      "id": "c4a2fc1b-cb36-4025-9c4b-b0ff9f0a88da",
-      "name": "Loop Over Items"
-    },
-    {
-      "parameters": {
-        "jsCode": "return [{json: {empty: items.length == 1 && Object.keys(items[0].json).length == 0}}];\n// return [{json: {empty: }}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1040,
-        192
-      ],
-      "id": "997c231b-e444-49aa-8a7a-4f0d06fdf117",
-      "name": "isEmpty?"
     }
   ],
   "pinData": {},
@@ -295,16 +154,16 @@
   },
   "shared": [
     {
-      "updatedAt": "2025-12-19T13:06:47.325Z",
-      "createdAt": "2025-12-19T13:06:47.325Z",
+      "updatedAt": "2025-12-19T22:18:04.645Z",
+      "createdAt": "2025-12-19T22:18:04.645Z",
       "role": "workflow:owner",
-      "workflowId": "djGQKUPqCPeDqjad",
+      "workflowId": "TnNPH0HNlbjWZmMy",
       "projectId": "rkuUtfbV4pRJvn4a"
     }
   ],
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-12-19T13:47:24.495Z",
-  "versionId": "a0b15582-a02b-496d-b353-f5fe277a615b"
+  "updatedAt": "2025-12-19T22:21:01.457Z",
+  "versionId": "9a7e1692-9d22-4205-97c3-4e6e47347f38"
 }
