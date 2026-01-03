@@ -1,7 +1,379 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T15:34:51.095Z",
+    "createdAt": "2025-12-04T15:34:51.095Z",
+    "versionId": "471951ac-d556-4641-9eac-ef7c8c72142f",
+    "workflowId": "1w82HjgLu6ZBJ8VM",
+    "nodes": [
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "operation": "download",
+          "path": "={{ $json.posting_path }}"
+        },
+        "id": "a97331a8-02e4-4a6d-80f0-8b0173637109",
+        "name": "Nextcloud - Get Posting File",
+        "type": "n8n-nodes-base.nextCloud",
+        "typeVersion": 1,
+        "position": [
+          460,
+          460
+        ],
+        "credentials": {
+          "nextCloudOAuth2Api": {
+            "id": "fLXJCCubxnE7gtwF",
+            "name": "NextCloud account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "text",
+          "options": {}
+        },
+        "id": "7d895a95-bbea-4844-8425-356d36a13fc0",
+        "name": "Extract from Job Posting Markdown",
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          680,
+          460
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "pdf",
+          "options": {}
+        },
+        "id": "68574b12-f3b3-4455-9c11-e28654d63bf7",
+        "name": "Extract from Resume PDF",
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          680,
+          680
+        ]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "91471de4-ead7-4223-8b5d-3c197b736553",
+                "name": "posting_path",
+                "value": "={{ $json.NextCloud_Path }}/Posting.md",
+                "type": "string"
+              },
+              {
+                "id": "c812ba43-a5ce-4118-8159-eccb5765bbe8",
+                "name": "resume_filename",
+                "value": "=Resume v{{ $json['Resume Version'] }}.pdf",
+                "type": "string"
+              },
+              {
+                "id": "37db82c7-54b5-4ba9-85de-facb11e8b685",
+                "name": "position",
+                "value": "={{ $json.Position }}",
+                "type": "string"
+              },
+              {
+                "id": "701e10cc-0bdb-434e-a53e-6d32f44a9841",
+                "name": "company",
+                "value": "={{ $json.Company }}",
+                "type": "string"
+              },
+              {
+                "id": "af426e7e-3e32-4a74-a8e6-4e216aba07fa",
+                "name": "resume_version",
+                "value": "={{ $json['Resume Version'] }}",
+                "type": "string"
+              },
+              {
+                "id": "dc8cdf4a-41d4-4c58-84be-559d70f2a50b",
+                "name": "nextcloud_path",
+                "value": "={{ $json.NextCloud_Path }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "24b18839-55eb-41ad-95a2-ff06c58b10a4",
+        "name": "Set Variables",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          200,
+          540
+        ]
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "operation": "download",
+          "path": "={{ $json.nextcloud_path }}{{ $json.resume_filename }}"
+        },
+        "id": "f9cf2472-f226-49bb-bf85-e828c45e9db3",
+        "name": "Nextcloud - Get Resume Version",
+        "type": "n8n-nodes-base.nextCloud",
+        "typeVersion": 1,
+        "position": [
+          460,
+          680
+        ],
+        "credentials": {
+          "nextCloudOAuth2Api": {
+            "id": "fLXJCCubxnE7gtwF",
+            "name": "NextCloud account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "27c5a223-e355-415a-8a23-0f5df10dee51",
+                "name": "posting",
+                "value": "={{ $json.data_1 }}",
+                "type": "string"
+              },
+              {
+                "id": "e1dca750-6d70-4582-afd1-bf25f57ad71c",
+                "name": "resume",
+                "value": "={{ $json.text_2 }}",
+                "type": "string"
+              },
+              {
+                "id": "c902a48b-1bfa-4b05-8f17-382c1b4459a1",
+                "name": "resume_version",
+                "value": "={{ $('Set Variables').item.json.resume_version }}",
+                "type": "string"
+              },
+              {
+                "id": "01ae07a0-65c0-4e64-b587-da3905b47e49",
+                "name": "position",
+                "value": "={{ $('Set Variables').item.json.position }}",
+                "type": "string"
+              },
+              {
+                "id": "c9befc42-9ff9-4872-99ef-2d2d42a11c30",
+                "name": "company",
+                "value": "={{ $('Set Variables').item.json.company }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "babfd235-5414-4306-ae39-5078137bfcc8",
+        "name": "Save Variables",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1160,
+          660
+        ]
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "path": "={{ $('Set Variables').item.json.nextcloud_path }}/AI Analysis (Resume) - {{ $now.format(\"yyyy-MM-dd\") }}.md",
+          "fileContent": "={{ $json.message.content }}"
+        },
+        "id": "771a3d17-5425-4593-91ff-92c6e5064cc3",
+        "name": "Nextcloud - Save Analysis Data",
+        "type": "n8n-nodes-base.nextCloud",
+        "typeVersion": 1,
+        "position": [
+          1720,
+          660
+        ],
+        "credentials": {
+          "nextCloudOAuth2Api": {
+            "id": "fLXJCCubxnE7gtwF",
+            "name": "NextCloud account"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "id": "a0b1a4b5-ebc6-45b6-b660-1346489d8aeb",
+        "name": "Execute Workflow Trigger",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          540
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineByPosition",
+          "options": {
+            "clashHandling": {
+              "values": {
+                "resolveClash": "addSuffix"
+              }
+            }
+          }
+        },
+        "id": "98e52b98-fdb8-4ddf-9a99-0d290da5f33a",
+        "name": "Merge",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3,
+        "position": [
+          960,
+          660
+        ]
+      },
+      {
+        "parameters": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4",
+            "mode": "list",
+            "cachedResultName": "GPT-4"
+          },
+          "messages": {
+            "values": [
+              {
+                "content": "=I want you to act as a recruiter for {{ $json.company }} horing for a {{ $json.position }}.  I am considering applying for this job and am trying to determine if I am a good fit for the position and how my resume might be improved.\n\n**Step 1:** Review the job description:\n\n{{ $json.posting }}\n\n**End of job description**\n\n**Step 2:** Review my resume text:\n\n{{ $json.resume }}\n\n**End of resume text**\n\n**Step 4:** Compare the job description and resume to each other and provide the following information:\n\n- Determine whether I am a good candidate for this role and provide the percentage estimate the resume matches the job description.  This percentage should be determined by whether I have demonstrated expertise for each of the qualifications listed in the job description.  I expect this percentage to be provided to me as a number, even if this is your best estimate without a specific assessment tool.\n- Identify any skills that should be added to the technical proficiencies section based off skillsets identified in the Job Posting and Resume.\n- Extract the salary / pay information from the job description, if it is not available say \"Salary was not included.\"\n- Rate my strengths for the role. Include the relevant text from the job posting and the relevant text from my resume. Put this analysis under the header of \"Strengths\"\n- Help me identify where I am weak for this role. Put this analysis under the header of \"Weaknesses\"\n\nIn a section called \"Resume Improvements\":\n- Do a check of the resume regarding acronyms that cannot be understood and need to be expanded upon. Show where these are in the resume.\n- Specify how I can improve this resume to be more compelling to recruiters. Provide suggestions on where to incorporate this on the resume. \n\n\nTake your time and be thorough."
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "dff1948b-720d-495a-8f33-8fb49ec4574c",
+        "name": "OpenAI",
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.6,
+        "position": [
+          1360,
+          660
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "ojJVqUWOFMKOOLeQ",
+            "name": "OpenAi account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Nextcloud - Get Posting File": {
+        "main": [
+          [
+            {
+              "node": "Extract from Job Posting Markdown",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from Job Posting Markdown": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from Resume PDF": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Set Variables": {
+        "main": [
+          [
+            {
+              "node": "Nextcloud - Get Posting File",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Nextcloud - Get Resume Version",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Nextcloud - Get Resume Version": {
+        "main": [
+          [
+            {
+              "node": "Extract from Resume PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Variables": {
+        "main": [
+          [
+            {
+              "node": "OpenAI",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute Workflow Trigger": {
+        "main": [
+          [
+            {
+              "node": "Set Variables",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Save Variables",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI": {
+        "main": [
+          [
+            {
+              "node": "Nextcloud - Save Analysis Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "471951ac-d556-4641-9eac-ef7c8c72142f",
   "connections": {
     "Nextcloud - Get Posting File": {
       "main": [
