@@ -972,7 +972,8 @@
         2080,
         448
       ],
-      "typeVersion": 1
+      "typeVersion": 1,
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {},
@@ -1016,6 +1017,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-04T21:41:24.053Z",
-  "versionId": "007d19e9-e2c7-4c9b-b862-5eb40fe87035"
+  "updatedAt": "2026-01-04T21:56:45.205Z",
+  "versionId": "5e09f11f-dea9-4610-8112-28d7ade97d6d"
 }
