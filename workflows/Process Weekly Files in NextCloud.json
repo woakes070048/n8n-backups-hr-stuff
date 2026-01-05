@@ -432,12 +432,7 @@
       "main": [
         [
           {
-            "node": "Nextcloud - Create Year Folder",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Set Desination Path",
+            "node": "Confirm to proceed",
             "type": "main",
             "index": 0
           }
@@ -492,7 +487,7 @@
       "main": [
         [
           {
-            "node": "Confirm to proceed",
+            "node": "Nextcloud - Inbox Files",
             "type": "main",
             "index": 0
           }
@@ -514,7 +509,12 @@
       "main": [
         [
           {
-            "node": "Nextcloud - Inbox Files",
+            "node": "Nextcloud - Create Year Folder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Desination Path",
             "type": "main",
             "index": 0
           }
@@ -540,15 +540,15 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        416,
-        0
+        240,
+        240
       ],
       "id": "4cad7909-7f89-4f98-b2ec-9341e89065f1",
       "name": "Nextcloud - Inbox Files",
       "credentials": {
         "nextCloudOAuth2Api": {
           "id": "fLXJCCubxnE7gtwF",
-          "name": "NextCloud account"
+          "name": "NextCloud account (ritchie)"
         }
       }
     },
@@ -582,8 +582,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        848,
-        0
+        672,
+        240
       ],
       "id": "182bbd44-5ba3-4ae4-9a2d-98e717598486",
       "name": "Extract File Details (Year, Month and File Type)"
@@ -597,8 +597,8 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1296,
-        -224
+        1312,
+        -208
       ],
       "id": "603babb6-52d5-423b-a1db-17624c80d890",
       "name": "Nextcloud - Create Year Folder",
@@ -606,7 +606,7 @@
       "credentials": {
         "nextCloudOAuth2Api": {
           "id": "fLXJCCubxnE7gtwF",
-          "name": "NextCloud account"
+          "name": "NextCloud account (ritchie)"
         }
       },
       "onError": "continueRegularOutput"
@@ -620,8 +620,8 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1472,
-        -224
+        1488,
+        -208
       ],
       "id": "d9ef728d-c137-4ed9-8447-f55c5704eb70",
       "name": "Nextcloud - Create Weekly folder",
@@ -629,7 +629,7 @@
       "credentials": {
         "nextCloudOAuth2Api": {
           "id": "fLXJCCubxnE7gtwF",
-          "name": "NextCloud account"
+          "name": "NextCloud account (ritchie)"
         }
       },
       "onError": "continueRegularOutput"
@@ -643,8 +643,8 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1648,
-        -224
+        1664,
+        -208
       ],
       "id": "dff036fd-9f44-4c88-b6d7-99b6b3a05ae2",
       "name": "Nextcloud - Create Week Folder",
@@ -652,7 +652,7 @@
       "credentials": {
         "nextCloudOAuth2Api": {
           "id": "fLXJCCubxnE7gtwF",
-          "name": "NextCloud account"
+          "name": "NextCloud account (ritchie)"
         }
       },
       "onError": "continueRegularOutput"
@@ -675,8 +675,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1296,
-        64
+        1312,
+        0
       ],
       "id": "07770d63-5c63-4d9e-b0b8-fc49865fb909",
       "name": "Set Desination Path"
@@ -691,15 +691,15 @@
       "type": "n8n-nodes-base.nextCloud",
       "typeVersion": 1,
       "position": [
-        1520,
-        64
+        1536,
+        0
       ],
       "id": "e8fd505c-9485-4bc8-aa41-4505ac02a20a",
       "name": "Nextcloud - File Calendar",
       "credentials": {
         "nextCloudOAuth2Api": {
           "id": "fLXJCCubxnE7gtwF",
-          "name": "NextCloud account"
+          "name": "NextCloud account (ritchie)"
         }
       },
       "onError": "continueRegularOutput"
@@ -731,8 +731,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        640,
-        0
+        464,
+        240
       ],
       "id": "c58130ee-09af-4c19-9d6d-ab2d438fb100",
       "name": "Filter - Weekly Files"
@@ -751,7 +751,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -224,
+        16,
         240
       ],
       "id": "0f8d670b-e58f-4a3d-bbbe-75c0a3da239c",
@@ -769,18 +769,12 @@
             "approvalType": "double"
           }
         },
-        "options": {
-          "limitWaitTime": {
-            "values": {
-              "resumeAmount": 12
-            }
-          }
-        }
+        "options": {}
       },
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        -16,
+        880,
         240
       ],
       "id": "61f5daed-984b-4eb4-af11-64347d54cb20",
@@ -821,7 +815,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        192,
+        1056,
         240
       ],
       "id": "5e8e0e31-d4fc-47a8-8c74-cccb3f6fb1ac",
@@ -855,6 +849,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-25T15:41:23.000Z",
-  "versionId": "86c88bad-3b06-47e4-96aa-5220e664bd52"
+  "updatedAt": "2026-01-04T22:04:20.898Z",
+  "versionId": "4ddd8a1a-1ef2-4bf1-8639-3362012dbcaf"
 }
