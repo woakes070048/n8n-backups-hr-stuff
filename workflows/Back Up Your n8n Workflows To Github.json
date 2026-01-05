@@ -970,10 +970,10 @@
       "type": "n8n-nodes-base.code",
       "position": [
         2080,
-        448
+        496
       ],
       "typeVersion": 1,
-      "onError": "continueRegularOutput"
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {},
@@ -1017,6 +1017,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-04T21:56:45.205Z",
-  "versionId": "5e09f11f-dea9-4610-8112-28d7ade97d6d"
+  "updatedAt": "2026-01-05T14:09:22.612Z",
+  "versionId": "39207c7c-22d8-452c-bc9b-349117e1dc42"
 }
