@@ -1,15 +1,21 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-04T15:34:51.095Z",
-    "createdAt": "2025-12-04T15:34:51.095Z",
-    "versionId": "809bf2b9-9c58-420b-8e99-0fcbb057d6db",
+    "updatedAt": "2026-01-06T16:48:05.000Z",
+    "createdAt": "2026-01-06T16:47:09.651Z",
+    "versionId": "ea790559-9943-4c9f-be74-a70e4751f0a4",
     "workflowId": "4vZENGkT0oDcDEvd",
     "nodes": [
       {
         "parameters": {
           "url": "={{ $json['Listing URL'] }}",
-          "options": {}
+          "options": {
+            "redirect": {
+              "redirect": {
+                "followRedirects": true
+              }
+            }
+          }
         },
         "id": "007726f4-063c-4302-81f2-f59f06d2c6db",
         "name": "HTTP Request",
@@ -100,7 +106,7 @@
         "credentials": {
           "baserowApi": {
             "id": "d2WUYcb60dACjFtq",
-            "name": "Baserow account"
+            "name": "Baserow account (Self-host)"
           }
         }
       },
@@ -212,7 +218,7 @@
         "credentials": {
           "baserowApi": {
             "id": "d2WUYcb60dACjFtq",
-            "name": "Baserow account"
+            "name": "Baserow account (Self-host)"
           }
         }
       },
@@ -226,8 +232,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 3,
         "position": [
-          704,
-          1104
+          1536,
+          1056
         ]
       },
       {
@@ -239,8 +245,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 1,
         "position": [
-          432,
-          1104
+          1264,
+          1056
         ],
         "alwaysOutputData": true,
         "continueOnFail": true
@@ -256,8 +262,8 @@
         "type": "n8n-nodes-base.merge",
         "typeVersion": 2.1,
         "position": [
-          2368,
-          800
+          1968,
+          688
         ]
       },
       {
@@ -269,8 +275,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 1,
         "position": [
-          2928,
-          608
+          2544,
+          816
         ]
       },
       {
@@ -283,8 +289,8 @@
         "type": "n8n-nodes-base.splitInBatches",
         "typeVersion": 2,
         "position": [
-          2592,
-          800
+          2192,
+          688
         ]
       },
       {
@@ -345,7 +351,7 @@
         "credentials": {
           "baserowApi": {
             "id": "d2WUYcb60dACjFtq",
-            "name": "Baserow account"
+            "name": "Baserow account (Self-host)"
           }
         }
       },
@@ -384,34 +390,6 @@
           -1968,
           208
         ]
-      },
-      {
-        "parameters": {
-          "resource": "mail",
-          "fromEmail": "support@boogienet.com",
-          "fromName": "Bien's Bottie",
-          "toEmail": "ritchie@macapinlac.com, bmatute@rennie.com",
-          "subject": "={{ $json.address }} {{ $json.mls_number }}",
-          "contentValue": "={{ $json[\"Post Draft\"] }}",
-          "additionalFields": {
-            "attachments": "={{ $json.binaryProperties }}"
-          }
-        },
-        "id": "21846d7c-f204-4828-bf89-c931f0716a99",
-        "name": "SendGrid",
-        "type": "n8n-nodes-base.sendGrid",
-        "typeVersion": 1,
-        "position": [
-          3568,
-          608
-        ],
-        "credentials": {
-          "sendGridApi": {
-            "id": "VtMovXvSYGhENdcJ",
-            "name": "SendGrid account"
-          }
-        },
-        "disabled": true
       },
       {
         "parameters": {},
@@ -513,7 +491,7 @@
       },
       {
         "parameters": {
-          "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nvar data = {};\n// console.log($input.all());\nfor (const item of $input.all()) {\n\n  _data = JSON.parse(item.json.raw_json);\n  console.log(_data.props.pageProps.listing);\n  data.site_description = _data.props.pageProps.listing.publicRemarks;\n  data.mls_number = _data.props.pageProps.listing.listingId;\n  data.beds = _data.props.pageProps.listing.bedroomsCount;\n  data.baths = _data.props.pageProps.listing.bathroomsCount;\n  data.sqft = _data.props.pageProps.listing.buildingAreaTotal;\n  // data.address = _data.props.pageProps.listing.address\n  data.unit_number = _data.props.pageProps.listing.unitNumber;\n  data.street_number = _data.props.pageProps.listing.streetNumber;\n  data.street_name = _data.props.pageProps.listing.streetName;\n  data.street_suffix = _data.props.pageProps.listing.streetSuffix;\n  data.subdivision = _data.props.pageProps.listing.subdivisionName;\n  data.city = _data.props.pageProps.listing.city\n  data.province = _data.props.pageProps.listing.stateOrProvince;\n  \n  data.listing_price = _data.props.pageProps.listing.price;\n  \n  /**\n  images = _data.props.pageProps.listing.media;\n  // console.log(images);\n  for (const _image of images) {\n    _img_url = _image.mediaUrl.trim();\n    // _img_filename = _img_url.substring(_img_url.lastIndexOf('/')+1);\n    _images.push({\n      image_url: _img_url\n      // image_filename: _img_filename\n    });\n    **/\n}\n\nreturn data;"
+          "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nvar data = {};\n// console.log($input.all());\nfor (const item of $input.all()) {\n\n  _data = JSON.parse(item.json.raw_json);\n  console.log(_data.props.pageProps.listing);\n  data.site_description = _data.props.pageProps.listing.publicRemarks;\n  data.mls_number = _data.props.pageProps.listing.mlsId;\n  data.beds = _data.props.pageProps.listing.bedroomsCount;\n  data.baths = _data.props.pageProps.listing.bathroomsCount;\n  data.sqft = _data.props.pageProps.listing.buildingAreaTotal;\n  // data.address = _data.props.pageProps.listing.address\n  data.unit_number = _data.props.pageProps.listing.unitNumber;\n  data.street_number = _data.props.pageProps.listing.streetNumber;\n  data.street_name = _data.props.pageProps.listing.streetName;\n  data.street_suffix = _data.props.pageProps.listing.streetSuffix;\n  data.subdivision = _data.props.pageProps.listing.subdivisionName;\n  data.city = _data.props.pageProps.listing.city\n  data.province = _data.props.pageProps.listing.stateOrProvince;\n  \n  data.listing_price = _data.props.pageProps.listing.price;\n  \n  /**\n  images = _data.props.pageProps.listing.media;\n  // console.log(images);\n  for (const _image of images) {\n    _img_url = _image.mediaUrl.trim();\n    // _img_filename = _img_url.substring(_img_url.lastIndexOf('/')+1);\n    _images.push({\n      image_url: _img_url\n      // image_filename: _img_filename\n    });\n    **/\n}\n\nreturn data;"
         },
         "id": "2e49aae4-84d2-47dc-b053-20357c25e08a",
         "name": "Code - Parse listing information",
@@ -528,7 +506,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const pluralize = (val, word, plural = word + \"s\") => {\n  const _pluralize = (num, word, plural = word + \"s\") =>\n    [1, -1].includes(Number(num)) ? word : plural;\n  if (typeof val === \"object\")\n    return (num, word) => _pluralize(num, word, val[word]);\n  return _pluralize(val, word, plural);\n};\n\nconst numberWithCommas = (x) => {\n    return x.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\");\n};\n\n// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.mls_number = \"MLS @ \" + item.json.mls_number;\n  item.json.beds = item.json.beds + \" \" + pluralize(item.json.beds, \"bedroom\");\n  item.json.baths = item.json.baths + \" \" + pluralize(item.json.baths, \"bathroom\");\n  item.json.sqft = numberWithCommas(item.json.sqft) + ' sqft'\n  item.json.listing_price = \"$\" + numberWithCommas(item.json.listing_price);\n\n  item.json.address = item.json.street_number + \" \" + item.json.street_name + \" \"+ item.json.street_suffix + \" \" + item.json.subdivision + \", \" + item.json.city + \" \" + item.json.province;\n  if (item.json.unit_number != \"\") {\n    item.json.address = item.json.unit_number + \"-\" + item.json.address;\n  }\n}\n\nreturn $input.all();"
+          "jsCode": "const pluralize = (val, word, plural = word + \"s\") => {\n  const _pluralize = (num, word, plural = word + \"s\") =>\n    [1, -1].includes(Number(num)) ? word : plural;\n  if (typeof val === \"object\")\n    return (num, word) => _pluralize(num, word, val[word]);\n  return _pluralize(val, word, plural);\n};\n\nconst numberWithCommas = (x) => {\n    return x.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\");\n};\n\n// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.mls_number = \"MLS @ \" + item.json.mls_number;\n  item.json.beds = item.json.beds + \" \" + pluralize(item.json.beds, \"bedroom\");\n  item.json.baths = item.json.baths + \" \" + pluralize(item.json.baths, \"bathroom\");\n  item.json.sqft = numberWithCommas(item.json.sqft) + ' sqft'\n  item.json.listing_price = \"$\" + numberWithCommas(item.json.listing_price);\n\nitem.json.address = item.json.street_number + \" \" + item.json.street_name + \" \"+ item.json.street_suffix + \" \" + item.json.subdivision + \", \" + item.json.city + \" \" + item.json.province;\n  if (item.json.unit_number == null) {\n    item.json.address = item.json.address;\n  } else {\n    item.json.address = item.json.unit_number + \"-\" + item.json.address;\n  }\n}\n\nreturn $input.all();"
         },
         "id": "9485967b-324d-4d42-8fdd-24e5d4646b83",
         "name": "Code - Format Data",
@@ -544,8 +522,8 @@
         "type": "n8n-nodes-base.noOp",
         "typeVersion": 1,
         "position": [
-          2912,
-          944
+          2496,
+          1216
         ],
         "id": "00b6539d-a149-49c2-a283-5c6e885062eb",
         "name": "No Operation, do nothing"
@@ -563,8 +541,8 @@
         "type": "n8n-nodes-base.emailSend",
         "typeVersion": 2.1,
         "position": [
-          3184,
-          608
+          2832,
+          816
         ],
         "id": "fbf293f3-d2ac-427c-a279-06daae08efeb",
         "name": "Send email",
@@ -784,17 +762,6 @@
           ]
         ]
       },
-      "SendGrid": {
-        "main": [
-          [
-            {
-              "node": "Split In Batches",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Merge": {
         "main": [
           [
@@ -886,7 +853,7 @@
         "main": [
           [
             {
-              "node": "SendGrid",
+              "node": "Split In Batches",
               "type": "main",
               "index": 0
             }
@@ -894,12 +861,12 @@
         ]
       }
     },
-    "authors": "system migration",
-    "name": null,
-    "description": null,
+    "authors": "Ritchie Macapinlac",
+    "name": "Version ea790559",
+    "description": "",
     "autosaved": false
   },
-  "activeVersionId": "809bf2b9-9c58-420b-8e99-0fcbb057d6db",
+  "activeVersionId": "ea790559-9943-4c9f-be74-a70e4751f0a4",
   "connections": {
     "HTTP Request": {
       "main": [
@@ -1107,17 +1074,6 @@
         ]
       ]
     },
-    "SendGrid": {
-      "main": [
-        [
-          {
-            "node": "Split In Batches",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Merge": {
       "main": [
         [
@@ -1209,7 +1165,7 @@
       "main": [
         [
           {
-            "node": "SendGrid",
+            "node": "Split In Batches",
             "type": "main",
             "index": 0
           }
@@ -1228,7 +1184,13 @@
     {
       "parameters": {
         "url": "={{ $json['Listing URL'] }}",
-        "options": {}
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": true
+            }
+          }
+        }
       },
       "id": "007726f4-063c-4302-81f2-f59f06d2c6db",
       "name": "HTTP Request",
@@ -1319,7 +1281,7 @@
       "credentials": {
         "baserowApi": {
           "id": "d2WUYcb60dACjFtq",
-          "name": "Baserow account"
+          "name": "Baserow account (Self-host)"
         }
       }
     },
@@ -1431,7 +1393,7 @@
       "credentials": {
         "baserowApi": {
           "id": "d2WUYcb60dACjFtq",
-          "name": "Baserow account"
+          "name": "Baserow account (Self-host)"
         }
       }
     },
@@ -1445,8 +1407,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        704,
-        1104
+        1536,
+        1056
       ]
     },
     {
@@ -1458,8 +1420,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        432,
-        1104
+        1264,
+        1056
       ],
       "alwaysOutputData": true,
       "continueOnFail": true
@@ -1475,8 +1437,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 2.1,
       "position": [
-        2368,
-        800
+        1968,
+        688
       ]
     },
     {
@@ -1488,8 +1450,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        2928,
-        608
+        2544,
+        816
       ]
     },
     {
@@ -1502,8 +1464,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 2,
       "position": [
-        2592,
-        800
+        2192,
+        688
       ]
     },
     {
@@ -1564,7 +1526,7 @@
       "credentials": {
         "baserowApi": {
           "id": "d2WUYcb60dACjFtq",
-          "name": "Baserow account"
+          "name": "Baserow account (Self-host)"
         }
       }
     },
@@ -1603,34 +1565,6 @@
         -1968,
         208
       ]
-    },
-    {
-      "parameters": {
-        "resource": "mail",
-        "fromEmail": "support@boogienet.com",
-        "fromName": "Bien's Bottie",
-        "toEmail": "ritchie@macapinlac.com, bmatute@rennie.com",
-        "subject": "={{ $json.address }} {{ $json.mls_number }}",
-        "contentValue": "={{ $json[\"Post Draft\"] }}",
-        "additionalFields": {
-          "attachments": "={{ $json.binaryProperties }}"
-        }
-      },
-      "id": "21846d7c-f204-4828-bf89-c931f0716a99",
-      "name": "SendGrid",
-      "type": "n8n-nodes-base.sendGrid",
-      "typeVersion": 1,
-      "position": [
-        3568,
-        608
-      ],
-      "credentials": {
-        "sendGridApi": {
-          "id": "VtMovXvSYGhENdcJ",
-          "name": "SendGrid account"
-        }
-      },
-      "disabled": true
     },
     {
       "parameters": {},
@@ -1732,7 +1666,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nvar data = {};\n// console.log($input.all());\nfor (const item of $input.all()) {\n\n  _data = JSON.parse(item.json.raw_json);\n  console.log(_data.props.pageProps.listing);\n  data.site_description = _data.props.pageProps.listing.publicRemarks;\n  data.mls_number = _data.props.pageProps.listing.listingId;\n  data.beds = _data.props.pageProps.listing.bedroomsCount;\n  data.baths = _data.props.pageProps.listing.bathroomsCount;\n  data.sqft = _data.props.pageProps.listing.buildingAreaTotal;\n  // data.address = _data.props.pageProps.listing.address\n  data.unit_number = _data.props.pageProps.listing.unitNumber;\n  data.street_number = _data.props.pageProps.listing.streetNumber;\n  data.street_name = _data.props.pageProps.listing.streetName;\n  data.street_suffix = _data.props.pageProps.listing.streetSuffix;\n  data.subdivision = _data.props.pageProps.listing.subdivisionName;\n  data.city = _data.props.pageProps.listing.city\n  data.province = _data.props.pageProps.listing.stateOrProvince;\n  \n  data.listing_price = _data.props.pageProps.listing.price;\n  \n  /**\n  images = _data.props.pageProps.listing.media;\n  // console.log(images);\n  for (const _image of images) {\n    _img_url = _image.mediaUrl.trim();\n    // _img_filename = _img_url.substring(_img_url.lastIndexOf('/')+1);\n    _images.push({\n      image_url: _img_url\n      // image_filename: _img_filename\n    });\n    **/\n}\n\nreturn data;"
+        "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nvar data = {};\n// console.log($input.all());\nfor (const item of $input.all()) {\n\n  _data = JSON.parse(item.json.raw_json);\n  console.log(_data.props.pageProps.listing);\n  data.site_description = _data.props.pageProps.listing.publicRemarks;\n  data.mls_number = _data.props.pageProps.listing.mlsId;\n  data.beds = _data.props.pageProps.listing.bedroomsCount;\n  data.baths = _data.props.pageProps.listing.bathroomsCount;\n  data.sqft = _data.props.pageProps.listing.buildingAreaTotal;\n  // data.address = _data.props.pageProps.listing.address\n  data.unit_number = _data.props.pageProps.listing.unitNumber;\n  data.street_number = _data.props.pageProps.listing.streetNumber;\n  data.street_name = _data.props.pageProps.listing.streetName;\n  data.street_suffix = _data.props.pageProps.listing.streetSuffix;\n  data.subdivision = _data.props.pageProps.listing.subdivisionName;\n  data.city = _data.props.pageProps.listing.city\n  data.province = _data.props.pageProps.listing.stateOrProvince;\n  \n  data.listing_price = _data.props.pageProps.listing.price;\n  \n  /**\n  images = _data.props.pageProps.listing.media;\n  // console.log(images);\n  for (const _image of images) {\n    _img_url = _image.mediaUrl.trim();\n    // _img_filename = _img_url.substring(_img_url.lastIndexOf('/')+1);\n    _images.push({\n      image_url: _img_url\n      // image_filename: _img_filename\n    });\n    **/\n}\n\nreturn data;"
       },
       "id": "2e49aae4-84d2-47dc-b053-20357c25e08a",
       "name": "Code - Parse listing information",
@@ -1747,7 +1681,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const pluralize = (val, word, plural = word + \"s\") => {\n  const _pluralize = (num, word, plural = word + \"s\") =>\n    [1, -1].includes(Number(num)) ? word : plural;\n  if (typeof val === \"object\")\n    return (num, word) => _pluralize(num, word, val[word]);\n  return _pluralize(val, word, plural);\n};\n\nconst numberWithCommas = (x) => {\n    return x.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\");\n};\n\n// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.mls_number = \"MLS @ \" + item.json.mls_number;\n  item.json.beds = item.json.beds + \" \" + pluralize(item.json.beds, \"bedroom\");\n  item.json.baths = item.json.baths + \" \" + pluralize(item.json.baths, \"bathroom\");\n  item.json.sqft = numberWithCommas(item.json.sqft) + ' sqft'\n  item.json.listing_price = \"$\" + numberWithCommas(item.json.listing_price);\n\n  item.json.address = item.json.street_number + \" \" + item.json.street_name + \" \"+ item.json.street_suffix + \" \" + item.json.subdivision + \", \" + item.json.city + \" \" + item.json.province;\n  if (item.json.unit_number != \"\") {\n    item.json.address = item.json.unit_number + \"-\" + item.json.address;\n  }\n}\n\nreturn $input.all();"
+        "jsCode": "const pluralize = (val, word, plural = word + \"s\") => {\n  const _pluralize = (num, word, plural = word + \"s\") =>\n    [1, -1].includes(Number(num)) ? word : plural;\n  if (typeof val === \"object\")\n    return (num, word) => _pluralize(num, word, val[word]);\n  return _pluralize(val, word, plural);\n};\n\nconst numberWithCommas = (x) => {\n    return x.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\");\n};\n\n// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.mls_number = \"MLS @ \" + item.json.mls_number;\n  item.json.beds = item.json.beds + \" \" + pluralize(item.json.beds, \"bedroom\");\n  item.json.baths = item.json.baths + \" \" + pluralize(item.json.baths, \"bathroom\");\n  item.json.sqft = numberWithCommas(item.json.sqft) + ' sqft'\n  item.json.listing_price = \"$\" + numberWithCommas(item.json.listing_price);\n\nitem.json.address = item.json.street_number + \" \" + item.json.street_name + \" \"+ item.json.street_suffix + \" \" + item.json.subdivision + \", \" + item.json.city + \" \" + item.json.province;\n  if (item.json.unit_number == null) {\n    item.json.address = item.json.address;\n  } else {\n    item.json.address = item.json.unit_number + \"-\" + item.json.address;\n  }\n}\n\nreturn $input.all();"
       },
       "id": "9485967b-324d-4d42-8fdd-24e5d4646b83",
       "name": "Code - Format Data",
@@ -1763,8 +1697,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        2912,
-        944
+        2496,
+        1216
       ],
       "id": "00b6539d-a149-49c2-a283-5c6e885062eb",
       "name": "No Operation, do nothing"
@@ -1782,8 +1716,8 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        3184,
-        608
+        2832,
+        816
       ],
       "id": "fbf293f3-d2ac-427c-a279-06daae08efeb",
       "name": "Send email",
@@ -1802,25 +1736,25 @@
         "json": {
           "headers": {
             "host": "automation.macapinlac.network",
-            "user-agent": "python-requests/2.32.3",
-            "content-length": "615",
+            "user-agent": "python-requests/2.32.5",
+            "content-length": "1707",
             "accept": "*/*",
             "accept-encoding": "gzip, br",
             "cdn-loop": "cloudflare; loops=1",
-            "cf-connecting-ip": "66.183.13.87",
+            "cf-connecting-ip": "108.180.127.41",
             "cf-ipcountry": "CA",
-            "cf-ray": "96c485d17e7575b0-SEA",
+            "cf-ray": "9b9c801feb36d85f-YVR",
             "cf-visitor": "{\"scheme\":\"https\"}",
             "chowkai": "iZEQm6PvZKPTMk",
             "content-type": "application/json",
-            "x-baserow-delivery": "73342293-c387-488a-853f-04d688e6bca7",
+            "x-baserow-delivery": "f2ca0f90-5638-4233-bc6c-9637f4dd6503",
             "x-baserow-event": "rows.created",
-            "x-forwarded-for": "172.68.22.132",
+            "x-forwarded-for": "162.158.146.65",
             "x-forwarded-host": "automation.macapinlac.network",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "f7263cef661c",
-            "x-real-ip": "172.68.22.132"
+            "x-forwarded-server": "3b3e8f8b7160",
+            "x-real-ip": "162.158.146.65"
           },
           "params": {},
           "query": {},
@@ -1829,16 +1763,16 @@
             "database_id": 46,
             "workspace_id": 38,
             "webhook_id": 1,
-            "event_id": "73342293-c387-488a-853f-04d688e6bca7",
+            "event_id": "f2ca0f90-5638-4233-bc6c-9637f4dd6503",
             "event_type": "rows.created",
             "items": [
               {
-                "id": 184,
-                "order": "184.00000000000000000000",
-                "uuid": "a302f770-770f-4d88-b677-9acd005e76d5",
-                "Write Up": null,
-                "Listing URL": "https://rennie.com/listings/18th-7250-avenue-ivory-mews-207-burnaby-r3033910",
-                "List Price": null,
+                "id": 244,
+                "order": "243.00000000000000000000",
+                "uuid": "8a24128c-6928-4c0a-ae0e-3b48b09390e0",
+                "Write Up": "I know when my clients—both in the finance industry—are ready to buy… it’s time 💼✨. These sophisticated buyers always have a sharp eye for potential and aren’t shy about letting me know they’re looking for a deal.\nI’m thrilled we were able to find them a true gem 🏡💎. Congratulations! I’m already looking forward to uncovering more incredible opportunities for you in the New Year 🎉📈✨.\n\nOffered at $1,299,000.00\n\n1006-112 13th Street Centerview, North Vancouver BC\nNorth Vancouver\nOffered at $1,220,000\n\nMLS @ undefined\n2 bedrooms\n2 bathrooms\n1,084 sqft\n\nSOUTH-WEST Luxurious 2 Bed/2 Bath plus Den. Breathtaking VIEW to the Ocean, City, Mountains and beyond. The home is elegant, spacious with high ceilings, floor to ceiling windows, wrap around spacious balcony, gourmet kitchen, spa like ensuite with soaker tub, separate shower & dual sinks. Air Conditioned! 2 parking, storage, bike storage and amenities galore. Best location in the center of Lonsdale.",
+                "Listing URL": "https://rennie.com/listings/hunter-th1431-street-hunter-at-lynn-creek-north-vancouver-r3070913",
+                "List Price": "$1,279,000",
                 "Post Draft": null,
                 "Use Presented By": false,
                 "mls_number": null,
@@ -1848,15 +1782,18 @@
                 "address": null,
                 "city": null,
                 "type": {
-                  "id": 2746,
-                  "value": "Just listed",
-                  "color": "light-brown"
+                  "id": 2747,
+                  "value": "Just sold",
+                  "color": "pink"
                 }
               }
             ]
           },
           "webhookUrl": "https://automation.macapinlac.network/webhook/e7f8d349-47f3-4c84-8e80-0d9cb43f96a1",
           "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
@@ -1883,6 +1820,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-09T13:05:50.000Z",
-  "versionId": "809bf2b9-9c58-420b-8e99-0fcbb057d6db"
+  "updatedAt": "2026-01-06T16:47:09.650Z",
+  "versionId": "ea790559-9943-4c9f-be74-a70e4751f0a4"
 }
