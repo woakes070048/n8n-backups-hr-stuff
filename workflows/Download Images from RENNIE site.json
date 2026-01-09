@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-06T16:48:05.000Z",
-    "createdAt": "2026-01-06T16:47:09.651Z",
-    "versionId": "ea790559-9943-4c9f-be74-a70e4751f0a4",
+    "updatedAt": "2026-01-09T18:44:14.000Z",
+    "createdAt": "2026-01-09T18:44:11.858Z",
+    "versionId": "c2c36534-3eac-4754-a718-809199faa378",
     "workflowId": "4vZENGkT0oDcDEvd",
     "nodes": [
       {
@@ -531,11 +531,13 @@
       {
         "parameters": {
           "fromEmail": "homelab@macapinlac.com",
-          "toEmail": "ritchie@macapinlac.com, bmatute@rennie.com",
+          "toEmail": " bmatute@rennie.com",
           "subject": "={{ $json.address }} {{ $json.mls_number }}",
-          "html": "={{ $json[\"Post Draft\"] }}",
+          "emailFormat": "text",
+          "text": "={{ $json[\"Post Draft\"] }}",
           "options": {
-            "attachments": "={{ $json.binaryProperties }}"
+            "attachments": "={{ $json.binaryProperties }}",
+            "ccEmail": "ritchie@macapinlac.com"
           }
         },
         "type": "n8n-nodes-base.emailSend",
@@ -862,11 +864,11 @@
       }
     },
     "authors": "Ritchie Macapinlac",
-    "name": "Version ea790559",
+    "name": "Version c2c36534",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "ea790559-9943-4c9f-be74-a70e4751f0a4",
+  "activeVersionId": "c2c36534-3eac-4754-a718-809199faa378",
   "connections": {
     "HTTP Request": {
       "main": [
@@ -1706,11 +1708,13 @@
     {
       "parameters": {
         "fromEmail": "homelab@macapinlac.com",
-        "toEmail": "ritchie@macapinlac.com, bmatute@rennie.com",
+        "toEmail": " bmatute@rennie.com",
         "subject": "={{ $json.address }} {{ $json.mls_number }}",
-        "html": "={{ $json[\"Post Draft\"] }}",
+        "emailFormat": "text",
+        "text": "={{ $json[\"Post Draft\"] }}",
         "options": {
-          "attachments": "={{ $json.binaryProperties }}"
+          "attachments": "={{ $json.binaryProperties }}",
+          "ccEmail": "ritchie@macapinlac.com"
         }
       },
       "type": "n8n-nodes-base.emailSend",
@@ -1737,24 +1741,24 @@
           "headers": {
             "host": "automation.macapinlac.network",
             "user-agent": "python-requests/2.32.5",
-            "content-length": "1707",
+            "content-length": "629",
             "accept": "*/*",
             "accept-encoding": "gzip, br",
             "cdn-loop": "cloudflare; loops=1",
-            "cf-connecting-ip": "108.180.127.41",
+            "cf-connecting-ip": "99.199.61.110",
             "cf-ipcountry": "CA",
-            "cf-ray": "9b9c801feb36d85f-YVR",
+            "cf-ray": "9bb5a0b18a4cc25f-YVR",
             "cf-visitor": "{\"scheme\":\"https\"}",
             "chowkai": "iZEQm6PvZKPTMk",
             "content-type": "application/json",
-            "x-baserow-delivery": "f2ca0f90-5638-4233-bc6c-9637f4dd6503",
+            "x-baserow-delivery": "d03da1e7-7da0-48d6-8b02-1deba1358347",
             "x-baserow-event": "rows.created",
-            "x-forwarded-for": "162.158.146.65",
+            "x-forwarded-for": "162.158.146.64",
             "x-forwarded-host": "automation.macapinlac.network",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "3b3e8f8b7160",
-            "x-real-ip": "162.158.146.65"
+            "x-forwarded-server": "eb8b4eea2398",
+            "x-real-ip": "162.158.146.64"
           },
           "params": {},
           "query": {},
@@ -1763,16 +1767,16 @@
             "database_id": 46,
             "workspace_id": 38,
             "webhook_id": 1,
-            "event_id": "f2ca0f90-5638-4233-bc6c-9637f4dd6503",
+            "event_id": "d03da1e7-7da0-48d6-8b02-1deba1358347",
             "event_type": "rows.created",
             "items": [
               {
-                "id": 244,
-                "order": "243.00000000000000000000",
-                "uuid": "8a24128c-6928-4c0a-ae0e-3b48b09390e0",
-                "Write Up": "I know when my clients—both in the finance industry—are ready to buy… it’s time 💼✨. These sophisticated buyers always have a sharp eye for potential and aren’t shy about letting me know they’re looking for a deal.\nI’m thrilled we were able to find them a true gem 🏡💎. Congratulations! I’m already looking forward to uncovering more incredible opportunities for you in the New Year 🎉📈✨.\n\nOffered at $1,299,000.00\n\n1006-112 13th Street Centerview, North Vancouver BC\nNorth Vancouver\nOffered at $1,220,000\n\nMLS @ undefined\n2 bedrooms\n2 bathrooms\n1,084 sqft\n\nSOUTH-WEST Luxurious 2 Bed/2 Bath plus Den. Breathtaking VIEW to the Ocean, City, Mountains and beyond. The home is elegant, spacious with high ceilings, floor to ceiling windows, wrap around spacious balcony, gourmet kitchen, spa like ensuite with soaker tub, separate shower & dual sinks. Air Conditioned! 2 parking, storage, bike storage and amenities galore. Best location in the center of Lonsdale.",
-                "Listing URL": "https://rennie.com/listings/hunter-th1431-street-hunter-at-lynn-creek-north-vancouver-r3070913",
-                "List Price": "$1,279,000",
+                "id": 249,
+                "order": "248.00000000000000000000",
+                "uuid": "4bd65fa1-04aa-4ccd-bb8e-58a35344c8fa",
+                "Write Up": null,
+                "Listing URL": "https://rennie.com/listings/cordova-1139-street-harbour-green-two-th102-vancouver-r3074737",
+                "List Price": null,
                 "Post Draft": null,
                 "Use Presented By": false,
                 "mls_number": null,
@@ -1782,9 +1786,9 @@
                 "address": null,
                 "city": null,
                 "type": {
-                  "id": 2747,
-                  "value": "Just sold",
-                  "color": "pink"
+                  "id": 2746,
+                  "value": "Just listed",
+                  "color": "light-brown"
                 }
               }
             ]
@@ -1820,6 +1824,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-06T16:47:09.650Z",
-  "versionId": "ea790559-9943-4c9f-be74-a70e4751f0a4"
+  "updatedAt": "2026-01-09T18:44:11.856Z",
+  "versionId": "c2c36534-3eac-4754-a718-809199faa378"
 }
