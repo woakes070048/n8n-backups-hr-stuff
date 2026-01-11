@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-09T18:44:14.000Z",
-    "createdAt": "2026-01-09T18:44:11.858Z",
-    "versionId": "c2c36534-3eac-4754-a718-809199faa378",
+    "updatedAt": "2026-01-10T23:14:42.000Z",
+    "createdAt": "2026-01-10T23:14:40.277Z",
+    "versionId": "2cc0418f-031a-4e34-a7de-bc601063c44c",
     "workflowId": "4vZENGkT0oDcDEvd",
     "nodes": [
       {
@@ -531,13 +531,12 @@
       {
         "parameters": {
           "fromEmail": "homelab@macapinlac.com",
-          "toEmail": " bmatute@rennie.com",
+          "toEmail": " bmatute@rennie.com; ritchie@macapinlac.com",
           "subject": "={{ $json.address }} {{ $json.mls_number }}",
           "emailFormat": "text",
           "text": "={{ $json[\"Post Draft\"] }}",
           "options": {
-            "attachments": "={{ $json.binaryProperties }}",
-            "ccEmail": "ritchie@macapinlac.com"
+            "attachments": "={{ $json.binaryProperties }}"
           }
         },
         "type": "n8n-nodes-base.emailSend",
@@ -864,11 +863,11 @@
       }
     },
     "authors": "Ritchie Macapinlac",
-    "name": "Version c2c36534",
+    "name": "Version 2cc0418f",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "c2c36534-3eac-4754-a718-809199faa378",
+  "activeVersionId": "2cc0418f-031a-4e34-a7de-bc601063c44c",
   "connections": {
     "HTTP Request": {
       "main": [
@@ -1708,13 +1707,12 @@
     {
       "parameters": {
         "fromEmail": "homelab@macapinlac.com",
-        "toEmail": " bmatute@rennie.com",
+        "toEmail": " bmatute@rennie.com; ritchie@macapinlac.com",
         "subject": "={{ $json.address }} {{ $json.mls_number }}",
         "emailFormat": "text",
         "text": "={{ $json[\"Post Draft\"] }}",
         "options": {
-          "attachments": "={{ $json.binaryProperties }}",
-          "ccEmail": "ritchie@macapinlac.com"
+          "attachments": "={{ $json.binaryProperties }}"
         }
       },
       "type": "n8n-nodes-base.emailSend",
@@ -1741,17 +1739,17 @@
           "headers": {
             "host": "automation.macapinlac.network",
             "user-agent": "python-requests/2.32.5",
-            "content-length": "629",
+            "content-length": "606",
             "accept": "*/*",
             "accept-encoding": "gzip, br",
             "cdn-loop": "cloudflare; loops=1",
             "cf-connecting-ip": "99.199.61.110",
             "cf-ipcountry": "CA",
-            "cf-ray": "9bb5a0b18a4cc25f-YVR",
+            "cf-ray": "9bb91bda48d5d9c8-YVR",
             "cf-visitor": "{\"scheme\":\"https\"}",
             "chowkai": "iZEQm6PvZKPTMk",
             "content-type": "application/json",
-            "x-baserow-delivery": "d03da1e7-7da0-48d6-8b02-1deba1358347",
+            "x-baserow-delivery": "5ceaeba9-5954-4b9a-8332-0cd222f712a3",
             "x-baserow-event": "rows.created",
             "x-forwarded-for": "162.158.146.64",
             "x-forwarded-host": "automation.macapinlac.network",
@@ -1767,15 +1765,15 @@
             "database_id": 46,
             "workspace_id": 38,
             "webhook_id": 1,
-            "event_id": "d03da1e7-7da0-48d6-8b02-1deba1358347",
+            "event_id": "5ceaeba9-5954-4b9a-8332-0cd222f712a3",
             "event_type": "rows.created",
             "items": [
               {
-                "id": 249,
-                "order": "248.00000000000000000000",
-                "uuid": "4bd65fa1-04aa-4ccd-bb8e-58a35344c8fa",
+                "id": 251,
+                "order": "250.00000000000000000000",
+                "uuid": "8a50b5b7-9320-4513-a8c3-152edc5f3b1e",
                 "Write Up": null,
-                "Listing URL": "https://rennie.com/listings/cordova-1139-street-harbour-green-two-th102-vancouver-r3074737",
+                "Listing URL": "https://rennie.com/listings/moyne-389-drive-west-vancouver-r3076837",
                 "List Price": null,
                 "Post Draft": null,
                 "Use Presented By": false,
@@ -1824,6 +1822,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-09T18:44:11.856Z",
-  "versionId": "c2c36534-3eac-4754-a718-809199faa378"
+  "updatedAt": "2026-01-10T23:14:40.271Z",
+  "versionId": "2cc0418f-031a-4e34-a7de-bc601063c44c"
 }
