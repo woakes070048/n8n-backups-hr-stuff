@@ -1,0 +1,730 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Nextcloud - Inbox Files": {
+      "main": [
+        [
+          {
+            "node": "Clean up paths",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract File Details (Year, Month and File Type)": {
+      "main": [
+        [
+          {
+            "node": "Confirm to proceed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud - Create Year Folder": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Create Weekly folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud - Create Weekly folder": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Create Week Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Desination Path": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - File Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter - Weekly Files": {
+      "main": [
+        [
+          {
+            "node": "Extract File Details (Year, Month and File Type)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Inbox Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirm to proceed": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Create Year Folder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Desination Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean up paths": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search for path": {
+      "main": [
+        [
+          {
+            "node": "If path not found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If path not found": {
+      "main": [
+        [
+          {
+            "node": "Create an item to process",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search for path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an item to process": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-12-15T17:06:01.781Z",
+  "id": "27VUBhHbq2A7nn10",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Process Files in NextCloud Inbox",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "operation": "list",
+        "path": "/Journal/Inbox"
+      },
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        240,
+        240
+      ],
+      "id": "4cad7909-7f89-4f98-b2ec-9341e89065f1",
+      "name": "Nextcloud - Inbox Files",
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account (ritchie)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eb5e11a5-711c-4545-a25d-72d297a919fd",
+              "name": "Year",
+              "value": "={{ $json.path.urlDecode().replace('Journal/Inbox/','').substring(0,4) }}",
+              "type": "string"
+            },
+            {
+              "id": "3b1efe19-21bd-409e-a5b1-c1df11f6e448",
+              "name": "Week",
+              "value": "={{ $json.path.urlDecode().replace('Journal/Inbox/','').substring(5,7) }}",
+              "type": "string"
+            },
+            {
+              "id": "94e86e33-6162-44fe-bfc4-f658150f8440",
+              "name": "File Type",
+              "value": "={{ $json.path.urlDecode().replace('Journal/Inbox/','').substring(10) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        656,
+        -16
+      ],
+      "id": "182bbd44-5ba3-4ae4-9a2d-98e717598486",
+      "name": "Extract File Details (Year, Month and File Type)"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "path": "=/Journal/{{ $json.Year }}"
+      },
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        -464
+      ],
+      "id": "603babb6-52d5-423b-a1db-17624c80d890",
+      "name": "Nextcloud - Create Year Folder",
+      "alwaysOutputData": false,
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account (ritchie)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "path": "=/Journal/{{ $('Extract File Details (Year, Month and File Type)').item.json.Year }}/Weekly"
+      },
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1472,
+        -464
+      ],
+      "id": "d9ef728d-c137-4ed9-8447-f55c5704eb70",
+      "name": "Nextcloud - Create Weekly folder",
+      "alwaysOutputData": true,
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account (ritchie)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "path": "=Journal/{{ $('Extract File Details (Year, Month and File Type)').item.json.Year }}/Weekly/{{ $('Extract File Details (Year, Month and File Type)').item.json.Week }}"
+      },
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1648,
+        -464
+      ],
+      "id": "dff036fd-9f44-4c88-b6d7-99b6b3a05ae2",
+      "name": "Nextcloud - Create Week Folder",
+      "alwaysOutputData": true,
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account (ritchie)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2b768710-5d36-4b24-9da8-446310dbf16d",
+              "name": "Destination",
+              "value": "=/Journal/{{ $json.Year }}/Weekly/{{ $json.Week }}/{{ $json['File Type'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1296,
+        -256
+      ],
+      "id": "07770d63-5c63-4d9e-b0b8-fc49865fb909",
+      "name": "Set Desination Path"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "move",
+        "path": "=/{{ $('Filter - Weekly Files').item.json.path.urlDecode() }}",
+        "toPath": "={{ $json.Destination }}"
+      },
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        -256
+      ],
+      "id": "e8fd505c-9485-4bc8-aa41-4505ac02a20a",
+      "name": "Nextcloud - File Calendar",
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account (ritchie)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9bfc03d9-fc6a-42c7-886d-4e85fa6d3562",
+              "leftValue": "={{ $json.path.urlDecode().replace('Journal/Inbox/','') }}",
+              "rightValue": "^\\d{4}-\\d{2}",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        -16
+      ],
+      "id": "c58130ee-09af-4c19-9d6d-ab2d438fb100",
+      "name": "Filter - Weekly Files"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 5
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        240
+      ],
+      "id": "0f8d670b-e58f-4a3d-bbbe-75c0a3da239c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "fromEmail": "homelab@macapinlac.com",
+        "toEmail": "ritchie@macapinlac.com",
+        "subject": "Process NextCloud Inbox?",
+        "message": "I am about to process your NextCloud Inbox. Continue?",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        864,
+        -16
+      ],
+      "id": "61f5daed-984b-4eb4-af11-64347d54cb20",
+      "name": "Confirm to proceed",
+      "webhookId": "83a7075f-97a0-4dc3-be65-61df2e3c6c64",
+      "credentials": {
+        "smtp": {
+          "id": "EJhzttjGW8At1laS",
+          "name": "homelab@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6ce6adb9-f781-4019-8d0e-d33a3838ad8d",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        -16
+      ],
+      "id": "5e8e0e31-d4fc-47a8-8c74-cccb3f6fb1ac",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c703b3d8-9b56-4f43-9de7-17dde3100c78",
+              "name": "path",
+              "value": "={{ $json.path.urlDecode() }}",
+              "type": "string"
+            },
+            {
+              "id": "823e5245-8724-42dc-af14-ce526a6d15af",
+              "name": "contentType",
+              "value": "={{ $json.contentType }}",
+              "type": "string"
+            },
+            {
+              "id": "9c079221-1f88-4f15-9560-bb4f73c5cb51",
+              "name": "type",
+              "value": "={{ $json.type }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        240
+      ],
+      "id": "34d4e3c7-148d-4074-b5b1-5b8eff6088cf",
+      "name": "Clean up paths"
+    },
+    {
+      "parameters": {
+        "databaseId": 33,
+        "tableId": 957,
+        "returnAll": true,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 9385,
+                "value": "={{ $json.path }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        880,
+        560
+      ],
+      "id": "fa52af3f-16ad-4a87-aeb1-65247d12ab17",
+      "name": "Search for path",
+      "alwaysOutputData": true,
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account (Self-host)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "28ce3c55-4986-471b-a0a0-28c23f90e3fd",
+              "leftValue": "={{ $json.isEmpty() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1056,
+        560
+      ],
+      "id": "6421435a-b563-4680-8890-eae1338691df",
+      "name": "If path not found"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        656,
+        240
+      ],
+      "id": "44e25be7-b4f7-4266-91d9-8497e75e78a2",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "databaseId": 33,
+        "tableId": 957,
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 9385,
+              "fieldValue": "={{ $('Clean up paths').item.json.path }}"
+            },
+            {
+              "fieldId": 9389,
+              "fieldValue": "={{ $('Clean up paths').item.json.type }}"
+            },
+            {
+              "fieldId": 9390,
+              "fieldValue": "={{ $('Clean up paths').item.json.contentType }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        656
+      ],
+      "id": "4e006c69-b4db-48d8-8e02-be0b1a6c03cf",
+      "name": "Create an item to process",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account (Self-host)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "homelab@macapinlac.com",
+        "toEmail": "ritchie@macapinlac.com",
+        "subject": "=Nextcloud Inbox (as of {{ $now.format(\"yyyy-LL-dd\") }})",
+        "emailFormat": "text",
+        "text": "Files waiting to be processed:\n\n- ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1072,
+        224
+      ],
+      "id": "e1738aa1-852b-443c-b6bf-7e1d51c13956",
+      "name": "Send email",
+      "webhookId": "8c59e807-1726-40c6-83e9-49e75ef5817c",
+      "credentials": {
+        "smtp": {
+          "id": "EJhzttjGW8At1laS",
+          "name": "homelab@macapinlac.com"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9aff6e46-c962-4c49-8ac4-c2f97b8f5081",
+              "leftValue": "={{ $json.processed }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        864,
+        224
+      ],
+      "id": "52ec3724-04fa-47d5-9379-6be2baaad44a",
+      "name": "Filter"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2024-12-15T17:06:01.787Z",
+      "createdAt": "2024-12-15T17:06:01.787Z",
+      "role": "workflow:owner",
+      "workflowId": "27VUBhHbq2A7nn10",
+      "projectId": "rkuUtfbV4pRJvn4a"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "updatedAt": "2024-12-07T20:35:10.543Z",
+      "createdAt": "2024-12-07T20:35:10.543Z",
+      "id": "3J5m8c8YNebX22pe",
+      "name": "NextCloud Inbox"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-01-16T16:53:42.405Z",
+  "versionId": "0efed7a1-66de-4a59-8e72-e58ca77d6126"
+}
