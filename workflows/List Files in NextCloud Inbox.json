@@ -1,0 +1,838 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-18T20:26:49.000Z",
+    "createdAt": "2026-01-18T20:26:47.824Z",
+    "versionId": "a9ff8254-7175-4dea-89a6-d08254f956f9",
+    "workflowId": "27VUBhHbq2A7nn10",
+    "nodes": [
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "resource": "folder",
+          "operation": "list",
+          "path": "/Journal/Inbox"
+        },
+        "type": "n8n-nodes-base.nextCloud",
+        "typeVersion": 1,
+        "position": [
+          240,
+          240
+        ],
+        "id": "4cad7909-7f89-4f98-b2ec-9341e89065f1",
+        "name": "Nextcloud - Inbox Files",
+        "credentials": {
+          "nextCloudOAuth2Api": {
+            "id": "fLXJCCubxnE7gtwF",
+            "name": "NextCloud account (ritchie)"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 5
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          16,
+          240
+        ],
+        "id": "0f8d670b-e58f-4a3d-bbbe-75c0a3da239c",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "c703b3d8-9b56-4f43-9de7-17dde3100c78",
+                "name": "path",
+                "value": "={{ $json.path.urlDecode().replace(\"Journal/Inbox/\",\"\") }}",
+                "type": "string"
+              },
+              {
+                "id": "823e5245-8724-42dc-af14-ce526a6d15af",
+                "name": "contentType",
+                "value": "={{ $json.contentType }}",
+                "type": "string"
+              },
+              {
+                "id": "9c079221-1f88-4f15-9560-bb4f73c5cb51",
+                "name": "type",
+                "value": "={{ $json.type }}",
+                "type": "string"
+              },
+              {
+                "id": "20c6da1f-824c-4636-87ac-480976c3f584",
+                "name": "date_imported",
+                "value": "={{ $now.format(\"yyyy-LL-dd\") }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          448,
+          240
+        ],
+        "id": "34d4e3c7-148d-4074-b5b1-5b8eff6088cf",
+        "name": "Clean up paths"
+      },
+      {
+        "parameters": {
+          "databaseId": 33,
+          "tableId": 957,
+          "returnAll": true,
+          "additionalOptions": {
+            "filters": {
+              "fields": [
+                {
+                  "field": 9385,
+                  "value": "={{ $json.path }}"
+                }
+              ]
+            }
+          }
+        },
+        "type": "n8n-nodes-base.baserow",
+        "typeVersion": 1,
+        "position": [
+          880,
+          560
+        ],
+        "id": "fa52af3f-16ad-4a87-aeb1-65247d12ab17",
+        "name": "Search for path",
+        "alwaysOutputData": true,
+        "credentials": {
+          "baserowApi": {
+            "id": "d2WUYcb60dACjFtq",
+            "name": "Baserow account (Self-host)"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "28ce3c55-4986-471b-a0a0-28c23f90e3fd",
+                "leftValue": "={{ $json.isEmpty() }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1056,
+          560
+        ],
+        "id": "6421435a-b563-4680-8890-eae1338691df",
+        "name": "If path not found"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          656,
+          240
+        ],
+        "id": "44e25be7-b4f7-4266-91d9-8497e75e78a2",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "operation": "create",
+          "databaseId": 33,
+          "tableId": 957,
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": 9385,
+                "fieldValue": "={{ $('Loop Over Items').item.json.path }}"
+              },
+              {
+                "fieldId": 9392,
+                "fieldValue": "={{ $('Loop Over Items').item.json.type == \"folder\" }}"
+              },
+              {
+                "fieldId": 9390,
+                "fieldValue": "={{ $('Loop Over Items').item.json.contentType }}"
+              },
+              {
+                "fieldId": 9389,
+                "fieldValue": "={{ $('Loop Over Items').item.json.date_imported }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.baserow",
+        "typeVersion": 1,
+        "position": [
+          1344,
+          656
+        ],
+        "id": "4e006c69-b4db-48d8-8e02-be0b1a6c03cf",
+        "name": "Create an item to process",
+        "credentials": {
+          "baserowApi": {
+            "id": "d2WUYcb60dACjFtq",
+            "name": "Baserow account (Self-host)"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "fromEmail": "homelab@macapinlac.com",
+          "toEmail": "ritchie@macapinlac.com",
+          "subject": "=Nextcloud Inbox (as of {{ $now.format(\"yyyy-LL-dd\") }})",
+          "emailFormat": "text",
+          "text": "={{ $json.path_count }} item(s) waiting to be processed:\n\n{{ $json.paths }}\n\nhttps://db.macapinlac.network/database/33/table/957/4367",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          1296,
+          224
+        ],
+        "id": "e1738aa1-852b-443c-b6bf-7e1d51c13956",
+        "name": "Send email",
+        "webhookId": "8c59e807-1726-40c6-83e9-49e75ef5817c",
+        "credentials": {
+          "smtp": {
+            "id": "EJhzttjGW8At1laS",
+            "name": "homelab@macapinlac.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet path_list = \"\";\nlet path_count = $input.all().length;\n\nfor (const item of $input.all()) {\n  path_list += \" - \" + item.json.path + \"\\n\";\n}\nreturn [{ json: { paths: path_list, path_count: path_count } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1088,
+          224
+        ],
+        "id": "5b059a6a-bf92-4d0d-aa36-b3f77f8ec460",
+        "name": "Format Output (Code)"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "9aff6e46-c962-4c49-8ac4-c2f97b8f5081",
+                "leftValue": "={{ $json.processed }}",
+                "rightValue": false,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "false",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.3,
+        "position": [
+          880,
+          224
+        ],
+        "id": "52ec3724-04fa-47d5-9379-6be2baaad44a",
+        "name": "Filter out processed items"
+      }
+    ],
+    "connections": {
+      "Nextcloud - Inbox Files": {
+        "main": [
+          [
+            {
+              "node": "Clean up paths",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Nextcloud - Inbox Files",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Clean up paths": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Search for path": {
+        "main": [
+          [
+            {
+              "node": "If path not found",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If path not found": {
+        "main": [
+          [
+            {
+              "node": "Create an item to process",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "Filter out processed items",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Search for path",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create an item to process": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Format Output (Code)": {
+        "main": [
+          [
+            {
+              "node": "Send email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter out processed items": {
+        "main": [
+          [
+            {
+              "node": "Format Output (Code)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Ritchie Macapinlac",
+    "name": "Version a9ff8254",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "a9ff8254-7175-4dea-89a6-d08254f956f9",
+  "connections": {
+    "Nextcloud - Inbox Files": {
+      "main": [
+        [
+          {
+            "node": "Clean up paths",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud - Inbox Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean up paths": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search for path": {
+      "main": [
+        [
+          {
+            "node": "If path not found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If path not found": {
+      "main": [
+        [
+          {
+            "node": "Create an item to process",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Filter out processed items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search for path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an item to process": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Output (Code)": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter out processed items": {
+      "main": [
+        [
+          {
+            "node": "Format Output (Code)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-12-15T17:06:01.781Z",
+  "id": "27VUBhHbq2A7nn10",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "List Files in NextCloud Inbox",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "folder",
+        "operation": "list",
+        "path": "/Journal/Inbox"
+      },
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        240,
+        240
+      ],
+      "id": "4cad7909-7f89-4f98-b2ec-9341e89065f1",
+      "name": "Nextcloud - Inbox Files",
+      "credentials": {
+        "nextCloudOAuth2Api": {
+          "id": "fLXJCCubxnE7gtwF",
+          "name": "NextCloud account (ritchie)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 5
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        240
+      ],
+      "id": "0f8d670b-e58f-4a3d-bbbe-75c0a3da239c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c703b3d8-9b56-4f43-9de7-17dde3100c78",
+              "name": "path",
+              "value": "={{ $json.path.urlDecode().replace(\"Journal/Inbox/\",\"\") }}",
+              "type": "string"
+            },
+            {
+              "id": "823e5245-8724-42dc-af14-ce526a6d15af",
+              "name": "contentType",
+              "value": "={{ $json.contentType }}",
+              "type": "string"
+            },
+            {
+              "id": "9c079221-1f88-4f15-9560-bb4f73c5cb51",
+              "name": "type",
+              "value": "={{ $json.type }}",
+              "type": "string"
+            },
+            {
+              "id": "20c6da1f-824c-4636-87ac-480976c3f584",
+              "name": "date_imported",
+              "value": "={{ $now.format(\"yyyy-LL-dd\") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        240
+      ],
+      "id": "34d4e3c7-148d-4074-b5b1-5b8eff6088cf",
+      "name": "Clean up paths"
+    },
+    {
+      "parameters": {
+        "databaseId": 33,
+        "tableId": 957,
+        "returnAll": true,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 9385,
+                "value": "={{ $json.path }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        880,
+        560
+      ],
+      "id": "fa52af3f-16ad-4a87-aeb1-65247d12ab17",
+      "name": "Search for path",
+      "alwaysOutputData": true,
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account (Self-host)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "28ce3c55-4986-471b-a0a0-28c23f90e3fd",
+              "leftValue": "={{ $json.isEmpty() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1056,
+        560
+      ],
+      "id": "6421435a-b563-4680-8890-eae1338691df",
+      "name": "If path not found"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        656,
+        240
+      ],
+      "id": "44e25be7-b4f7-4266-91d9-8497e75e78a2",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "databaseId": 33,
+        "tableId": 957,
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 9385,
+              "fieldValue": "={{ $('Loop Over Items').item.json.path }}"
+            },
+            {
+              "fieldId": 9392,
+              "fieldValue": "={{ $('Loop Over Items').item.json.type == \"folder\" }}"
+            },
+            {
+              "fieldId": 9390,
+              "fieldValue": "={{ $('Loop Over Items').item.json.contentType }}"
+            },
+            {
+              "fieldId": 9389,
+              "fieldValue": "={{ $('Loop Over Items').item.json.date_imported }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        656
+      ],
+      "id": "4e006c69-b4db-48d8-8e02-be0b1a6c03cf",
+      "name": "Create an item to process",
+      "credentials": {
+        "baserowApi": {
+          "id": "d2WUYcb60dACjFtq",
+          "name": "Baserow account (Self-host)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "homelab@macapinlac.com",
+        "toEmail": "ritchie@macapinlac.com",
+        "subject": "=Nextcloud Inbox (as of {{ $now.format(\"yyyy-LL-dd\") }})",
+        "emailFormat": "text",
+        "text": "={{ $json.path_count }} item(s) waiting to be processed:\n\n{{ $json.paths }}\n\nhttps://db.macapinlac.network/database/33/table/957/4367",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1296,
+        224
+      ],
+      "id": "e1738aa1-852b-443c-b6bf-7e1d51c13956",
+      "name": "Send email",
+      "webhookId": "8c59e807-1726-40c6-83e9-49e75ef5817c",
+      "credentials": {
+        "smtp": {
+          "id": "EJhzttjGW8At1laS",
+          "name": "homelab@macapinlac.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet path_list = \"\";\nlet path_count = $input.all().length;\n\nfor (const item of $input.all()) {\n  path_list += \" - \" + item.json.path + \"\\n\";\n}\nreturn [{ json: { paths: path_list, path_count: path_count } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        224
+      ],
+      "id": "5b059a6a-bf92-4d0d-aa36-b3f77f8ec460",
+      "name": "Format Output (Code)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9aff6e46-c962-4c49-8ac4-c2f97b8f5081",
+              "leftValue": "={{ $json.processed }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        880,
+        224
+      ],
+      "id": "52ec3724-04fa-47d5-9379-6be2baaad44a",
+      "name": "Filter out processed items"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2024-12-15T17:06:01.787Z",
+      "createdAt": "2024-12-15T17:06:01.787Z",
+      "role": "workflow:owner",
+      "workflowId": "27VUBhHbq2A7nn10",
+      "projectId": "rkuUtfbV4pRJvn4a"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "updatedAt": "2024-12-07T20:35:10.543Z",
+      "createdAt": "2024-12-07T20:35:10.543Z",
+      "id": "3J5m8c8YNebX22pe",
+      "name": "NextCloud Inbox"
+    },
+    {
+      "updatedAt": "2024-10-21T01:31:06.740Z",
+      "createdAt": "2024-10-21T01:31:06.740Z",
+      "id": "IvxaDJAqZrWQAVKk",
+      "name": "production"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-01-18T20:26:47.823Z",
+  "versionId": "a9ff8254-7175-4dea-89a6-d08254f956f9"
+}
