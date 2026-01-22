@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-18T20:26:49.000Z",
-    "createdAt": "2026-01-18T20:26:47.824Z",
-    "versionId": "a9ff8254-7175-4dea-89a6-d08254f956f9",
+    "updatedAt": "2026-01-22T17:29:42.000Z",
+    "createdAt": "2026-01-22T17:28:39.946Z",
+    "versionId": "c688682b-fdae-4ed1-968d-a0d31f400cd0",
     "workflowId": "27VUBhHbq2A7nn10",
     "nodes": [
       {
@@ -53,7 +53,7 @@
             "assignments": [
               {
                 "id": "c703b3d8-9b56-4f43-9de7-17dde3100c78",
-                "name": "path",
+                "name": "filename",
                 "value": "={{ $json.path.urlDecode().replace(\"Journal/Inbox/\",\"\") }}",
                 "type": "string"
               },
@@ -98,7 +98,7 @@
               "fields": [
                 {
                   "field": 9385,
-                  "value": "={{ $json.path }}"
+                  "value": "={{ $json.filename }}"
                 }
               ]
             }
@@ -176,7 +176,7 @@
             "fieldValues": [
               {
                 "fieldId": 9385,
-                "fieldValue": "={{ $('Loop Over Items').item.json.path }}"
+                "fieldValue": "={{ $('Loop Over Items').item.json.filename }}"
               },
               {
                 "fieldId": 9392,
@@ -235,7 +235,7 @@
       },
       {
         "parameters": {
-          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet path_list = \"\";\nlet path_count = $input.all().length;\n\nfor (const item of $input.all()) {\n  path_list += \" - \" + item.json.path + \"\\n\";\n}\nreturn [{ json: { paths: path_list, path_count: path_count } }];"
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet path_list = \"\";\nlet path_count = $input.all().length;\n\nfor (const item of $input.all()) {\n  path_list += \" - \" + item.json.filename + \"\\n\";\n}\nreturn [{ json: { paths: path_list, path_count: path_count } }];"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -397,11 +397,11 @@
       }
     },
     "authors": "Ritchie Macapinlac",
-    "name": "Version a9ff8254",
-    "description": "",
-    "autosaved": false
+    "name": "Version c688682b",
+    "description": "Updated field from path to filename (started in baserow)",
+    "autosaved": true
   },
-  "activeVersionId": "a9ff8254-7175-4dea-89a6-d08254f956f9",
+  "activeVersionId": "c688682b-fdae-4ed1-968d-a0d31f400cd0",
   "connections": {
     "Nextcloud - Inbox Files": {
       "main": [
@@ -572,7 +572,7 @@
           "assignments": [
             {
               "id": "c703b3d8-9b56-4f43-9de7-17dde3100c78",
-              "name": "path",
+              "name": "filename",
               "value": "={{ $json.path.urlDecode().replace(\"Journal/Inbox/\",\"\") }}",
               "type": "string"
             },
@@ -617,7 +617,7 @@
             "fields": [
               {
                 "field": 9385,
-                "value": "={{ $json.path }}"
+                "value": "={{ $json.filename }}"
               }
             ]
           }
@@ -695,7 +695,7 @@
           "fieldValues": [
             {
               "fieldId": 9385,
-              "fieldValue": "={{ $('Loop Over Items').item.json.path }}"
+              "fieldValue": "={{ $('Loop Over Items').item.json.filename }}"
             },
             {
               "fieldId": 9392,
@@ -754,7 +754,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet path_list = \"\";\nlet path_count = $input.all().length;\n\nfor (const item of $input.all()) {\n  path_list += \" - \" + item.json.path + \"\\n\";\n}\nreturn [{ json: { paths: path_list, path_count: path_count } }];"
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet path_list = \"\";\nlet path_count = $input.all().length;\n\nfor (const item of $input.all()) {\n  path_list += \" - \" + item.json.filename + \"\\n\";\n}\nreturn [{ json: { paths: path_list, path_count: path_count } }];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -833,6 +833,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-18T20:26:47.823Z",
-  "versionId": "a9ff8254-7175-4dea-89a6-d08254f956f9"
+  "updatedAt": "2026-01-22T17:28:39.945Z",
+  "versionId": "c688682b-fdae-4ed1-968d-a0d31f400cd0"
 }
